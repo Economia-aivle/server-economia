@@ -21,8 +21,11 @@ from django.shortcuts import render
 def index(request):
     return render(request,'index.html')
 
+def study(request):
+    return render(request,'study.html')
+
 urlpatterns = [
-    path("",index)
+    path("",study)
 ]
 
 from django.conf import settings
