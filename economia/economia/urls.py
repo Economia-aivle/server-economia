@@ -33,8 +33,11 @@ def blank(request):
 def multiple(request):
     return render(request,'multiple.html')
 
+def wrong_explanation(request):
+    return render(request,'wrong_explanation.html')
+
 urlpatterns = [
-    path("",blank)
+    path("",wrong_explanation)
 ]
 
 from django.conf import settings
