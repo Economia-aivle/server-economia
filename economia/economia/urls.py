@@ -19,7 +19,7 @@ from django.urls import path
 from django.shortcuts import render
 
 def index(request):
-    return render(request,'notice.html')
+    return render(request,'previous_quiz_answer.html')
 
 urlpatterns = [
     path("",index)
