@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>문제풀이 - OX</title>
+    <link rel="stylesheet" href="{% static 'multiple.css' %}" />
+  </head>
+
+  <body>
+    {% include 'quiz_header.html' %}
+    <main>
+      <div class="wrap-container">
+        <div class="question-container">
+          <h1>
+            Q3. 예금에 대한 설명으로 옳지 않은것은?
+          </h1>
+        </div>
+        <div class="character">
+          <img src="{% static 'char1.png' %}" alt="char" />
+        </div>
+        <div class="anwer-container">
+            <button class="option-btn" id="option1" onclick="selectOption(this)">1. 예금은 금이다.</button>
+            <button class="option-btn" id="option2" onclick="selectOption(this)">2. 누구나 다 가입할 수 있다.</button>
+            <button class="option-btn" id="option3" onclick="selectOption(this)">3. 다양한 종류가 있다.</button>
+            <button class="option-btn" id="option4" onclick="selectOption(this)">4. 적금의 친구다.</button>
+          </div>
+    </main>
+    <aside class="sidebar">
+      <div class="top-num"><p class="progress-num">3/5</p></div>
+
+      <div class="progress">
+        <span class="progress-step active"></span>
+        <span class="progress-step active"></span>
+        <span class="progress-step active"></span>
+        <span class="progress-step"></span>
+        <span class="progress-step"></span>
+      </div>
+    </aside>
+  </body>
+</html>
+<script>
+    function selectOption(selectedBtn) {
+        // 모든 버튼의 selected 클래스를 제거
+        const buttons = document.querySelectorAll('.option-btn');
+        buttons.forEach(btn => {
+          btn.classList.remove('selected');
+        });
+      
+        // 클릭한 버튼에 selected 클래스 추가
+        selectedBtn.classList.add('selected');
+      }
+</script>

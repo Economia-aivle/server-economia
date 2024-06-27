@@ -27,8 +27,14 @@ def study(request):
 def tfquiz(request):
     return render(request,'tfquiz.html')
 
+def blank(request):
+    return render(request,'blank.html')
+
+def multiple(request):
+    return render(request,'multiple.html')
+
 urlpatterns = [
-    path("",tfquiz)
+    path("",blank)
 ]
 
 from django.conf import settings
