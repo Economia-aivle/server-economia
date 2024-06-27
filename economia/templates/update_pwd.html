@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'update_pwd.css' %}" />
+    <title>Title</title>
+</head>
+<body>
+    <div class="container">
+        <div class="white_box"></div>
+        <span class="title_update_pwd">비밀번호 재설정</span>
+        <input type="text" class="new_pwd" placeholder="새 비밀번호">
+        <div class="line1"></div>
+        <input type="text" class="check_pwd" placeholder="비밀번호 확인">
+        <div class="line2"></div>
+        <button class="check_btn"><span class="check_str">변경하기</span></button>
+    </div>
+</body>
+</html>

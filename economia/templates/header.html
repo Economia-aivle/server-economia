@@ -1,0 +1,74 @@
+
+{% load static %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+    body, h1, h2, p, ul, li, a {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        text-decoration: none;
+        font-family: Arial, sans-serif;
+    }
+    .logo a{
+        font-family: "Quicksand", sans-serif;
+    }
+    .head-container {
+        width: 80%;
+        margin: 0 auto;
+    }
+    
+    .navbar {
+        margin-top: 1%;
+        background-color: white;
+        color: white;
+        padding: 10px 0;
+        border-radius: 10px;
+        width: 100%;
+    }
+    
+    .navbar .logo {
+        float: left;
+    }
+    
+    .navbar nav {
+        float: right;
+    }
+    
+    .navbar ul {
+        display: flex;
+        padding-top: 15px;
+    }
+    
+    .navbar ul li {
+        margin-left: 100px;
+    }
+    
+    .navbar ul li a, .navbar ul li p {
+        color: black;
+        font-size: 30px;
+        font-family: "Quicksand", sans-serif;
+    }
+    
+    .navbar:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    </style>
+</head>
+    <header class="navbar">
+        <div class="head-container">
+            <a href=""><img src="{% static 'logo.png' %}" alt="My Image"></a>
+            <nav>
+                <ul>
+                    <li><a href="">학습하기</a></li>
+                    <li><a href="">시나리오</a></li>
+                    <li><a href="">마이페이지</a></li>
+                    <li><a href="">로그아웃</a></li>
+                </ul>
+            </nav>
+        </div>
+
+    </header>
+    <hr>
+
