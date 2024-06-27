@@ -24,6 +24,9 @@ def index(request):
 def study(request):
     return render(request,'study.html')
 
+def level_choice(request):
+    return render(request,'level_choice.html')
+
 urlpatterns = [
     path("",study)
 ]

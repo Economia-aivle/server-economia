@@ -3,29 +3,29 @@
 main{
 	background-color:rgba(224.000001847744, 244.0000006556511, 255, 1);
 	width:100%;
-	height: 1125px;
+	height: 1000px;
 	position : relative;
 	display: flex;
 	justify-content : center;
 	font-family: 'Noto Sans KR', sans-serif;
 
 }
-.container { 
-	margin-left: 50%;
+body{
+	background-color: #E0F4FF;
 }
 
 .wrap-container { 
 	box-shadow:4px 4px 4px rgba(0, 0, 0, 0.25);
-	width:1600px;
-	height:800px;
+	width:1400px;
+	height:600px;
 	position:absolute;
 	top : 10%;
 	
 }
 .video-container { 
 	background-color:rgba(255, 255, 255, 1);
-	width:1600px;
-	height: 800px;
+	width:1400px;
+	height: 600px;
 	border-radius:15px;
 }
 .video { 

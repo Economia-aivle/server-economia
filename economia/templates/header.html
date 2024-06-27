@@ -2,7 +2,7 @@
 <head>
 <style>
     @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
-        ul, li, a {
+        body, ul, li, a {
         margin: 0;
         padding: 0;
         list-style: none;
@@ -11,21 +11,24 @@
     }
     .logo{
         display: flex;
+        margin-top: 10px;
     }
     .head-container {
-        width: 2000px;
+        width: 1887px;
+        height: 80px;
         margin: 0 auto;
         position: relative;
     }
     
     .navbar {
         position : relative;
-        margin-top: 1%;
         background-color: white;
         color: white;
-        padding: 10px 0;
-        border-radius: 10px;
         width: 100%;
+        padding: 10px;
+        border-bottom-width:1px; 
+        border-bottom-style:solid;
+        border-bottom-color:black;
     }
     
     .navbar .logo {
@@ -42,13 +45,16 @@
     }
     
     .navbar ul li {
-        margin-left: 100px;
+        margin-left: 50px;
     }
     
     .navbar ul li a, .navbar ul li {
         color: black;
         font-size: 30px;
         font-family: 'Noto Sans KR', sans-serif;
+    }
+    .navbar ul{
+        margin-right: 50px;
     }
     
     .navbar:after {
@@ -60,7 +66,7 @@
 </head>
     <header class="navbar">
         <div class="head-container">
-            <a href=""><img src="{% static 'logo.png' %}" alt="My Image"></a>
+            <a href=""><img src="{% static 'logo.png' %}" class="logo" alt="My Image"></a>
             <nav>
                 <ul>
                     <li><a href="">학습하기</a></li>
@@ -72,4 +78,3 @@
         </div>
 
     </header>
-    <hr>
