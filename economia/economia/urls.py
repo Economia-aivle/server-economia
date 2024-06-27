@@ -39,8 +39,11 @@ def wrong_explanation(request):
 def chapter_summary(request):
     return render(request,'chapter_summary.html')
 
+def level_choice(request):
+    return render(request,'level_choice.html')
+
 urlpatterns = [
-    path("",blank)
+    path("",level_choice)
 ]
 
 from django.conf import settings
