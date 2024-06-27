@@ -19,7 +19,7 @@ from django.urls import path
 from django.shortcuts import render
 
 def index(request):
-    return render(request,'find_account_id.html')
+    return render(request,'char_delete.html')
 
 urlpatterns = [
     path("",index)
