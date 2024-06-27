@@ -24,11 +24,11 @@ def index(request):
 def study(request):
     return render(request,'study.html')
 
-def level_choice(request):
-    return render(request,'level_choice.html')
+def tfquiz(request):
+    return render(request,'tfquiz.html')
 
 urlpatterns = [
-    path("",study)
+    path("",tfquiz)
 ]
 
 from django.conf import settings

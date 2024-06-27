@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>문제풀이 - OX</title>
+    <link rel="stylesheet" href="{% static 'level_choice.css' %}" />
+  </head>
+
+  <body>
+    {% include 'quiz_header.html' %}
+    <main>
+      <div class="question-container">
+        <h1>Q3. 예금은 누구나 다 가입할 수 있다.</h1>
+      </div>
+      <div class="wrap-container">
+        <button class="o-btn">O</button>
+        <img src="{% static 'char1.png' %}" alt="char" />
+        <button class="x-btn">X</button>
+      </div>
+    </main>
+    <aside class="sidebar">
+      <div class="top-num"><p class="progress-num">3/5</p></div>
+
+      <div class="progress">
+        <span class="progress-step active"></span>
+        <span class="progress-step active"></span>
+        <span class="progress-step active"></span>
+        <span class="progress-step"></span>
+        <span class="progress-step"></span>
+      </div>
+    </aside>
+  </body>
+</html>
