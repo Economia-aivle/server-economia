@@ -1,29 +1,34 @@
-
 {% load static %}
+<head>
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
-    body, h1, h2, p, ul, li, a {
+    @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+        body, ul, li, a {
         margin: 0;
         padding: 0;
         list-style: none;
         text-decoration: none;
-        font-family: Arial, sans-serif;
+        font-family: 'Noto Sans KR', sans-serif;
     }
-    .logo a{
-        font-family: "Quicksand", sans-serif;
+    .logo{
+        display: flex;
+        margin-top: 10px;
     }
     .head-container {
-        width: 80%;
+        width: 1887px;
+        height: 80px;
         margin: 0 auto;
+        position: relative;
     }
     
     .navbar {
-        margin-top: 1%;
+        position : relative;
         background-color: white;
         color: white;
-        padding: 10px 0;
-        border-radius: 10px;
         width: 100%;
+        padding: 10px;
+        border-bottom-width:1px; 
+        border-bottom-style:solid;
+        border-bottom-color:black;
     }
     
     .navbar .logo {
@@ -40,13 +45,16 @@
     }
     
     .navbar ul li {
-        margin-left: 100px;
+        margin-left: 50px;
     }
     
-    .navbar ul li a, .navbar ul li p {
+    .navbar ul li a, .navbar ul li {
         color: black;
         font-size: 30px;
-        font-family: "Quicksand", sans-serif;
+        font-family: 'Noto Sans KR', sans-serif;
+    }
+    .navbar ul{
+        margin-right: 50px;
     }
     
     .navbar:after {
@@ -58,7 +66,7 @@
 </head>
     <header class="navbar">
         <div class="head-container">
-            <a href=""><img src="{% static 'logo.png' %}" alt="My Image"></a>
+            <a href=""><img src="{% static 'logo.png' %}" class="logo" alt="My Image"></a>
             <nav>
                 <ul>
                     <li><a href="">학습하기</a></li>
@@ -70,5 +78,3 @@
         </div>
 
     </header>
-    <hr>
-
