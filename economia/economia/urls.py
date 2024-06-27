@@ -43,7 +43,14 @@ def level_choice(request):
     return render(request,'level_choice.html')
 
 urlpatterns = [
-    path("",level_choice)
+    path("",level_choice),
+    path("blank",blank),
+    path("chapter_summary",chapter_summary),
+    path("level_choice",level_choice),
+    path("multiple",multiple),
+    path("study",study),
+    path("tfquiz",tfquiz),
+    path("wrong_explanation",wrong_explanation),
 ]
 
 from django.conf import settings

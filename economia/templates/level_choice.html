@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>학습 하기</title>
-    <link rel="stylesheet" href="{% static 'level_choice.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/level_choice.css' %}" />
   </head>
   {% include 'header.html' %}
   <body>
@@ -16,20 +16,20 @@
         <span class="btn-cho">
             <button class="next-btn active">
                 <p>초급</p>
-                <div><img src="{% static 'unlock.png' %}" alt="초급"></div>
+                <div><img src="{% static 'images/unlock.png' %}" alt="초급"></div>
                 
             </button>
         </span>
         <span class="btn-jung">
             <button class="next-btn active">
                 <p>중급</p>
-                <div><img src="{% static 'unlock.png' %}" alt="중급"></div>
+                <div><img src="{% static 'images/unlock.png' %}" alt="중급"></div>
             </button>
         </span>
         <span class="btn-go">
             <button class="next-btn">
                 <p>고급</p>
-                <div><img src="{% static 'unlock.png' %}" alt="고급"></div>
+                <div><img src="{% static 'images/unlock.png' %}" alt="고급"></div>
                 
             </button>
         </span>
@@ -46,10 +46,10 @@
     
             if (button.classList.contains('active')) {
                 button.disabled = false;
-                img.src = "{% static 'unlock.png' %}";
+                img.src = "{% static 'images/unlock.png' %}";
             } else {
                 button.disabled = true;
-                img.src = "{% static 'lock.png' %}";
+                img.src = "{% static 'images/lock.png' %}";
             }
            
         });
