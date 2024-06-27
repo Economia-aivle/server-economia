@@ -111,12 +111,13 @@ body{
   .tri-btn { 
 	width: 0;
 	height: 0;
-	border-bottom: 30px solid transparent;
-	border-top: 30px solid transparent;
-	border-left: 50px solid #39A7FF;
-	border-right: 50px solid transparent;
+	border-bottom: 25px solid transparent;
+	border-top: 25px solid transparent;
+	border-left: 40px solid  #39A7FF;
+	border-right: 40px solid transparent;
 	border-radius:10px;
     margin-bottom: 80px;
+    
 }
 .next-btn{
     display: flex;
@@ -129,6 +130,7 @@ body{
 .next-btn a{
     display: flex;
     color: #39A7FF;
+    font-weight: bold;
     font-size: 30px;
     align-items: center;
     margin-left: -100px;
@@ -136,3 +138,6 @@ body{
     position: relative;
     padding: 10px 20px;
 }
+
+.modal-bg {display:none;width:100%;height:100%;position:fixed;top:0;left:0;right:0;background: rgba(0, 0, 0, 0.6);z-index:999;}
+.modal-wrap {display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;height:300px;background:#fff;z-index:1000;}

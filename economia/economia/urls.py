@@ -40,7 +40,7 @@ def chapter_summary(request):
     return render(request,'chapter_summary.html')
 
 urlpatterns = [
-    path("",chapter_summary)
+    path("",blank)
 ]
 
 from django.conf import settings
