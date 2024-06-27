@@ -36,8 +36,11 @@ def multiple(request):
 def wrong_explanation(request):
     return render(request,'wrong_explanation.html')
 
+def chapter_summary(request):
+    return render(request,'chapter_summary.html')
+
 urlpatterns = [
-    path("",wrong_explanation)
+    path("",chapter_summary)
 ]
 
 from django.conf import settings
