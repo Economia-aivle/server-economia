@@ -1,12 +1,19 @@
 {% load static %}
+<<<<<<< HEAD
 <head>
 <style>
     @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
         body, ul, li, a {
+=======
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+    body, h1, h2, p, ul, li, a {
+>>>>>>> main
         margin: 0;
         padding: 0;
         list-style: none;
         text-decoration: none;
+<<<<<<< HEAD
         font-family: 'Noto Sans KR', sans-serif;
     }
     .logo{
@@ -29,6 +36,26 @@
         border-bottom-width:1px; 
         border-bottom-style:solid;
         border-bottom-color:black;
+=======
+        font-family: Arial, sans-serif;
+    }
+    .logo a {
+        font-family: "Quicksand", sans-serif;
+    }
+    .head-container {
+        width: 80%;
+        margin: 0 auto;
+    }
+    
+    .navbar {
+        margin-top: 0%;
+        background-color: white;
+        color: white;
+        padding: 10px 0;
+        width: 100%;
+        height: 70px;
+        min-height:60px;
+>>>>>>> main
     }
     
     .navbar .logo {
@@ -45,6 +72,7 @@
     }
     
     .navbar ul li {
+<<<<<<< HEAD
         margin-left: 50px;
     }
     
@@ -55,6 +83,15 @@
     }
     .navbar ul{
         margin-right: 50px;
+=======
+        margin-left: 100px;
+    }
+    
+    .navbar ul li a, .navbar ul li p {
+        color: black;
+        font-size: 30px;
+        font-family: "Quicksand", sans-serif;
+>>>>>>> main
     }
     
     .navbar:after {
@@ -62,6 +99,7 @@
         display: table;
         clear: both;
     }
+<<<<<<< HEAD
     </style>
 </head>
     <header class="navbar">
@@ -78,3 +116,81 @@
         </div>
 
     </header>
+=======
+    
+    /* Media Queries for Responsiveness */
+    @media (max-width: 1200px) {
+        .navbar ul li {
+            margin-left: 50px;
+        }
+        
+        .navbar ul li a, .navbar ul li p {
+            font-size: 25px;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .head-container {
+            width: 90%;
+        }
+
+        .navbar ul li {
+            margin-left: 30px;
+        }
+
+        .navbar ul li a, .navbar ul li p {
+            font-size: 20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .navbar {
+            padding: 10px;
+        }
+
+        .navbar .logo {
+            float: none;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .navbar nav {
+            float: none;
+            text-align: center;
+        }
+
+        .navbar ul {
+            flex-direction: column;
+            padding-top: 0;
+        }
+
+        .navbar ul li {
+            margin: 10px 0;
+        }
+
+        .navbar ul li a, .navbar ul li p {
+            font-size: 18px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .navbar ul li a, .navbar ul li p {
+            font-size: 16px;
+        }
+    }
+</style>
+</head>
+<header class="navbar">
+    <div class="head-container">
+        <a href=""><img src="{% static 'logo.png' %}" alt="My Image"></a>
+        <nav>
+            <ul>
+                <li><a href="">학습하기</a></li>
+                <li><a href="">시나리오</a></li>
+                <li><a href="">마이페이지</a></li>
+                <li><a href="">로그아웃</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+>>>>>>> main

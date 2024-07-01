@@ -19,10 +19,25 @@ from django.urls import path
 from django.shortcuts import render
 
 def index(request):
-    return render(request,'popup_char_exist.html')
+    return render(request,'index.html')
+def index1(request):
+    return render(request,'previous_scenario.html')
+def index2(request):
+    return render(request,'ranking.html')
+def index3(request):
+    return render(request,'scenario_list.html')
+def index4(request):
+    return render(request,'scenario.html')
+def index5(request):
+    return render(request,'summary_anime.html')
 
 urlpatterns = [
-    path("",index)
+    path("",index),
+    path("mode1/",index1),
+    path("mode2/",index2),
+    path("mode3/",index3),
+    path("mode4/",index4),
+    path("mode5/",index5)
 ]
 
 from django.conf import settings
