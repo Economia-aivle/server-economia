@@ -17,6 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.shortcuts import render
+from django.urls import include
+
+app_name = 'chatgpt'
+
 
 def index(request):
     return render(request,'index.html')
@@ -52,6 +56,9 @@ def chapter_summary(request):
 def level_choice(request):
     return render(request,'level_choice.html')
 
+def summary_anime(request):
+    return render(request,'summary_anime.html')
+
 urlpatterns = [
     path("",level_choice),
     path("blank",blank),
@@ -61,6 +68,8 @@ urlpatterns = [
     path("study",study),
     path("tfquiz",tfquiz),
     path("wrong_explanation",wrong_explanation),
+    path("summary_anime",summary_anime),
+    path('apps/', include('apps.urls')),
 ]
 
 from django.conf import settings

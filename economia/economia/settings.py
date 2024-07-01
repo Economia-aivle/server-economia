@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "apps",
 ]
 
 MIDDLEWARE = [
@@ -78,6 +79,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "economia",
         "USER" : "root",
+        "PASSWORD" : 'aivle',
         "HOST" : '127.0.0.1',
         "PORT" : '3306'
     }
