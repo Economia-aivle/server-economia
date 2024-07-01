@@ -1,0 +1,121 @@
+body {
+    background-color: rgba(224, 244, 255, 1);
+}
+.container {
+    overflow: hidden;
+    background-color: rgba(224, 244, 255, 1);
+    width: 1920px;
+    height: 1080px;
+    position: absolute;
+}
+
+.white_box {
+    background-color: rgba(255, 255, 255, 1);
+    width: 750px;
+    height: 860px;
+    position: absolute;
+    left: 585px;
+    top: 110px;
+    border-radius: 20px;
+}
+
+.new_pwd {
+    width: 380px;
+    height: 36px;
+    position: absolute;
+    left: 674px;
+    top: 355px;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 30px;
+    outline: none;
+    letter-spacing: 0;
+    cursor: text;
+}
+
+.line1 {
+    width: 460px;
+    height: 0px;
+    position: absolute;
+    left: 673px;
+    top: 425px;
+    border: 3px solid rgba(217, 217, 217, 1);
+}
+
+.check_pwd {
+    width: 380px;
+    height: 36px;
+    position: absolute;
+    left: 674px;
+    top: 450px;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 30px;
+    outline: none;
+    letter-spacing: 0;
+    cursor: text;
+}
+
+.line2 {
+    width: 460px;
+    height: 0px;
+    position: absolute;
+    left: 673px;
+    top: 520px;
+    border: 3px solid rgba(217, 217, 217, 1);
+}
+
+.title_update_pwd {
+    color: rgba(0, 0, 0, 1);
+    width: 420px;
+    height: 100px;
+    position: absolute;
+    left: 665px;
+    top: 200px;
+    font-family: Inter;
+    text-align: left;
+    font-size: 50px;
+    font-weight: bold;
+    letter-spacing: 0;
+}
+
+button.check_btn {
+    box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.25);
+    background-color: rgba(57, 167, 255, 1);
+    width: 500px;
+    height: 80px;
+    top: 750px;
+    left: 700px;
+    position: absolute;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: background-color 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button:active {
+    animation: blink 0.2s;
+}
+
+@keyframes blink {
+    0%, 100% { background-color: rgba(57, 167, 255, 1); }
+    50% { background-color: rgba(30, 144, 255, 1); }
+}
+
+.check_str {
+    color: rgba(255, 255, 255, 1);
+    font-family: Noto Sans;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 0;
+}

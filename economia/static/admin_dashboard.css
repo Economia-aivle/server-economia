@@ -1,0 +1,92 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #3c8dbc;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.header-right {
+    font-size: 0.9em;
+}
+
+.header-right a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+.container {
+    display: flex;
+    margin: 20px;
+}
+
+aside {
+    width: 25%;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-right: 20px;
+}
+
+aside h2 {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.management-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.management-table th,
+.management-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.management-table th {
+    background-color: #f4f7f6;
+}
+
+.management-table a {
+    color: #3c8dbc;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+main {
+    width: 75%;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+main h2 {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.recent-activity {
+    background-color: #f4f7f6;
+    padding: 20px;
+    border: 1px solid #ddd;
+}
+
+.recent-activity p {
+    margin: 5px 0;
+}

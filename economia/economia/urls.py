@@ -20,6 +20,16 @@ from django.shortcuts import render
 
 def index(request):
     return render(request,'index.html')
+def index1(request):
+    return render(request,'previous_scenario.html')
+def index2(request):
+    return render(request,'ranking.html')
+def index3(request):
+    return render(request,'scenario_list.html')
+def index4(request):
+    return render(request,'scenario.html')
+def index5(request):
+    return render(request,'summary_anime.html')
 
 def study(request):
     return render(request,'study.html')
@@ -43,6 +53,7 @@ def level_choice(request):
     return render(request,'level_choice.html')
 
 urlpatterns = [
+<<<<<<< HEAD
     path("",level_choice),
     path("blank",blank),
     path("chapter_summary",chapter_summary),
@@ -51,6 +62,14 @@ urlpatterns = [
     path("study",study),
     path("tfquiz",tfquiz),
     path("wrong_explanation",wrong_explanation),
+=======
+    path("",index),
+    path("mode1/",index1),
+    path("mode2/",index2),
+    path("mode3/",index3),
+    path("mode4/",index4),
+    path("mode5/",index5)
+>>>>>>> 56ed5314845f29a91907a49230a253f8af0af99b
 ]
 
 from django.conf import settings

@@ -1,0 +1,99 @@
+body {
+    background-color: #E0F4FF;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 150px; /* 헤더의 높이보다 큰 값으로 설정 */
+}
+
+.search_container {
+    display: flex;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.search_input {
+    width: 550px;
+    height: 35px;
+    margin-top: 20px;
+    padding: 20px;
+    font-size: 24px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+}
+
+.search_btn {
+    height: 40px;
+    padding: 0 20px;
+    cursor: pointer;
+    background-image: url('search.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    margin-left: 30px;
+    margin-top: 15px;
+}
+
+.white_box {
+    width: 80%;
+    max-height: 700px
+    max-width: 1000px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 70px;
+    padding: 20px;
+    border-radius: 10px;
+    overflow: auto; /* 테이블이 넘칠 경우 스크롤 바 표시 */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; /* 테이블과 검색 입력창 간격 */
+    background-color: #fff;
+    font-size: 24px;
+}
+
+table th {
+    background-color: #fff;
+    border-bottom: 3px solid #87C4FF;
+    border-top: none; /* 테이블 헤더의 상단 테두리 없앰 */
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: center; /* 셀 내부의 텍스트 가운데 정렬 */
+    border-right: 3px solid #87C4FF; /* 우측 세로 테두리 */
+    border-left: 3px solid #87C4FF; /* 좌측 세로 테두리 */
+
+}
+
+table td:first-child,
+table th:first-child {
+    border-left: none; /* 첫 번째 열의 좌측 테두리 없앰 */
+}
+
+table td:last-child,
+table th:last-child {
+    border-right: none; /* 마지막 열의 우측 테두리 없앰 */
+}
+
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+table tr:nth-child(even) {
+    background-color: #fff;
+}
+
+table tr:nth-child(odd) {
+    background-color: #fff;
+}
