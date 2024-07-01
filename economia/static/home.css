@@ -37,7 +37,7 @@ body, html {
     position: absolute;
     top: 20px; /* 사이드바 상단으로부터의 거리 */
     left: 20px; /* 사이드바 왼쪽으로부터의 거리 */
-    background-image: url(images/logo_official.png);
+    background-image: url(images/logo.png);
     background-size: cover; 
     border: none; /* 테두리 없음 */
     background-repeat: no-repeat; /* 이미지 반복 방지 */
