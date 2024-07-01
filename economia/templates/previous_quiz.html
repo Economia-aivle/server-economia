@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>이전 문제 보기</title>
+    <link rel="stylesheet" href="{% static 'previous_quiz.css' %}" />
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="container">
+        <div class="search_container">
+            <input type="text" class="search_input" placeholder="검색">
+            <input type="button" class="search_btn">
+            <!-- 첫 번째 드롭다운 메뉴 -->
+            <select class="dropdown">
+                <option value="list1">경제</option>
+                <option value="list2">기업/경영</option>
+                <option value="list3">금융</option>
+                <option value="list4">산업</option>
+                <option value="list5">노동</option>
+                <option value="list6">은행 및 금융용어</option>
+                <option value="list7">부동산</option>
+                <option value="list8">디지털 경제용어</option>
+                <option value="list9">은행</option>
+            </select>
+            <!-- 두 번째 드롭다운 메뉴 -->
+            <select class="dropdown">
+                <option value="option1">초급</option>
+                <option value="option2">중급</option>
+                <option value="option3">고급</option>
+            </select>
+        </div>
+
+        <div class="list_box">
+            <div class="list_item">
+                <div class="list_content">예금은 누구나 다 가입할 수 있다.</div>
+                <button class="item_button"></button>
+            </div>
+            <div class="list_item">
+                <div class="list_content">정해진 금액을 일정 기간 맡겼다 다시 찾아가는 방식을 [      ] 이라고 한다.</div>
+                <button class="item_button"></button>
+            </div>
+            <div class="list_item">
+                <div class="list_content">예금에 대한 설명으로 옳지 않은것은?</div>
+                <button class="item_button"></button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
