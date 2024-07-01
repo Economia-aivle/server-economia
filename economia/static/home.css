@@ -1,0 +1,437 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans', sans-serif;
+    overflow: auto;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+    background-color: rgba(224, 244, 255, 1);
+}
+
+.sidebar {
+    width: 30%;
+    max-width: 527px;
+    background-color: rgba(255, 255, 255, 1);
+    /* padding: 20px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 10px;
+    position: relative;
+}
+
+
+.logo {
+    /* display: block; */
+    width: 140px;
+    height: 30px;
+    position: absolute;
+    top: 20px; /* 사이드바 상단으로부터의 거리 */
+    left: 20px; /* 사이드바 왼쪽으로부터의 거리 */
+    background-image: url(images/logo_official.png);
+    background-size: cover; 
+    border: none; /* 테두리 없음 */
+    background-repeat: no-repeat; /* 이미지 반복 방지 */
+    background-position: top; /* 이미지 중앙 정렬 */
+}
+
+.logout-btn {
+    color: rgb(255, 255, 255);
+    position: absolute;
+    top: 20px; /* 사이드바 상단으로부터의 거리 */
+    right: 20px; /* 사이드바 오른쪽으로부터의 거리 */
+    border: none;
+    background-color: rgba(57, 167, 255, 1);
+    border-radius: 10px;
+    text-align: center;
+    font-size: 16px;    
+    font-family: 'Noto Sans';
+    cursor: pointer; /* 마우스를 가져다 대면 포인터로 변경 */
+    padding: 5px 10px; /* 상하 10px, 좌우 20px 패딩을 줘서 텍스트 주변에 여유 공간을 확보 */
+}
+
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.character {
+    width: 294px;
+    height: 222px;
+    top: 100px;
+    background-image: url(images/character.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* margin: 0 auto; */
+    position: absolute;
+}
+
+#nickname {
+    font-size: 25px;
+    text-align: center;
+    display: block;
+    top: 320px;
+    position: absolute;
+    margin-top: 10px;
+    font-weight: bold;
+
+}
+
+.username {
+    top: 355px;
+    font-size: 20px;
+    text-align: center;
+    display: block;
+    position: absolute;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.school {
+    top: 380px;
+    font-size: 20px;
+    text-align: center;
+    display: block;
+    position: absolute; 
+    margin-top: 25px;
+    font-weight: bold;
+
+}
+
+.user-setting {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.edit-character-btn {
+    color: rgb(255, 255, 255);
+    font-size: 10px;
+    text-decoration: none;
+    position: absolute;
+    top: 80px; /* 캐릭터 이미지 위쪽 대각선 위치 */
+    right: 100px; /* 캐릭터 이미지 오른쪽 대각선 위치 */
+    border: none;
+    background-color: rgba(57, 167, 255, 1);
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.my-page-btn {
+    color: rgb(255, 255, 255);
+    font-size: 10px;
+    text-decoration: none;
+    position: absolute;
+    top: 80px;
+    left: 100px;
+    border: none;
+    background-color: rgba(57, 167, 255, 1);
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.level-info {
+    position: relative;
+    width: 150px; /* progress-circle 크기에 맞추기 */
+    margin: 50px auto; /* 가운데 정렬 및 상하 마진 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    overflow: visible; /* 부모 요소의 경계를 넘어서도 자식 요소가 표시되도록 설정 */
+
+}
+
+.level {
+    position: absolute;
+    top: -40px; /* progress-circle의 좌상단으로 이동 */
+    left: 5%; /* 중앙 정렬 */
+    transform: translateX(-50%); /* 중앙 정렬 보정 */
+    font-size: 30px;
+    font-weight: bold;
+    color: rgba(57, 167, 255, 1);
+}
+
+
+.progress-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: rgba(57, 167, 255, 1); /* 큰 파란색 원 */
+    position: relative; /* 자식 요소들의 위치를 절대적으로 지정하기 위해 필요 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle-inner {
+    width: 100px; /* 외곽의 파란 원이 잘 보이도록 약간 작게 설정 */
+    height: 100px; /* 외곽의 파란 원이 잘 보이도록 약간 작게 설정 */
+    border-radius: 50%;
+    background-color: white; /* 흰색 원 */
+    position: absolute; /* 부모 요소인 .progress-circle 안에 배치 */
+    display: flex; /* 가운데 정렬을 위한 Flexbox 사용 */
+    justify-content: center;
+    align-items: center;
+    z-index: 1; /* 자식 요소들이 부모 요소보다 위에 표시되도록 설정 */
+}
+
+.progress-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 정확히 가운데 정렬 */
+    font-size: 40px;
+    color: rgba(57, 167, 255, 1); /* 파란색 글씨 */
+    z-index: 2; /* 글씨가 흰색 원보다 위에 표시되도록 설정 */
+}
+
+.progress-pts {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px; /* progress-circle 아래에 위치하도록 조정 */
+    display: block;
+}
+
+.main-content {
+    width: 70%;
+    flex: 1;
+    padding: 20px;
+    gap: 60px;
+    /* justify-content: space-between; */
+    display: flex;
+    flex-direction: column;
+    position: relative; /* 부모 요소를 relative로 설정 */
+    /* flex-wrap: wrap; */
+}
+
+.content-header {
+    display: flex;
+    align-items: center; /* 수직 중앙 정렬 */
+    padding: 10px;
+    justify-content: center;
+}
+
+.category-btn { 
+    width: 40px;
+    height: 50px;
+    background-image: url(images/category-btn.png);
+    background-size: contain; /* 이미지 크기를 컨테이너에 맞추기 */
+    background-repeat: no-repeat; /* 이미지 반복 방지 */
+    background-position: center; /* 이미지 중앙 정렬 */
+    border: none; /* 테두리 없음 */
+    cursor: pointer; /* 마우스를 가져다 대면 포인터로 변경 */
+    outline: none; /* 포커스시 외곽선 없음 */
+    background-color: transparent; /* 배경색을 투명하게 설정 */
+    display: inline-block; /* 기본 버튼 스타일 제거 */
+    margin-right: 30px; /* 버튼과 텍스트 사이의 간격 */
+}
+
+.category-btn:hover {
+	opacity: 0.8;
+}
+
+.category {
+    font-size: 48px;
+    color: rgba(0, 0, 0, 1);
+    margin-right: 20px; /* 카테고리와 버튼 사이의 간격을 설정 */
+}
+
+.learning-btn, .scenario-btn {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    background-color: rgba(57, 167, 255, 1);
+    border-radius: 10px;
+    border-color: transparent;
+    /* text-align: center; */
+    font-size: 20px;
+    cursor: pointer; 
+    margin-left: 20px;
+    padding: 5px 10px;
+}
+
+.learning-btn:hover, .scenario-btn:hover {
+	opacity: 0.8;
+}
+
+.content-body > .row {
+    display: flex;
+    gap: 20px;
+}
+
+.content-body > .row > div {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    flex: 1;
+}
+
+.content-body {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+
+/* 첫 번째 row 설정 */
+.current-problem,
+.current-scenario,
+.points,
+.ranking {
+    flex: 1;
+}
+
+/* 두 번째 row 설정 */
+.view-solved,
+.created-scenarios,
+.announcement {
+    flex: 1;
+}
+
+/* 세 번째 row 설정 */
+.advertiser {
+    display: flex;
+    background-image: url(images/ads.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 10px;
+    padding: 20px;
+    height: 155px;
+    margin-top: 20px;
+}
+
+.status, .current-scenario-text, .points-text, .ranking-text,
+.view-solved-text, .created-scenario-text, .announcement-title {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 20px; /* 제목과 본문 사이의 간격 */
+    
+}
+
+.content-body a {
+    text-decoration: none;
+    text-align: center;
+    font-size: 15px;
+    cursor: pointer; 
+    margin: auto auto; /* 가운데 정렬 */
+    flex-direction: column;
+    align-items: center;
+}
+
+.announcement {
+    background-color: rgb(253, 246, 223) !important;
+}
+
+.move-problem-btn, .scenario-move-btn{
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    background-color: rgba(57, 167, 255, 1);
+    border-radius: 10px;
+    border-color: transparent;
+    text-align: center;
+    font-size: 15px;
+    cursor: pointer; 
+    margin: auto auto; /* 가운데 정렬 */
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+
+.chapter-1, .chapter-2, .chapter-3,
+.created-scenario-1, .created-scenario-2, .created-scenario-3,
+.announcement-text, .announcement-text2 {
+    text-decoration: none;
+    flex-direction: column;
+    align-items: center;
+    font-size: 20px;
+    margin: auto auto; /* 가운데 정렬 */
+    text-align: center;
+    cursor: pointer; 
+    display: flex;
+    margin-top: 20px;
+    margin: auto auto;
+}
+
+.chapter, .difficulty, .scenario-title,
+.my-pts, .rank {
+    text-decoration: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    display: flex;
+}
+
+.my-pts {
+    font-size: 30px;
+    color: rgba(57, 167, 255, 1);;
+}
+
+.rank {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row
+}
+
+.rank .crown {
+    display: flex;
+    width: 24px; /* 이미지의 너비 설정 */
+    height: 24px; /* 이미지의 높이 설정 */
+    background-image: url('images/crown.png'); /* 실제 crown 이미지의 경로 */
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-left: 10px; /* 텍스트와 이미지 간격 조절 */
+}
+
+.content-body button:hover,
+.content-body a:hover {
+    opacity: 0.8;
+}
+
+.ranking-view, .chapter-icon,
+.created-scenario-view, .announcement-view {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    background-color: rgba(57, 167, 255, 1);
+    border-radius: 10px;
+    border-color: transparent;
+    text-align: center;
+    font-size: 15px;
+    cursor: pointer; 
+    margin: auto auto; /* 가운데 정렬 */
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+
+@media (max-width: 1024px) {
+    #container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        max-width: none;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+ 
+}
