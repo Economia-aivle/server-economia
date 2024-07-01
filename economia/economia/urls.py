@@ -31,13 +31,45 @@ def index4(request):
 def index5(request):
     return render(request,'summary_anime.html')
 
+def study(request):
+    return render(request,'study.html')
+
+def tfquiz(request):
+    return render(request,'tfquiz.html')
+
+def blank(request):
+    return render(request,'blank.html')
+
+def multiple(request):
+    return render(request,'multiple.html')
+
+def wrong_explanation(request):
+    return render(request,'wrong_explanation.html')
+
+def chapter_summary(request):
+    return render(request,'chapter_summary.html')
+
+def level_choice(request):
+    return render(request,'level_choice.html')
+
 urlpatterns = [
+<<<<<<< HEAD
+    path("",level_choice),
+    path("blank",blank),
+    path("chapter_summary",chapter_summary),
+    path("level_choice",level_choice),
+    path("multiple",multiple),
+    path("study",study),
+    path("tfquiz",tfquiz),
+    path("wrong_explanation",wrong_explanation),
+=======
     path("",index),
     path("mode1/",index1),
     path("mode2/",index2),
     path("mode3/",index3),
     path("mode4/",index4),
     path("mode5/",index5)
+>>>>>>> 56ed5314845f29a91907a49230a253f8af0af99b
 ]
 
 from django.conf import settings

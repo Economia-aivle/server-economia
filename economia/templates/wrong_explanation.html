@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>문제풀이 - OX</title>
+    <link rel="stylesheet" href="{% static 'css/wrong_explanation.css' %}" />
+  </head>
+
+  <body>
+    {% include 'quiz_header.html' %}
+    <main>
+      <div class="wrap-container">
+        <div class="question-container">
+          <h1>Q3. 예금은 누구나 다 가입할 수 있다.</h1>
+        </div>
+        <div class="answer-bubble">
+          <p class="ans">답: O</p>
+          <p>
+            예금이란 돈을 한 번에 납입하는 방식의 저축이야. 돈을 보관하는 기간과
+            방식에 따라 크게 ‘보통예금’과 ‘정기예금’으로 나눌 수 있어
+          </p>
+        </div>
+        <div class="character">
+          <img src="{% static 'images/char1.png' %}" alt="char" />
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
+<script>
+  function popOpen() {
+    var modalPop = $(".modal-wrap");
+    var modalBg = $(".modal-bg");
+
+    $(modalPop).show();
+    $(modalBg).show();
+  }
+
+  function popClose() {
+    var modalPop = $(".modal-wrap");
+    var modalBg = $(".modal-bg");
+
+    $(modalPop).hide();
+    $(modalBg).hide();
+  }
+</script>
