@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>공지사항</title>
+    <link rel="stylesheet" href="{% static 'notice.css' %}" />
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="search_container">
+        <input type="text" class="search_input" placeholder="검색">
+        <input type="button" class="search_btn">
+    </div>
+    <div class="white_box">
+        <table>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>날짜</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>[6/21] 업데이트 예정사항 공지</td>
+                    <td>강현수</td>
+                    <td>24.06.21</td>
+                </tr>
+                <tr>
+                    <td>행 2, 열 1</td>
+                    <td>행 2, 열 2</td>
+                    <td>행 2, 열 3</td>
+                    <td>행 2, 열 4</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
