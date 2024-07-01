@@ -17,56 +17,38 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.shortcuts import render
+from django.urls import include
+from django.conf import settings
+from django.conf.urls.static import static
 
 def index(request):
     return render(request,'index.html')
-def index1(request):
-    return render(request,'previous_scenario.html')
-def index2(request):
-    return render(request,'ranking.html')
-def index3(request):
-    return render(request,'scenario_list.html')
-def index4(request):
-    return render(request,'scenario.html')
-def index5(request):
-    return render(request,'summary_anime.html')
-
-def study(request):
-    return render(request,'study.html')
-
-def tfquiz(request):
-    return render(request,'tfquiz.html')
-
-def blank(request):
-    return render(request,'blank.html')
-
-def multiple(request):
-    return render(request,'multiple.html')
-
-def wrong_explanation(request):
-    return render(request,'wrong_explanation.html')
-
-def chapter_summary(request):
-    return render(request,'chapter_summary.html')
-
-def level_choice(request):
-    return render(request,'level_choice.html')
+def chapter(request):
+    return render(request,'chapter.html')
+def home(request):
+    return render(request,'home.html')
+def mypage(request):
+    return render(request,'mypage.html')
+def onboarding(request):
+    return render(request,'onboarding.html')
+def update_info(request):
+    return render(request,'update_info.html')
 
 
 
 urlpatterns = [
-    path("",level_choice),
-    path("blank",blank),
-    path("chapter_summary",chapter_summary),
-    path("level_choice",level_choice),
-    path("multiple",multiple),
-    path("study",study),
-    path("tfquiz",tfquiz),
-    path("wrong_explanation",wrong_explanation),
+    path("",index),
+    path('users/', include('users.urls')),
+    path('educations/', include('educations.urls')),
+    path('scenarios/', include('scenarios.urls')),
+    path("chapter", chapter),
+    path("home", home),
+    path("mypage", mypage),
+    path("onboarding", onboarding),
+    path("update_info", update_info),
 ]
 
-from django.conf import settings
-from django.conf.urls.static import static
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

@@ -1,0 +1,45 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Montserrat Font Example</title>
+  <link rel="stylesheet" href="{% static 'css/test.css' %}" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+</head>
+<body>
+  user
+<a href="{% url 'users:signup' %}">signup</a><br>
+<a href="{% url 'users:find_account_pwd' %}">find_account_pwd</a><br>
+<a href="{% url 'users:find_account_id' %}">find_account_id</a><br>
+<a href="{% url 'users:find_account' %}">find_account</a><br>
+<a href="{% url 'users:check_id' %}">check_id</a><br>
+<a href="{% url 'users:ranking' %}">ranking</a><br>
+<a href="{% url 'users:char_create' %}">char_create</a><br>
+<a href="{% url 'users:char_delete' %}">char_delete</a><br>
+<hr>
+educations
+<a href="{% url 'educations:level_choice' %}">level_choice</a><br>
+<a href="{% url 'educations:tfquiz' %}">tfquiz</a><br>
+<a href="{% url 'educations:blank' %}">blank</a><br>
+<a href="{% url 'educations:multiple' %}">multiple</a><br>
+<a href="{% url 'educations:previous_quiz_answer' %}">previous_quiz_answer</a><br>
+<a href="{% url 'educations:previous_quiz' %}">previous_quiz</a><br>
+<a href="{% url 'educations:study' %}">study</a><br>
+<a href="{% url 'educations:summary_anime' %}">summary_anime</a><br>
+<hr>
+scenarios
+<a href="{% url 'scenarios:previous_scenario' %}">previous_scenario</a><br>
+<a href="{% url 'scenarios:scenario_list' %}">scenario_list</a><br>
+<a href="{% url 'scenarios:scenario' %}">scenario</a><br>
+<hr>
+home
+<a href="chapter">chpater</a><br>
+<a href="home">home</a><br>
+<a href="onboarding">onboarding</a><br>
+<a href="mypage">mypage</a><br>
+<a href="update_info">update_info</a><br>
+
+</body>
