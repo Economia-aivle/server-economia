@@ -1,0 +1,58 @@
+<!doctype html>
+{% load static %}
+<link rel="stylesheet" href="{% static 'scenario_list.css' %}" />
+{% include "header.html" %}
+</head>
+<body>
+  <input type="text" class="search" name="search" placeholder="검색">
+  <button class="search_button"><img src="{% static 'search.png' %}" alt="search Image"></button>
+  <table>
+    <thead>
+    <tr>
+        <th>번호</th>
+        <th>진행여부</th>
+        <th>제목</th>
+        <th>과목</th>
+        <th>날짜</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>1</td>
+        <td>O</td>
+        <td><li href="">가로등 설치 투표</li></td>
+        <td>금융</td>
+        <td>06.25.</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>X</td>
+        <td><li herf="">라면 가격 정하기</li></td>
+        <td>시장</td>
+        <td>06.20.</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+  </table>
+
+</body>

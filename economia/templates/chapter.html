@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>chapter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'chapter.css' %}" />
+  </head>
+
+  <body>
+    <div class="main-container">
+      <div class="header">
+        <div class="category"># 금융</div>
+        <button class="quit-btn" onclick="handleButtonClick()">나가기</button>
+      </div>
+      <div class="chapters">
+        <a class="chap1" href="#" target="_self">Chapter 1. 스스로 선택해라: 금융과 의사결정</a>
+        <a class="chap2" href="#" target="_self">Chapter 2. 시장의 주인은 소비자!</a>
+        <a class="chap3" href="#" target="_self">Chapter 3. 정보화 시대 시장은 어떻게 움직일까?</a>
+        <a class="chap4" href="#" target="_self">Chapter 4. 나의 신용을 지켜라: 신용이 재산이다</a>
+        <a class="chap5" href="#" target="_self">Chapter 5. 저축과 보험: 미래를 설계하다</a>
+      </div>
+    </div>
+</body>
+</html>

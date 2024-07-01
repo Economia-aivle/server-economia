@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mypage</title>
+    <link rel="stylesheet" href="{% static 'mypage.css' %}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap">
+  </head>
+    {% include 'header.html' %}
+  <body>
+    
+    <div class="main-container">
+      <div class="left">
+        <div class="user-info">
+          <h2 class="title">개인정보 변경</h2>
+          <a class="user-info-change" href="#" target="_self">개인정보 변경</a>
+          <a class="delete-account" href="#" target="_self">회원 탈퇴</a>
+        </div>
+        <div class="etc">
+          <h2 class="title">기타</h2>
+          <a class="info-agree" href="#" target="_blank">정보 동의 설정</a>
+        </div>
+      </div>
+      <div class="info">
+        <h2 class="title">이용 안내</h2>
+        <a class="ask" href="#" target="_blank">문의하기</a>
+        <a class="announcement" href="#" target="_blank">공지사항</a>
+        <a class="community-rule" href="#" target="_blank">커뮤니티 규칙</a>
+        <a class="service-term" href="#" target="_blank">서비스 이용 약관</a>
+        <a class="account-term" href="#" target="_blank">개인정보 처리방침</a>
+        <a class="teen-term" href="#" target="_blank">청소년 보호 정책</a>
+      </div>
+    </div>
+  </body>
+</html>

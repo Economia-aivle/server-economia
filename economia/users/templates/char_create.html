@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'char_create.css' %}" />
+    <title>캐릭터 생성</title>
+</head>
+<body>
+    <div class="container">
+        <span class="title1">캐릭터 선택하기</span>
+
+        <div class="characters">
+            <input type="button" class="char1">
+            <input type="button" class="char2">
+            <input type="button" class="char3">
+            <input type="button" class="char4">
+            <input type="button" class="char5">
+        </div>
+
+        <div class="buttons-container">
+            <button class="create_btn"><span class="create_str">만들기</span></button>
+            <button class="update_btn"><span class="update_str">수정하기</span></button>
+            <button class="delete_btn"><span class="delete_str">삭제하기</span></button>
+        </div>
+    </div>
+</body>
+</html>
