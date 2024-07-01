@@ -52,6 +52,8 @@ def chapter_summary(request):
 def level_choice(request):
     return render(request,'level_choice.html')
 
+
+
 urlpatterns = [
     path("",level_choice),
     path("blank",blank),

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'home.css' %}" />
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="sidebar">
+        <div class="side-header">
+            <a class="logo" href="#"></a>
+            <button class="logout-btn" onclick="handleButtonClick()">로그아웃</button>
+        </div>
+        <div class="user-setting">
+            <a class="my-page-btn" href="#", target="_blank">마이페이지</a>
+            <a class="edit-character-btn" href="#", target="_self">캐릭터 수정</a>
+        </div>
+        <div class="user-info">
+            <span class="character"></span>
+            <span id="nickname">Nickname</span>
+            <span id="username" class="username">강현수</span>
+            <span class="info-divider1"></span>
+            <span id="school" class="school">강원 고등학교</span>
+            <span class="info-divider2"></span>
+        </div>
+        <div class="level-info">
+            <div id="level" class="level">LV. 10</div>
+            <div class="progress-circle">
+                <div class="circle-inner">
+                    <span class="progress-percentage">50%</span>
+                </div>
+            </div>
+            <div class="progress-pts"> 1000 / 2000 pts</div>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="content-header">
+            <div id="category" class="category">금융</div>
+            <button class="category-btn" onclick="handleButtonClick()"></button>
+            <button class="learning-btn" onclick="handleButtonClick()">학습하기</button>
+            <button class="scenario-btn" onclick="handleButtonClick()">시나리오</button>
+        </div>
+        <div class="content-body">
+            <div class="row">
+                <div class="current-problem">
+                    <h1 class="status">진행중인 문제</h1>
+                    <h3 class="chapter">Chapter 2. 은행</h3>
+                    <h3 class="difficulty">난이도 : 중급(2)</h3>
+                    <button class="move-problem-btn" onclick="handleButtonClick()">이동</button>
+                </div>
+                <div class="current-scenario">
+                    <h1 class="current-scenario-text">진행중인 시나리오</h1>
+                    <h3 class="scenario-title">가로등 설치 투표 [과목] 기간 : ~ 00/00 00:00</h3>
+                    <button class="scenario-move-btn" onclick="handleButtonClick()">이동</button>
+                </div>
+                <div class="points">
+                    <h1 class="points-text">점수</h1>
+                    <h3 class="my-pts">300 pts</h3>
+                </div>
+                <div class="ranking">
+                    <h1 class="ranking-text">랭킹</h1>
+                    <h3 class="rank">1등<span class="crown"></span></h3>
+                    <button class="ranking-view" onclick="handleButtonClick()">더보기</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="view-solved">
+                    <h1 class="view-solved-text">내가 푼 문제 보기</h1>
+                    <a class="chapter-1" href="#" target="_self">Chapter 1-1 예금 초급</a>
+                    <a class="chapter-2" href="#" target="_self">Chapter 1-2 예금 중급</a>
+                    <a class="chapter-3" href="#" target="_self">Chapter 1-3 예금 고급</a>
+                    <button class="chapter-icon" onclick="handleButtonClick()">더보기</button>
+                </div>
+                <div class="created-scenarios">
+                    <h1 class="created-scenario-text">작성한 시나리오</h1>
+                    <a class="created-scenario-1" href="#" target="_self">가로등 설치 투표 [금융] [6.24]</a>
+                    <a class="created-scenario-2" href="#" target="_self">내가 대통령이라면 [금융] [6.1]</a>
+                    <a class="created-scenario-3" href="#" target="_self">라면 가격 정하기 [시장] [4.30]</a>
+                    <button class="created-scenario-view" onclick="handleButtonClick()">더보기</button>
+                </div>
+               
+                <div class="announcement">
+                    <h1 class="announcement-title">공지</h1>
+                    <a class="announcement-text" href="#", target="_blank">[6/21] 업데이트...</a>
+                    <a class="announcement-text2" href="#", target="_blank">[이벤트] 학교대...</a>
+                    <div class="announcement-icon-1"></div>
+                    <div class="announcement-icon-2"></div>
+                    <button class="announcement-view" onclick="handleButtonClick()">더보기</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="advertiser">
+                    <a class="ads" href="#" target="_blank"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+</div>
+</body>
+</html>
