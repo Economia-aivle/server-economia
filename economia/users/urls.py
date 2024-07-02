@@ -14,5 +14,8 @@ urlpatterns = [
     path('ranking', views.ranking, name='ranking'),
     path('char_create', views.char_create, name='char_create'),
     path('char_delete', views.char_delete, name='char_delete'),
+    path('login/', views.admin_login, name='admin_login'),
+    path('dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('api/login/', views.AdminLoginAPI.as_view(), name='admin_login_api'),
 
 ]

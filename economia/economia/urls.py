@@ -48,9 +48,8 @@ urlpatterns = [
     path("mypage", mypage),
     path("onboarding", onboarding),
     path("update_info", update_info),
-    path('admin/login/', views.admin_login, name='admin_login'),
-    path('admin/dashboard/', views.admin_dashboard, name='admin_dashboard'),
-    path('admin/logout/', LogoutView.as_view(next_page='admin_login'), name='admin_logout'),
+    path('admin/', admin.site.urls),
+    path('users/', include('users.urls')),
 ]
 
 
