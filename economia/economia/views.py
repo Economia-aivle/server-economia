@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from .form import PlayerForm
 from .models import Player
 from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import ProductSerializer
 
 # Create your views here.
 def char_create(request):
@@ -21,24 +24,15 @@ def check_username(request):
 
 def register(request):  # 함수 이름을 'register'로 변경
     if request.method == 'POST':
-        user_id = request.POST.get('user_id')
-        confirm_password = request.POST.get('confirm_password')
-        password = request.POST.get('password')
-        email = request.POST.get('email')
-        name = request.POST.get('name')
-        school_name = request.POST.get('school_name')
-        nickname = request.POST.get('nickname')
+        user_id = request.POST.get('user_id1')
+        password = request.POST.get('password1')
         
-        if Player.objects.filter(player_id=user_id).exists():
-            return JsonResponse({'error': '중복된 아이디입니다.'}, status=400)
-        if confirm_password != password:
+        if not Player.objects.filter(player_id=user_id).exists():
+            return JsonResponse({'error': '존재하지 않는 아이디입니다.'}, status=400)
+        data = Player.objects.get(player_id=user_id)
+        serializer = ProductSerializer(data)
+        if serializer.data['pwd'] != password:
             return JsonResponse({'error': '비밀번호를 다시 확인해주세요'}, status=400)
-        if Player.objects.filter(email=email).exists():
-            return JsonResponse({'error': '중복된 이메일입니다'}, status=400)
-        if Player.objects.filter(nickname=nickname).exists():
-            return JsonResponse({'error': '중복된 닉네임입니다'}, status=400)
-
-        Player.objects.create(player_id=user_id, pwd=password, email=email, player_name=name, school=school_name, nickname=nickname, admin_tf=True)
         return JsonResponse({'success': '회원가입이 완료되었습니다.'})
     return JsonResponse({'error': 'Invalid request'}, status=400)
 

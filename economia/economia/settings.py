@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "economia",
     "users",
     "educations",
     "scenarios",
@@ -81,7 +82,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "economia",
         "USER" : "root",
-        "PASSWORD" : "aivle",
+        "PASSWORD" : "spotlight12",
         "HOST" : '127.0.0.1',
         "PORT" : '3306'
     }

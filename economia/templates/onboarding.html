@@ -23,18 +23,41 @@
         <div class="left-panel">영상</div>
         <div class="right-panel">
             <div class="logo"></div>
-            <form>
-                <label for="name" id="id">아이디</label>
-                <input type="text" name="name" value="아이디"><br>
-
-                <label for="password" id="pwd">비밀번호</label>
-                <input type="password" name="password" value="비밀번호"><br>
-
+            <form id="signupForm" onsubmit="register(event)">
+                <label>아이디</label>
+                <input type="text" id="user_id1" name="user_id1" placeholder="ID"><br>
+                <label>비밀번호</label>
+                <input type="text" id="password1" name="password1" placeholder="PASSWORD"><br>
                 <button type="submit" id="login-btn">로그인</button>
             </form>
-            <a class="first-account" href="#" target="_blank">처음 오셨나요?</a>
-            <a class="forgot-account" href="#" target="_blank">계정을 잊으셨나요?</a>
+            <a class="first-account" href="{% url 'users:signup' %}">처음 오셨나요?</a>
+            <a class="forgot-account" href="{% url 'users:find_account_id' %}">계정을 잊으셨나요?</a>
         </div>
     </div>
+    <script>
+      async function register(event) {
+          event.preventDefault();
+          const form = event.target;
+          const formData = new FormData(form);
+          
+          try {
+              const response = await fetch("{% url 'register' %}", {
+                  method: 'POST',
+                  headers: {
+                      'X-CSRFToken': '{{ csrf_token }}'
+                  },
+                  body: formData
+              });
+              const data = await response.json();
+              if (data.success) {
+                  window.location.href = 'home';
+              } else if (data.error) {
+                  alert(data.error);
+              }
+          } catch (error) {
+              alert('로그인 중 오류가 발생했습니다.');
+          }
+      }
+  </script>
 </body>
 </html>

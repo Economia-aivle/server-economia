@@ -2,6 +2,7 @@
 from django.urls import path
 from django.contrib import admin
 from . import views
+from django.urls import include
 
 app_name = 'users'
 urlpatterns = [
@@ -14,5 +15,8 @@ urlpatterns = [
     path('ranking', views.ranking, name='ranking'),
     path('char_create', views.char_create, name='char_create'),
     path('char_delete', views.char_delete, name='char_delete'),
+    path('success', views.success, name='success'),
+    path('check_username', views.check_username, name='check_username'),
+    path('register', views.register, name='register'),  # 회원가입 페이지
 
 ]

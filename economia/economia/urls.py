@@ -19,6 +19,7 @@ from django.urls import path
 from django.shortcuts import render
 from django.urls import include
 from django.conf import settings
+from . import views
 from django.conf.urls.static import static
 
 def index(request):
@@ -34,8 +35,6 @@ def onboarding(request):
 def update_info(request):
     return render(request,'update_info.html')
 
-
-
 urlpatterns = [
     path("",index),
     path('users/', include('users.urls')),
@@ -46,6 +45,7 @@ urlpatterns = [
     path("mypage", mypage),
     path("onboarding", onboarding),
     path("update_info", update_info),
+    path('register', views.register, name='register'), 
 ]
 
 
