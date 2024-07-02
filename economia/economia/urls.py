@@ -49,7 +49,7 @@ urlpatterns = [
     path("onboarding", onboarding),
     path("update_info", update_info),
     path('admin/', admin.site.urls),
-    path('users/', include('users.urls')),
+    path('users/', include('users.urls')),  # 'users' 앱의 URL을 포함
 ]
 
 
