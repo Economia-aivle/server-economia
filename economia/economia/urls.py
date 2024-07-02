@@ -20,6 +20,8 @@ from django.shortcuts import render
 from django.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
+from . import views
+from django.contrib.auth.views import LogoutView
 
 def index(request):
     return render(request,'index.html')
@@ -46,6 +48,9 @@ urlpatterns = [
     path("mypage", mypage),
     path("onboarding", onboarding),
     path("update_info", update_info),
+    path('admin/login/', views.admin_login, name='admin_login'),
+    path('admin/dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('admin/logout/', LogoutView.as_view(next_page='admin_login'), name='admin_logout'),
 ]
 
 
