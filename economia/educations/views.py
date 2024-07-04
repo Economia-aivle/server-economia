@@ -1,4 +1,6 @@
+from django.http import JsonResponse
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -100,9 +102,17 @@ def previous_quiz(request):
     return render(request,'previous_quiz.html')
 
 # 학습하기
-class StudyVideoView(APIView):
-    def get(self, request, format=None):
+@csrf_exempt
+def study_view(request):
+    if request.method == 'GET' and 'video' in request.GET:
         video_url = "https://music.youtube.com/watch?v=od5qQ84pKIo&list=RDAMVM-vN8G8Vpy6M"
-        return Response({"video_url": video_url})
+        print("Returning video URL:", video_url)
+        return JsonResponse({"video_url": video_url})
+    elif request.method == 'GET':
+        print("Rendering study.html")
+        return render(request, 'study.html')
+    print("Invalid request method")
+    return JsonResponse({"error": "Invalid request method"}, status=400)
+
 def summary_anime(request):
     return render(request,'summary_anime.html')

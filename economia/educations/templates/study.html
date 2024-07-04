@@ -1,24 +1,21 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>학습 하기</title>
-    <link rel="stylesheet" href="{% static 'study.css' %}" />
-  </head>
-  {% include 'header.html' %}
-  <body>
-    
-    <main>
-      <h1>영상 들어갈거라 모양만 만들었습니다</h1>
-      <div class="wrap-container">
-        <div class="video-container"></div>
-        <div class="video"></div>
-        <div class="btn">
-          <button class="next-btn">문제풀기</button>
-        </div>
-      </div>
-    </main>
-  </body>
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>학습 하기</title>
+  <link rel="stylesheet" href="{% static 'study.css' %}" />
+  <script src="{% static 'study.js' %}"></script>
+ </head>
+ {% include 'header.html' %}
+ <body>
+
+  <main>
+   <h1>학습하기</h1>
+   <div class="wrap-container">
+    <div class="video-container" id="video-container"></div>
+   </div>
+  </main>
+ </body>
 </html>
