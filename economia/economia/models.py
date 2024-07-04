@@ -78,10 +78,10 @@ class AuthUserUserPermissions(models.Model):
 
 
 class Blank(models.Model):
-    id = models.IntegerField(primary_key=True)
     characters = models.ForeignKey('Characters', models.DO_NOTHING)
     question_text = models.CharField(max_length=500, blank=True, null=True)
     correct_answer = models.CharField(max_length=10, blank=True, null=True)
+    subjects = models.CharField(max_length=10, blank=True, null=True)
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
 
@@ -91,15 +91,12 @@ class Blank(models.Model):
 
 
 class Characters(models.Model):
-    id = models.IntegerField(primary_key=True)
     player = models.ForeignKey('Player', models.DO_NOTHING)
     exp = models.IntegerField()
     last_quiz = models.IntegerField()
     kind = models.IntegerField(blank=True, null=True)
     kind_url = models.CharField(max_length=500, blank=True, null=True)
-    score1 = models.TextField(blank=True, null=True)
-    score2 = models.TextField(blank=True, null=True)
-    score3 = models.TextField(blank=True, null=True)
+    score = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -107,7 +104,6 @@ class Characters(models.Model):
 
 
 class ChildComments(models.Model):
-    id = models.IntegerField(primary_key=True)
     parent = models.ForeignKey('Comments', models.DO_NOTHING)
     player = models.ForeignKey('Player', models.DO_NOTHING)
     texts = models.CharField(max_length=500, blank=True, null=True)
@@ -118,8 +114,9 @@ class ChildComments(models.Model):
 
 
 class Comments(models.Model):
-    id = models.IntegerField(primary_key=True)
-    player = models.ForeignKey('Player', models.DO_NOTHING)
+    scenario = models.ForeignKey('Scenario', models.DO_NOTHING)
+    characters = models.ForeignKey(Characters, models.DO_NOTHING)
+    percents = models.IntegerField()
     texts = models.CharField(max_length=500, blank=True, null=True)
     like_cnt = models.IntegerField(blank=True, null=True)
 
@@ -174,7 +171,6 @@ class DjangoSession(models.Model):
 
 
 class Multiple(models.Model):
-    id = models.IntegerField(primary_key=True)
     characters = models.ForeignKey(Characters, models.DO_NOTHING)
     stage = models.IntegerField()
     question_text = models.CharField(max_length=500, blank=True, null=True)
@@ -183,6 +179,7 @@ class Multiple(models.Model):
     option_c = models.CharField(max_length=255, blank=True, null=True)
     option_d = models.CharField(max_length=255, blank=True, null=True)
     correct_answer = models.CharField(max_length=1, blank=True, null=True)
+    subjects = models.CharField(max_length=10, blank=True, null=True)
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
 
@@ -192,7 +189,6 @@ class Multiple(models.Model):
 
 
 class NoticeBoard(models.Model):
-    id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=20, blank=True, null=True)
     texts = models.CharField(max_length=500, blank=True, null=True)
     write_time = models.DateTimeField()
@@ -204,7 +200,7 @@ class NoticeBoard(models.Model):
 
 
 class Player(models.Model):
-    id = models.IntegerField(primary_key=True)
+    player_id = models.CharField(max_length=20)
     player_name = models.CharField(max_length=5, blank=True, null=True)
     nickname = models.CharField(unique=True, max_length=255)
     email = models.CharField(unique=True, max_length=255)
@@ -218,7 +214,6 @@ class Player(models.Model):
 
 
 class Rules(models.Model):
-    id = models.IntegerField(primary_key=True)
     communit_rule = models.CharField(max_length=500, blank=True, null=True)
     personal_rule = models.CharField(max_length=500, blank=True, null=True)
     youth_protection_rule = models.CharField(max_length=500, blank=True, null=True)
@@ -229,10 +224,9 @@ class Rules(models.Model):
 
 
 class Scenario(models.Model):
-    id = models.IntegerField(primary_key=True)
     subjects = models.CharField(max_length=5)
+    title = models.CharField(max_length=20, blank=True, null=True)
     question_text = models.CharField(max_length=500, blank=True, null=True)
-    characters_id = models.IntegerField()
     start_time = models.DateTimeField()
 
     class Meta:
@@ -240,19 +234,7 @@ class Scenario(models.Model):
         db_table = 'scenario'
 
 
-class ScenarioPersonal(models.Model):
-    id = models.IntegerField(primary_key=True)
-    characters = models.ForeignKey(Characters, models.DO_NOTHING)
-    scenario = models.ForeignKey(Scenario, models.DO_NOTHING, blank=True, null=True)
-    correct_answer = models.CharField(max_length=500, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'scenario_personal'
-
-
 class Stage(models.Model):
-    id = models.IntegerField(primary_key=True)
     characters = models.ForeignKey(Characters, models.DO_NOTHING)
     subject = models.CharField(max_length=5, blank=True, null=True)
     chapter = models.IntegerField(blank=True, null=True)
@@ -263,11 +245,30 @@ class Stage(models.Model):
         db_table = 'stage'
 
 
+class Subjects(models.Model):
+    subjects = models.CharField(max_length=20, blank=True, null=True)
+    chapters = models.CharField(max_length=1000, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'subjects'
+
+
+class SubjectsScore(models.Model):
+    subjects = models.ForeignKey(Subjects, models.DO_NOTHING)
+    characters = models.ForeignKey(Characters, models.DO_NOTHING)
+    score = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'subjects_score'
+
+
 class Tf(models.Model):
-    id = models.IntegerField(primary_key=True)
     characters = models.ForeignKey(Characters, models.DO_NOTHING)
     question_text = models.CharField(max_length=500, blank=True, null=True)
     correct_answer = models.CharField(max_length=1, blank=True, null=True)
+    subjects = models.CharField(max_length=10, blank=True, null=True)
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
 
