@@ -11,42 +11,145 @@
     {% include 'header.html' %}
     <div class="container">
         <div class="search_container">
-            <input type="text" class="search_input" placeholder="검색">
+            <input type="text" class="search_input" id="search_input" placeholder="검색">
             <input type="button" class="search_btn">
             <!-- 첫 번째 드롭다운 메뉴 -->
-            <select class="dropdown">
-                <option value="list1">경제</option>
-                <option value="list2">기업/경영</option>
-                <option value="list3">금융</option>
-                <option value="list4">산업</option>
-                <option value="list5">노동</option>
-                <option value="list6">은행 및 금융용어</option>
-                <option value="list7">부동산</option>
-                <option value="list8">디지털 경제용어</option>
-                <option value="list9">은행</option>
+            <select class="dropdown" id="subject_dropdown">
+                <option value="all">모든 카테고리</option>
+                <option value="경제">경제</option>
+                <option value="기업/경영">기업/경영</option>
+                <option value="금융">금융</option>
+                <option value="산업">산업</option>
+                <option value="노동">노동</option>
+                <option value="은행 및 금융용어">은행 및 금융용어</option>
+                <option value="부동산">부동산</option>
+                <option value="디지털 경제용어">디지털 경제용어</option>
+                <option value="은행">은행</option>
             </select>
             <!-- 두 번째 드롭다운 메뉴 -->
-            <select class="dropdown">
-                <option value="option1">초급</option>
-                <option value="option2">중급</option>
-                <option value="option3">고급</option>
+            <select class="dropdown_level" id="level_dropdown">
+                <option value="all">모든 문제</option>
+                <option value="tf">초급</option>
+                <option value="multiple">중급</option>
+                <option value="blank">고급</option>
             </select>
         </div>
 
         <div class="list_box">
-            <div class="list_item">
-                <div class="list_content">예금은 누구나 다 가입할 수 있다.</div>
-                <button class="item_button"></button>
+            {% for item in blank %}
+            <div class="list_container blank" data-subject="{{ item.subjects }}">
+                <div class="list_item">
+                    <div class="list_content">{{ item.subjects }} {{ item.question_text }}</div>
+                    <button class="item_button"><img src="{% static 'images/dropdown.png' %}" alt="dropdown"></button>
+                </div>
+                <div class="answer_container">
+                    <div class="white_box">
+                        <span class="title_answer">답: {{ item.correct_answer }}</span><br><br>
+                        <span class="title_exp">해설: {{ item.explanation }}</span><br><br>
+                        <span class="exp_str"></span>
+                    </div>
+                </div>
             </div>
-            <div class="list_item">
-                <div class="list_content">정해진 금액을 일정 기간 맡겼다 다시 찾아가는 방식을 [      ] 이라고 한다.</div>
-                <button class="item_button"></button>
+            {% endfor %}
+
+            {% for item in tf %}
+            <div class="list_container tf" data-subject="{{ item.subjects }}">
+                <div class="list_item">
+                    <div class="list_content">{{ item.subjects }} {{ item.question_text }}</div>
+                    <button class="item_button"><img src="{% static 'images/dropdown.png' %}" alt="dropdown"></button>
+                </div>
+                <div class="answer_container">
+                    <div class="white_box">
+                        <span class="title_answer">답: {{ item.correct_answer }}</span><br><br>
+                        <span class="title_exp">해설: {{ item.explanation }}</span><br><br>
+                        <span class="exp_str"></span>
+                    </div>
+                </div>
             </div>
-            <div class="list_item">
-                <div class="list_content">예금에 대한 설명으로 옳지 않은것은?</div>
-                <button class="item_button"></button>
+            {% endfor %}
+
+            {% for item in multiple %}
+            <div class="list_container multiple" data-subject="{{ item.subjects }}">
+                <div class="list_item">
+                    <div class="list_content">{{ item.subjects }} {{ item.question_text }}</div>
+                    <button class="item_button"><img src="{% static 'images/dropdown.png' %}" alt="dropdown"></button>
+                </div>
+                <div class="answer_container">
+                    <div class="white_box">
+                        <span class="title_answer">답: {{ item.correct_answer }}</span><br><br>
+                        <span class="answer_list1">{{ item.option_a }}</span><br>
+                        <div class="line1"></div>
+                        <span class="answer_list2">{{ item.option_b }}</span><br>
+                        <div class="line2"></div>
+                        <span class="answer_list3">{{ item.option_c }}</span><br>
+                        <div class="line3"></div>
+                        <span class="answer_list4">{{ item.option_d }}</span><br>
+                        <div class="line4"></div><br><br>
+                        <span class="title_exp">해설: {{ item.explanation }}</span><br><br>
+                        <span class="exp_str"></span>
+                    </div>
+                </div>
             </div>
+            {% endfor %}
         </div>
     </div>
+
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.item_button');
+        const subjectDropdown = document.getElementById('subject_dropdown');
+        const levelDropdown = document.getElementById('level_dropdown');
+        const containers = document.querySelectorAll('.list_container');
+        const searchInput = document.querySelector('.search_input');
+        const searchBtn = document.querySelector('.search_btn');
+
+        // 버튼 클릭 이벤트
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                const answerContainer = this.parentElement.nextElementSibling;
+                const img = this.querySelector('img');
+                if (answerContainer) {
+                    answerContainer.classList.toggle('show');
+                    img.classList.toggle('rotated');
+                }
+            });
+        });
+
+        // 필터링 함수
+        function filterQuestions() {
+            const category = subjectDropdown.value;
+            const level = levelDropdown.value;
+            const searchTerm = searchInput.value.trim().toLowerCase();
+
+            containers.forEach(container => {
+                const containerCategory = container.dataset.subject;
+                const containerLevel = container.classList.contains(level) || level === 'all';
+                const content = container.querySelector('.list_content').innerText.toLowerCase();
+                const matchesSearch = content.includes(searchTerm);
+
+                if ((category === 'all' || containerCategory === category) && containerLevel && matchesSearch) {
+                    container.style.display = '';
+                } else {
+                    container.style.display = 'none';
+                }
+            });
+        }
+
+        // 드롭다운 메뉴 변경 이벤트
+        subjectDropdown.addEventListener('change', filterQuestions);
+        levelDropdown.addEventListener('change', filterQuestions);
+
+        // 검색 버튼 클릭 이벤트
+        searchBtn.addEventListener('click', filterQuestions);
+
+        // 검색 입력란에서 Enter 키 이벤트
+        searchInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                filterQuestions();
+            }
+        });
+    });
+</script>
 </html>

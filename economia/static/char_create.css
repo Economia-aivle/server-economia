@@ -109,21 +109,21 @@ button.update_btn:active {
 }
 
 .char1 {
-    background-image: url('ghost.png');
+    background-image: url('images/ghost.png');
 }
 
 .char2 {
-    background-image: url('baby_mummy.png');
+    background-image: url('images/baby_mummy.png');
 }
 
 .char3 {
-    background-image: url('ghost.png');
+    background-image: url('images/ghost.png');
 }
 
 .char4 {
-    background-image: url('baby_mummy.png');
+    background-image: url('images/baby_mummy.png');
 }
 
 .char5 {
-    background-image: url('ghost.png');
+    background-image: url('images/ghost.png');
 }

@@ -1,7 +1,7 @@
 <style>
     
     @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
-    body, h1, h2, p, ul, li, a {
+    body,h1, h2, p, ul, li, a {
         margin: 0;
         padding: 0;
         list-style: none;
@@ -126,12 +126,12 @@
 </head>
 <header class="navbar">
     <div class="head-container">
-        <a href=""><img src="{% static 'images/logo.png' %}" alt="My Image"></a>
+        <a href="/"><img src="{% static 'images/logo.png' %}" alt="My Image"></a>
         <nav>
             <ul>
                 <li><a href="">학습하기</a></li>
-                <li><a href="">시나리오</a></li>
-                <li><a href="">마이페이지</a></li>
+                <li><a href="{% url 'scenarios:scenario_list' %}">시나리오</a></li>
+                <li><a href="/mypage">마이페이지</a></li>
                 <li><a href="">로그아웃</a></li>
             </ul>
         </nav>
