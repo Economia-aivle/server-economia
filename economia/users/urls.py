@@ -13,6 +13,7 @@ urlpatterns = [
     path('check_id', views.check_id, name='check_id'),
     path('ranking', views.ranking, name='ranking'),
     path('char_create/', views.character_create_view, name='char_create'),
+    path('get_character/<int:player_id>/', views.get_character_view, name='get_character'),
     #path('create-character/', views.character_create_view, name='create_character'),
     path('char_update/', views.character_update_view, name='char_update'),
 

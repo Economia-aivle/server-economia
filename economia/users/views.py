@@ -7,7 +7,15 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpResponseBadRequest
 from .serializers import CreateCharacterSerializer
 from django.db import IntegrityError
-
+@csrf_exempt
+def get_character_view(request, player_id):
+    if request.method == 'GET':
+        try:
+            character = Characters.objects.get(player_id=player_id)
+            return JsonResponse({"id": character.id, "kind": character.kind, "kind_url": character.kind_url}, status=200)
+        except Characters.DoesNotExist:
+            return JsonResponse({"error": "Character not found"}, status=404)
+    return HttpResponseBadRequest("Invalid request method")
 # 캐릭터 생성하기
 @csrf_exempt
 def character_create_view(request):

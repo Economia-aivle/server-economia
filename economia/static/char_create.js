@@ -2,7 +2,27 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedCharId = null;
     let selectedCharUrl = null;
     let characterId = null;
-    let playerId = 3; // 실제 로그인한 사용자의 ID로 설정되어야 함
+    let playerId = 5; // 실제 로그인한 사용자의 ID로 설정되어야 함
+
+    // 페이지 로드 시 캐릭터 ID 가져오기
+    fetch(`/users/get_character/${playerId}/`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.id) {
+            characterId = data.id;
+            console.log("Loaded Character ID:", characterId); // 디버깅 로그 추가
+        } else {
+            console.log("No character found for player.");
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 
     // 캐릭터 선택 기능
     document.querySelectorAll('.char1, .char2, .char3, .char4, .char5').forEach(char => {
