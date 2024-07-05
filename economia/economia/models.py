@@ -227,7 +227,7 @@ class Scenario(models.Model):
     subjects = models.CharField(max_length=5)
     title = models.CharField(max_length=20, blank=True, null=True)
     question_text = models.CharField(max_length=500, blank=True, null=True)
-    start_time = models.DateTimeField()
+    start_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False
