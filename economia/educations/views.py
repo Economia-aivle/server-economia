@@ -104,11 +104,7 @@ def previous_quiz(request):
 # 학습하기
 @csrf_exempt
 def study_view(request):
-    if request.method == 'GET' and 'video' in request.GET:
-        video_url = "https://music.youtube.com/watch?v=od5qQ84pKIo&list=RDAMVM-vN8G8Vpy6M"
-        print("Returning video URL:", video_url)
-        return JsonResponse({"video_url": video_url})
-    elif request.method == 'GET':
+    if request.method == 'GET':
         print("Rendering study.html")
         return render(request, 'study.html')
     print("Invalid request method")

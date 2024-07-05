@@ -17,9 +17,9 @@ body {
 .wrap-container {
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
     width: 1400px;
-    height: 600px;
+    height: 620px;
     position: absolute;
-    top: 10%;
+    margin-top: 150px;
 }
 
 .video-container {
@@ -46,6 +46,30 @@ body {
     object-fit: contain;
 }
 
-h1 {
-    margin-top: 20px;
+.btn {
+	margin-top: 30px;
+	float: right;
 }
+.next-btn{
+	background-color: #39A7FF;
+	font-size: 20px;
+	color: white;
+	width: 150px;
+	height: 60px;
+	border: none;
+	border-top-left-radius:20px;
+	border-top-right-radius:20px;
+	border-bottom-left-radius:20px;
+	border-bottom-right-radius:20px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+
+
+.next-btn:hover {
+background-color: #1A85D6;
+color: #E0E0E0;
+}
+
