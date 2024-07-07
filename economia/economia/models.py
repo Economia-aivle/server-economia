@@ -123,6 +123,17 @@ class Comments(models.Model):
     class Meta:
         managed = False
         db_table = 'comments'
+    
+
+
+class CommentsLikes(models.Model):
+    comment = models.ForeignKey(Comments, models.DO_NOTHING)
+    player = models.ForeignKey('Player', models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'comments_likes'
+        unique_together = (('comment', 'player'),)
 
 
 class DjangoAdminLog(models.Model):

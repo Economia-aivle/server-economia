@@ -15,3 +15,4 @@ class ChildCommentsSerializer(ModelSerializer):
     class Meta:
         model = ChildComments
         fields = '__all__'
+        

@@ -187,3 +187,19 @@ body {
 .form_container{
 	height: 60px;
 }
+.like-btn    {
+    float: right;
+    border: none;
+    background-color: #ffffff ;
+  }
+.like-btn img   {
+    height: 20px;
+    width: 20px;
+  }
+.likecnt {
+    float: right;
+    margin-top: -2px;
+}
+.comment_container p {
+    width: 1200px;
+}

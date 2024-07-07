@@ -26,15 +26,20 @@
         {% for item in comment %}
             <div class="comment_box1">
                 <div class="comment_container">
-                    <form method="post" class="likeForm">
-                        <input type="hidden" name="comment_id" value="{{ item.id }}">
-                        <button type="submit" class="likebtn">{{ item.like_cnt }}<img src="{% static 'images/like.png' %}" alt=""></button>
-                    </form>
                     <form method="post" action="{% url 'scenarios:delete_comment' item.id %}" class="deleteForm">
                         {% csrf_token %}
                         <input type="hidden" name="scenario_id" value="{{ scenario.0.id }}">
                         <button type="submit" class="delete_button">삭제</button>
                     </form>
+                    <button id="like-btn-{{ item.id }}" class="like-btn" data-comment-id="{{ item.id }}" data-action="{% if item.is_liked_by_user  %}unliked{% else %}liked{% endif %}">
+                        {% if item.is_liked_by_user  %}
+                        <img src="{% static 'images/like.png' %}" alt="안좋아요" height=40px width=40px>
+                        {% else %}
+                        <img src="{% static 'images/unlike.png' %}" alt="좋아요" height=40px width=40px>
+                        {% endif %}
+                    </button>
+                    <span id="like-count-{{ item.id }}" class="likecnt">{{ item.like_cnt }}</span>
+                    
                     <span class="comment_box1_nickname">닉네임1</span>
                     <span class="comment_box1_same">유사도: {{ item.percents }}%</span><br>
                     <p>{{ item.texts }}</p>
@@ -89,30 +94,62 @@
         });
     });
     document.addEventListener('DOMContentLoaded', function() {
-      const likeForms = document.querySelectorAll('.likeForm');
-
-      likeForms.forEach(form => {
-        form.addEventListener('submit', function(event) {
-          event.preventDefault();
-
-          const formData = new FormData(form);
-          const commentId = formData.get('comment_id');
-
-          fetch('/scenarios/like/', {
-            method: 'POST',
-            headers: {
-              'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: formData
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.success) {
-              form.querySelector('button').innerHTML = `${data.like_cnt} <img src="{% static 'images/like.png' %}" alt="">`;
-            }
-          });
+        const likeButtons = document.querySelectorAll('.like-btn');
+        
+        likeButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                const commentId = this.getAttribute('data-comment-id');
+                let action = this.getAttribute('data-action');
+                
+                fetch(`/scenarios/like/comment/${commentId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const likeCountElement = document.getElementById(`like-count-${commentId}`);
+                        likeCountElement.textContent = data.like_cnt;
+                        
+                        // 좋아요/좋아요 취소 상태에 따라 버튼의 data-action 값 변경
+                        action = data.action; // 서버에서 받은 action 값으로 업데이트
+                        
+                        // 이미지도 변경할 경우
+                        const likeButton = document.getElementById(`like-btn-${commentId}`);
+                        if (data.action === 'liked') {
+                            likeButton.innerHTML = '<img src="{% static 'images/like.png' %}" alt="좋아요" height="40px" width="40px">';
+                        } else if (data.action === 'unliked') {
+                            likeButton.innerHTML = '<img src="{% static 'images/unlike.png' %}" alt="좋아요 취소" height="40px" width="40px">';
+                        }
+                    } else {
+                        console.error('Failed to like/unlike comment:', data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
         });
-      });
+        
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
     });
   </script>
 </html>

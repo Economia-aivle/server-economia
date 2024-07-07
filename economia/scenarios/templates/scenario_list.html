@@ -11,9 +11,12 @@
     {% include "header.html" %}
     <div class="container">
         <div class="search-container">
-            <input type="text" class="search" name="search" placeholder="검색" id="search-input">
+            <input type="text" class="search" name="search" placeholder="시나리오 제목 검색" id="search-input">
             <button class="search_button" id="search-button"><img src="{% static 'images/search.png' %}" alt="search Image"></button>
+          {% if request.user.is_staff %}   <!-- admin만 보임 -->
             <a href="{% url 'scenarios:create_scenario' %}" class="create-scenario-button">Create Scenario</a>
+            {% endif %}
+        
         </div>
         <table>
             <thead>
@@ -26,14 +29,16 @@
                 </tr>
             </thead>
             <tbody id="scenario-table-body">
-                {% for item in scenarios %}
+                {% for item in page_obj.object_list %}
                 <tr>
                     <td>{{ item.id }}</td>
-                    <td>{% if item.is_overdue %}X</td>
+                    {% if item.is_overdue %}    
+                    <td>마감</td>
                     <td><a href="{% url 'scenarios:previous_scenario' id=item.id %}">{{ item.title }}</a></td>
                     <td>{{ item.subjects }}</td>
                     <td>{{ item.start_time|slice:":10" }}</td>
-                    {% else %}O</td>
+                    {% else %} 
+                    <td>진행중</td>
                     <td><a href="{% url 'scenarios:scenario_num' id=item.id %}">{{ item.title }}</a></td>
                     <td>{{ item.subjects }}</td>
                     <td>{{ item.start_time|slice:":10" }}</td>
@@ -43,6 +48,23 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+    
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+    
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
     </div>
 
     <script>

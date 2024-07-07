@@ -11,6 +11,7 @@ body {
     width: 90%;
     max-width: 1200px;
     margin-top: 20px;
+    margin-bottom: 30px;
 }
 
 .search-container {
@@ -43,11 +44,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #E0F4FF ;
 }
 
 .search_button img {
     width: 75%;
-    height: 75%;
+    height: 70%;
 }
 
 table {
@@ -90,3 +92,34 @@ td {
 	background-color: #0056b3;
 	transform: scale(1.05);
   }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.pagination .step-links {
+    display: flex;
+    gap: 10px;
+}
+
+.pagination .step-links a, .pagination .step-links span {
+    color: #007bff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.pagination .step-links a:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.pagination .step-links .current {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}

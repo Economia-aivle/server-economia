@@ -10,6 +10,8 @@ import pytz
 from .forms import ScenarioForm
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.core.paginator import Paginator
 # Create your views here.
 
 
@@ -65,7 +67,7 @@ def scenario_list(request):
     scenario_response = requests.get('http://127.0.0.1:8000/scenarios/scenario_datas')
     scenario_data = scenario_response.json()
 
-    
+    # 각 항목의 start_time을 UTC로 변환하고 is_overdue 필드를 추가
     for item in scenario_data:
         start_time = datetime.strptime(item['start_time'], '%Y-%m-%dT%H:%M:%S%z')
         start_time_utc = start_time.astimezone(pytz.utc)  # UTC로 변환
@@ -74,8 +76,19 @@ def scenario_list(request):
             item['is_overdue'] = True
         else:
             item['is_overdue'] = False
-    
-    return render(request, 'scenario_list.html', {'scenarios': scenario_data})
+
+        # UTC로 변환된 start_time을 item에 추가 (정렬용)
+        item['start_time_utc'] = start_time_utc
+
+    # start_time_utc 기준으로 내림차순 정렬
+    scenario_data.sort(key=lambda x: x['start_time_utc'], reverse=True)
+
+    # 페이지네이션
+    paginator = Paginator(scenario_data, 10)  # 페이지 당 10개 항목
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'scenario_list.html', {'page_obj': page_obj})
 
 def scenario(request, id):
     response = requests.get(f'http://127.0.0.1:8000/scenarios/scenario/{id}')
@@ -92,17 +105,27 @@ def create_scenario(request): #시나리오 생성
         form = ScenarioForm()
     return render(request, 'create_scenario.html', {'form': form})
 
-def previous_scenario(request,id):
-    response = requests.get(f'http://127.0.0.1:8000/scenarios/scenario/{id}')
-    scenario_data = response.json()
+def previous_scenario(request, id):
+    # 임시로 사용자 ID 설정 (로그인 구현 후 변경 필요)
+    user_id = 1
     
-    response = requests.get(f'http://127.0.0.1:8000/scenarios/comment_datas/{id}')
-    comment_data = response.json()
+    # Scenario 데이터 가져오기
+    scenario_response = requests.get(f'http://127.0.0.1:8000/scenarios/scenario/{id}')
+    scenario_data = scenario_response.json()
+    
+    # Comment 데이터 가져오기
+    comment_response = requests.get(f'http://127.0.0.1:8000/scenarios/comment_datas/{id}')
+    comment_data = comment_response.json()
     
     childcomment_data = []
 
-    # Fetch child comment data for each comment
+    # 각 Comment에 대해 좋아요 여부 확인 및 Child Comment 데이터 가져오기
     for comment in comment_data:
+        # 좋아요 여부 확인
+        is_liked_by_user = CommentsLikes.objects.filter(comment_id=comment['id'], player_id=user_id).exists()
+        comment['is_liked_by_user'] = is_liked_by_user
+        
+        # Child Comment 데이터 가져오기
         response = requests.get(f'http://127.0.0.1:8000/scenarios/childcomment_datas/{comment["id"]}')
         childcomment_data.extend(response.json())
     
@@ -112,17 +135,39 @@ def previous_scenario(request,id):
         'childcomment': childcomment_data,
     }
     
-    return render(request,'previous_scenario.html', context)
+    return render(request, 'previous_scenario.html', context)
 
+@require_POST
 @csrf_exempt
-def like_comment(request): #comment 좋아요
+def like_comment(request, comment_id):
     if request.method == 'POST':
-        comment_id = request.POST.get('comment_id')
-        comment = Comments.objects.get(id=comment_id)
-        comment.like_cnt += 1
-        comment.save()
-        return JsonResponse({'success': True, 'like_cnt': comment.like_cnt})
-    return JsonResponse({'success': False})
+        player_id = 1  # 임시로 사용자 ID를 1로 설정
+        
+        comment = get_object_or_404(Comments, id=comment_id)
+        player = get_object_or_404(Player, id=player_id)
+        
+        try:
+            # 사용자가 해당 댓글에 좋아요를 했는지 확인
+            is_liked_by_user = CommentsLikes.objects.filter(comment=comment, player=player).exists()
+            
+            if is_liked_by_user:
+                # 이미 좋아요를 눌렀으면 좋아요 취소
+                CommentsLikes.objects.filter(comment=comment, player=player).delete()
+                comment.like_cnt = comment.like_cnt - 1 if comment.like_cnt else 0
+                action = 'unliked'
+            else:
+                # 좋아요를 처음 누른 경우
+                CommentsLikes.objects.create(comment=comment, player=player)
+                comment.like_cnt = comment.like_cnt + 1 if comment.like_cnt else 1
+                action = 'liked'
+            
+            comment.save()
+            return JsonResponse({'success': True, 'like_cnt': comment.like_cnt, 'action': action})
+        
+        except CommentsLikes.DoesNotExist:
+            return JsonResponse({'error': 'Failed to process like/unlike action.'}, status=500)
+    
+    return JsonResponse({'error': 'Method not allowed.'}, status=405)
 
 def submit_answer(request): #시나리오 답 제출
     if request.method == 'POST':
