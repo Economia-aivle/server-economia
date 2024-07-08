@@ -39,13 +39,6 @@ def getStageDatas(request, characters):
     serializer = StageSerializer(datas, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
-def get_next_blank(request, characters, subject, chapter, num):
-    next_num = num + 1  # 다음 문제 번호 계산
-    blank = get_object_or_404(Blank, characters=characters, subject=subject, chapter=chapter, num=next_num)
-    serializer = BlankSerializer(blank)
-    return JsonResponse(serializer.data)
-
 def previous_quiz(request, characters):
     
     # player = request.player
