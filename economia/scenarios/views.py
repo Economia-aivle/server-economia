@@ -66,7 +66,7 @@ def delete_childcomment(request, id):
 def scenario_list(request):
     scenario_response = requests.get('http://127.0.0.1:8000/scenarios/scenario_datas')
     scenario_data = scenario_response.json()
-
+    
     # 각 항목의 start_time을 UTC로 변환하고 is_overdue 필드를 추가
     for item in scenario_data:
         start_time = datetime.strptime(item['start_time'], '%Y-%m-%dT%H:%M:%S%z')
@@ -108,7 +108,7 @@ def create_scenario(request): #시나리오 생성
 def previous_scenario(request, id):
     # 임시로 사용자 ID 설정 (로그인 구현 후 변경 필요)
     user_id = 1
-    
+    characters_id =1
     # Scenario 데이터 가져오기
     scenario_response = requests.get(f'http://127.0.0.1:8000/scenarios/scenario/{id}')
     scenario_data = scenario_response.json()
@@ -118,7 +118,11 @@ def previous_scenario(request, id):
     comment_data = comment_response.json()
     
     childcomment_data = []
-
+    
+    comments = Comments.objects.filter(scenario_id=id)
+    # 특정 캐릭터가 작성한 댓글이 있는지 확인
+    has_character_comment = comments.filter(characters_id=characters_id).exists()
+    
     # 각 Comment에 대해 좋아요 여부 확인 및 Child Comment 데이터 가져오기
     for comment in comment_data:
         # 좋아요 여부 확인
@@ -133,6 +137,7 @@ def previous_scenario(request, id):
         'scenario': scenario_data,
         'comment': comment_data,
         'childcomment': childcomment_data,
+        'has_character_comment': has_character_comment,
     }
     
     return render(request, 'previous_scenario.html', context)
@@ -141,7 +146,7 @@ def previous_scenario(request, id):
 @csrf_exempt
 def like_comment(request, comment_id):
     if request.method == 'POST':
-        player_id = 1  # 임시로 사용자 ID를 1로 설정
+        player_id = 1 # 임시로 사용자 ID를 1로 설정
         
         comment = get_object_or_404(Comments, id=comment_id)
         player = get_object_or_404(Player, id=player_id)

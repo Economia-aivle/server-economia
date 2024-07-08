@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>시나리오</title>
     <link rel="stylesheet" href="{% static 'previous_scenario.css' %}" />
+    <link rel="stylesheet" href="{% static 'scenario.css' %}" />
 </head>
 <body>
     {% include "header.html" %}
@@ -16,65 +17,76 @@
                 <span class="contents">{{ item.question_text }}</span>
             {% endfor %}
         </div>
-        <div class="ai_comment_box">
-            <span class="ai_comment_title">AI 답변</span>
-        </div>
-        <div class="comment_box_head">
-            <span class="comment_box_head_same"><input type="button" value="유사도순"></span>|
-            <span class="comment_box_head_like"><input type="button" value="좋아요순"> </span>
-        </div>
-        {% for item in comment %}
-            <div class="comment_box1">
-                <div class="comment_container">
-                    <form method="post" action="{% url 'scenarios:delete_comment' item.id %}" class="deleteForm">
-                        {% csrf_token %}
-                        <input type="hidden" name="scenario_id" value="{{ scenario.0.id }}">
-                        <button type="submit" class="delete_button">삭제</button>
-                    </form>
-                    <button id="like-btn-{{ item.id }}" class="like-btn" data-comment-id="{{ item.id }}" data-action="{% if item.is_liked_by_user  %}unliked{% else %}liked{% endif %}">
-                        {% if item.is_liked_by_user  %}
-                        <img src="{% static 'images/like.png' %}" alt="안좋아요" height=40px width=40px>
-                        {% else %}
-                        <img src="{% static 'images/unlike.png' %}" alt="좋아요" height=40px width=40px>
-                        {% endif %}
-                    </button>
-                    <span id="like-count-{{ item.id }}" class="likecnt">{{ item.like_cnt }}</span>
-                    
-                    <span class="comment_box1_nickname">닉네임1</span>
-                    <span class="comment_box1_same">유사도: {{ item.percents }}%</span><br>
-                    <p>{{ item.texts }}</p>
-            
-                </div>
-                {% for child in childcomment %}
-                    {% if child.parent == item.id %}
-                        <div class="childcomment_container">
-                            <div class="child_comment_box">
-                                <form method="post" action="{% url 'scenarios:delete_childcomment' child.id %}" class="deleteForm">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="scenario_id" value="{{ scenario.0.id }}">
-                                    <button type="submit" class="delete_button">삭제</button>
-                                </form> 
-                                <span class="child_comment_nickname">닉네임2</span>
-                                <span class="child_comment_text"><p>{{ child.texts }}</p></span>
-                                <hr>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-                <!-- 대댓글 작성 폼 -->
-                <div class="form_container">
-                    <div class="child_comment_form">
-                        <form method="post" action="{% url 'scenarios:submit_childcomment' %}">
+        
+        {% if not has_character_comment %}
+            <div class="answer_box">
+                <form method="post" action="{% url 'scenarios:submit_answer' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="scenario_id" value="{{ scenario.0.id }}">
+                    <input type="text" name="scenario_answer" class="scenario_answer" placeholder="답 입력">
+                    <div class="button_box">
+                        <button type="submit" class="submit_button">제출</button>
+                    </div>
+                </form>
+            </div>
+        {% else %}
+            <div class="comment_box_head">
+                <span class="comment_box_head_same"><input type="button" value="유사도순"></span>|
+                <span class="comment_box_head_like"><input type="button" value="좋아요순"> </span>
+            </div>
+            {% for item in comment %}
+                <div class="comment_box1">
+                    <div class="comment_container">
+                        <form method="post" action="{% url 'scenarios:delete_comment' item.id %}" class="deleteForm">
                             {% csrf_token %}
-                            <input type="hidden" name="parent_id" value="{{ item.id }}">
                             <input type="hidden" name="scenario_id" value="{{ scenario.0.id }}">
-                            <input type="text" name="childcomment_text" class="childcomment_input" placeholder="의견 입력">
-                            <button type="submit" class="childcomment_submit_button"></button>
+                            <button type="submit" class="delete_button">삭제</button>
                         </form>
+                        <button id="like-btn-{{ item.id }}" class="like-btn" data-comment-id="{{ item.id }}" data-action="{% if item.is_liked_by_user  %}unliked{% else %}liked{% endif %}">
+                            {% if item.is_liked_by_user  %}
+                            <img src="{% static 'images/like.png' %}" alt="안좋아요" height=40px width=40px>
+                            {% else %}
+                            <img src="{% static 'images/unlike.png' %}" alt="좋아요" height=40px width=40px>
+                            {% endif %}
+                        </button>
+                        <span id="like-count-{{ item.id }}" class="likecnt">{{ item.like_cnt }}</span>
+                        
+                        <span class="comment_box1_nickname">닉네임1</span>
+                        <span class="comment_box1_same">유사도: {{ item.percents }}%</span><br>
+                        <p>{{ item.texts }}</p>
+                
+                    </div>
+                    {% for child in childcomments %}
+                        {% if child.parent == item.id %}
+                            <div class="childcomment_container">
+                                <div class="child_comment_box">
+                                    <form method="post" action="{% url 'scenarios:delete_childcomment' child.id %}" class="deleteForm">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="scenario_id" value="{{ scenario.0.id }}">
+                                        <button type="submit" class="delete_button">삭제</button>
+                                    </form> 
+                                    <span class="child_comment_nickname">닉네임2</span>
+                                    <span class="child_comment_text"><p>{{ child.texts }}</p></span>
+                                    <hr>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <!-- 대댓글 작성 폼 -->
+                    <div class="form_container">
+                        <div class="child_comment_form">
+                            <form method="post" action="{% url 'scenarios:submit_childcomment' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="parent_id" value="{{ item.id }}">
+                                <input type="hidden" name="scenario_id" value="{{ scenario.0.id }}">
+                                <input type="text" name="childcomment_text" class="childcomment_input" placeholder="의견 입력">
+                                <button type="submit" class="childcomment_submit_button"></button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        {% endif %}
     </div>
 </body>
 <script>
@@ -93,6 +105,7 @@
             });
         });
     });
+
     document.addEventListener('DOMContentLoaded', function() {
         const likeButtons = document.querySelectorAll('.like-btn');
         
@@ -151,5 +164,5 @@
             return cookieValue;
         }
     });
-  </script>
+</script>
 </html>

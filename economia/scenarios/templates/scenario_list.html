@@ -34,16 +34,12 @@
                     <td>{{ item.id }}</td>
                     {% if item.is_overdue %}    
                     <td>마감</td>
-                    <td><a href="{% url 'scenarios:previous_scenario' id=item.id %}">{{ item.title }}</a></td>
-                    <td>{{ item.subjects }}</td>
-                    <td>{{ item.start_time|slice:":10" }}</td>
                     {% else %} 
                     <td>진행중</td>
-                    <td><a href="{% url 'scenarios:scenario_num' id=item.id %}">{{ item.title }}</a></td>
-                    <td>{{ item.subjects }}</td>
-                    <td>{{ item.start_time|slice:":10" }}</td>
                     {% endif %}
-                    
+                    <td><a href="{% url 'scenarios:previous_scenario' id=item.id %}">{{ item.title }}</a></td>
+                    <td>{{ item.subjects }}</td>
+                    <td>{{ item.start_time|slice:":10" }}</td>                                
                 </tr>
                 {% endfor %}
             </tbody>

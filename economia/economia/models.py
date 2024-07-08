@@ -127,7 +127,7 @@ class Comments(models.Model):
 
 
 class CommentsLikes(models.Model):
-    comment = models.ForeignKey(Comments, models.DO_NOTHING)
+    comment = models.ForeignKey(Comments, on_delete=models.CASCADE)
     player = models.ForeignKey('Player', models.DO_NOTHING)
 
     class Meta:

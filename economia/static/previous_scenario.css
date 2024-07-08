@@ -125,6 +125,7 @@ body {
     padding: 20px; /* 내부 패딩을 늘려서 댓글 간격 조정 */
 	padding-bottom: 40px;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .childcomment_submit_button {
@@ -202,4 +203,68 @@ body {
 }
 .comment_container p {
     width: 1200px;
+}
+
+
+
+.answer_box {
+    background-color: #E0F4FF;
+    width: 70%;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    border-radius: 15px;
+    margin-top: 20px; /* Added margin-top for spacing */
+    margin-bottom: 5%;
+}
+
+.answer_box form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.scenario_answer {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    width: 90%;
+    height: 140px;
+    font-size: 25px;
+    border: none;
+    border-radius: 15px;
+    padding: 10px; /* Added padding for better appearance */
+}
+
+.button_box {
+    background-color: #E0F4FF;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 10%;
+    height: 100%;
+    margin-left: 20px; /* Adjusted for better spacing */
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.save_button, .submit_button {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    border: none; /* 버튼의 기본 테두리 제거 */
+    width: 100%;
+    height: 40%;
+    color: #fff;
+    background-color: #39A7FF;
+    cursor: pointer; /* 마우스 커서 모양 변경 */
+    margin-bottom: 10px; /* Adjusted for spacing */
+    font-size: 20px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.save_button:hover, .submit_button:hover {
+    background: #0056b3; /* 마우스를 올렸을 때 버튼의 배경색 */
+    transform: scale(1.05); /* 마우스를 올렸을 때 버튼의 크기 확대 */
+}
+
+.save_button:active, .submit_button:active {
+    background: #004080; /* 버튼을 눌렀을 때의 배경색 */
+    transform: scale(0.95); /* 버튼을 눌렀을 때 약간 작아지게 */
 }
