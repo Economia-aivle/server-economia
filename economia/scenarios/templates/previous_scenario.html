@@ -37,11 +37,12 @@
             {% for item in comment %}
                 <div class="comment_box1">
                     <div class="comment_container">
+                        {% if item.characters == characters_id %}
                         <form method="post" action="{% url 'scenarios:delete_comment' item.id %}" class="deleteForm">
                             {% csrf_token %}
                             <input type="hidden" name="scenario_id" value="{{ scenario.0.id }}">
                             <button type="submit" class="delete_button">삭제</button>
-                        </form>
+                        </form>{% endif %}
                         <button id="like-btn-{{ item.id }}" class="like-btn" data-comment-id="{{ item.id }}" data-action="{% if item.is_liked_by_user  %}unliked{% else %}liked{% endif %}">
                             {% if item.is_liked_by_user  %}
                             <img src="{% static 'images/like.png' %}" alt="안좋아요" height=40px width=40px>
@@ -51,20 +52,21 @@
                         </button>
                         <span id="like-count-{{ item.id }}" class="likecnt">{{ item.like_cnt }}</span>
                         
-                        <span class="comment_box1_nickname">닉네임1</span>
+                        <span class="comment_box1_nickname">{{ item.characters}}</span>
                         <span class="comment_box1_same">유사도: {{ item.percents }}%</span><br>
                         <p>{{ item.texts }}</p>
                 
                     </div>
-                    {% for child in childcomments %}
+                    {% for child in childcomment %}
                         {% if child.parent == item.id %}
                             <div class="childcomment_container">
                                 <div class="child_comment_box">
+                                    {% if child.parent == player_id %}
                                     <form method="post" action="{% url 'scenarios:delete_childcomment' child.id %}" class="deleteForm">
                                         {% csrf_token %}
                                         <input type="hidden" name="scenario_id" value="{{ scenario.0.id }}">
                                         <button type="submit" class="delete_button">삭제</button>
-                                    </form> 
+                                    </form>      {% endif %}
                                     <span class="child_comment_nickname">닉네임2</span>
                                     <span class="child_comment_text"><p>{{ child.texts }}</p></span>
                                     <hr>

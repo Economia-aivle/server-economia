@@ -107,7 +107,7 @@ def create_scenario(request): #시나리오 생성
 
 def previous_scenario(request, id):
     # 임시로 사용자 ID 설정 (로그인 구현 후 변경 필요)
-    user_id = 1
+    player_id = 1
     characters_id =1
     # Scenario 데이터 가져오기
     scenario_response = requests.get(f'http://127.0.0.1:8000/scenarios/scenario/{id}')
@@ -126,7 +126,7 @@ def previous_scenario(request, id):
     # 각 Comment에 대해 좋아요 여부 확인 및 Child Comment 데이터 가져오기
     for comment in comment_data:
         # 좋아요 여부 확인
-        is_liked_by_user = CommentsLikes.objects.filter(comment_id=comment['id'], player_id=user_id).exists()
+        is_liked_by_user = CommentsLikes.objects.filter(comment_id=comment['id'], player_id=player_id).exists()
         comment['is_liked_by_user'] = is_liked_by_user
         
         # Child Comment 데이터 가져오기
@@ -137,6 +137,8 @@ def previous_scenario(request, id):
         'scenario': scenario_data,
         'comment': comment_data,
         'childcomment': childcomment_data,
+        'characters_id' : characters_id,
+        'player_id' : player_id,
         'has_character_comment': has_character_comment,
     }
     
