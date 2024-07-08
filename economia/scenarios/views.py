@@ -113,6 +113,22 @@ def previous_scenario(request, id):
     scenario_response = requests.get(f'http://127.0.0.1:8000/scenarios/scenario/{id}')
     scenario_data = scenario_response.json()
     
+    # 각 항목의 start_time을 UTC로 변환하고 is_overdue 필드를 추가
+    for item in scenario_data:
+        start_time = datetime.strptime(item['start_time'], '%Y-%m-%dT%H:%M:%S%z')
+        start_time_utc = start_time.astimezone(pytz.utc)  # UTC로 변환
+        
+        if start_time_utc + timedelta(days=7) < timezone.now():
+            item['is_overdue'] = True
+        else:
+            item['is_overdue'] = False
+
+        # UTC로 변환된 start_time을 item에 추가 (정렬용)
+        item['start_time_utc'] = start_time_utc
+
+    # start_time_utc 기준으로 내림차순 정렬
+    scenario_data.sort(key=lambda x: x['start_time_utc'], reverse=True)
+    
     # Comment 데이터 가져오기
     comment_response = requests.get(f'http://127.0.0.1:8000/scenarios/comment_datas/{id}')
     comment_data = comment_response.json()

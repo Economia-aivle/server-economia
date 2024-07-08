@@ -13,9 +13,9 @@
         <div class="search-container">
             <input type="text" class="search" name="search" placeholder="시나리오 제목 검색" id="search-input">
             <button class="search_button" id="search-button"><img src="{% static 'images/search.png' %}" alt="search Image"></button>
-          {% if request.user.is_staff %}   <!-- admin만 보임 -->
+
             <a href="{% url 'scenarios:create_scenario' %}" class="create-scenario-button">Create Scenario</a>
-            {% endif %}
+
         
         </div>
         <table>
