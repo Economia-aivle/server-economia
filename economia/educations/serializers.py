@@ -1,7 +1,7 @@
 # educations/serializers.py
 
 from rest_framework.serializers import ModelSerializer
-from economia.models import Blank, Multiple, Tf
+from economia.models import Blank, Multiple, Tf, Subjects, Stage
 
 class BlankSerializer(ModelSerializer):
     class Meta:
@@ -16,4 +16,14 @@ class MultipleSerializer(ModelSerializer):
 class TfSerializer(ModelSerializer):
     class Meta:
         model = Tf
+        fields = '__all__'
+        
+class SubjectSerializer(ModelSerializer):
+    class Meta:
+        model = Subjects
+        fields = '__all__'
+        
+class StageSerializer(ModelSerializer):
+    class Meta:
+        model = Stage
         fields = '__all__'

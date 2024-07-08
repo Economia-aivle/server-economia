@@ -46,8 +46,10 @@ body{
 }
 .answer_form{
     margin-top: 30px;
+	text-align: center;
 }
 .answer{
+	text-align: center;
     width: 500px;
 	height: 60px;
     font-size: 20px;
@@ -56,22 +58,11 @@ body{
 	border-top-right-radius:20px;
 	border-bottom-left-radius:20px;
 	border-bottom-right-radius:20px;
+
 }
 input::placeholder {
     font-weight: bold;
     text-align: center;
-}
-.video { 
-	width: 0;
-	height: 0;
-	border-bottom: 30px solid transparent;
-	border-top: 30px solid transparent;
-	border-left: 50px solid #39A7FF;
-	border-right: 50px solid transparent;
-	position:absolute;
-	border-radius:10px;
-	top : 40%;
-	left: 50%;
 }
 .btn {
 	margin-top: 30px;
@@ -134,9 +125,7 @@ color: #E0E0E0;
 	background-color: #39A7FF;
 }
 
-.progress-step:not(.active):hover {
-	background-color: #75BFFF;
-}
+
 .top-num{
 	text-align: center;
 	width: 100%;
@@ -145,4 +134,8 @@ color: #E0E0E0;
 	border-bottom-width:1px; 
     border-bottom-style:solid;
     border-bottom-color:black;
+}
+
+.progress-step.wrong {
+    background-color: red;
 }

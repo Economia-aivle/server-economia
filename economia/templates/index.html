@@ -21,9 +21,8 @@
 <a href="{% url 'users:char_delete' %}">char_delete</a><br>
 <hr>
 educations<br>
-<a href="{% url 'educations:level_choice' %}">level_choice</a><br>
+<!--  -->
 <a href="{% url 'educations:tfquiz' %}">tfquiz</a><br>
-<a href="{% url 'educations:blank' %}">blank</a><br>
 <a href="{% url 'educations:multiple' %}">multiple</a><br>
 <a href="{% url 'educations:previous_quiz_answer' %}">previous_quiz_answer</a><br>
 <a href="{% url 'educations:previous_quiz' characters=1 %}">previous_quiz</a><br>
@@ -31,6 +30,7 @@ educations<br>
 <a href="{% url 'educations:summary_anime' %}">summary_anime</a><br>
 <a href="{% url 'educations:wrong_explanation' %}">wrong_explanation</a><br>
 <a href="{% url 'educations:chapter_summary' %}">chapter_summary</a><br>
+<a href="{% url 'educations:chapter' subjects='금융' %}">chapter</a><br>
 <hr>
 scenarios<br>
 <a href="{% url 'scenarios:previous_scenario' id=1 %}">previous_scenario</a><br>
@@ -39,7 +39,6 @@ scenarios<br>
 <a href="{% url 'scenarios:create_scenario'  %}">create_scenario</a><br>
 <hr>
 home<br>
-<a href="chapter">chpater</a><br>
 <a href="home">home</a><br>
 <a href="onboarding">onboarding</a><br>
 <a href="mypage">mypage</a><br>

@@ -17,16 +17,17 @@
   <body>
     <div class="main-container">
       <div class="header">
-        <div class="category"># 금융</div>
+         
+        <div class="category"># {{ chapter.0.subjects }}</div>
         <button class="quit-btn" onclick="handleButtonClick()">나가기</button>
       </div>
+      
       <div class="chapters">
-        <a class="chap1" href="#" target="_self">Chapter 1. 스스로 선택해라: 금융과 의사결정</a>
-        <a class="chap2" href="#" target="_self">Chapter 2. 시장의 주인은 소비자!</a>
-        <a class="chap3" href="#" target="_self">Chapter 3. 정보화 시대 시장은 어떻게 움직일까?</a>
-        <a class="chap4" href="#" target="_self">Chapter 4. 나의 신용을 지켜라: 신용이 재산이다</a>
-        <a class="chap5" href="#" target="_self">Chapter 5. 저축과 보험: 미래를 설계하다</a>
+        {% for item in chapter %} 
+        <a class="chap{{item.id}}" href="{% url 'educations:level_choice' characters=1 subject=chapter.0.subjects chapter=item.id %}" target="_self"> Chapter {{ item.chapters }}</a>
+        {% endfor %}
       </div>
+      
     </div>
 </body>
 </html>
