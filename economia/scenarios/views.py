@@ -117,6 +117,23 @@ def previous_scenario(request, id):
     comment_response = requests.get(f'http://127.0.0.1:8000/scenarios/comment_datas/{id}')
     comment_data = comment_response.json()
     
+    comments = Comments.objects.filter(scenario_id=id).select_related('characters__player')
+    
+     # 각 Comment에 대해 좋아요 여부 확인 및 Player 닉네임 가져오기
+    comment_data_updated = []
+    for comment in comments:
+        is_liked_by_user = CommentsLikes.objects.filter(comment_id=comment.id, player_id=player_id).exists()
+        comment_data_updated.append({
+            'id': comment.id,
+            'scenario_id': comment.scenario_id,
+            'characters_id': comment.characters_id,
+            'percents': comment.percents,
+            'texts': comment.texts,
+            'like_cnt': comment.like_cnt,
+            'is_liked_by_user': is_liked_by_user,
+            'player_nickname': comment.characters.player.nickname  # Player 닉네임 추가
+        })
+    
     childcomment_data = []
     
     comments = Comments.objects.filter(scenario_id=id)
@@ -124,18 +141,26 @@ def previous_scenario(request, id):
     has_character_comment = comments.filter(characters_id=characters_id).exists()
     
     # 각 Comment에 대해 좋아요 여부 확인 및 Child Comment 데이터 가져오기
-    for comment in comment_data:
-        # 좋아요 여부 확인
-        is_liked_by_user = CommentsLikes.objects.filter(comment_id=comment['id'], player_id=player_id).exists()
-        comment['is_liked_by_user'] = is_liked_by_user
+    # for comment in comment_data:
+    #     # 좋아요 여부 확인
+    #     is_liked_by_user = CommentsLikes.objects.filter(comment_id=comment['id'], player_id=player_id).exists()
+    #     comment['is_liked_by_user'] = is_liked_by_user
         
-        # Child Comment 데이터 가져오기
-        response = requests.get(f'http://127.0.0.1:8000/scenarios/childcomment_datas/{comment["id"]}')
-        childcomment_data.extend(response.json())
+    # Child Comment 데이터 가져오기
+    child_comments = ChildComments.objects.select_related('player').filter(parent__in=[comment['id'] for comment in comment_data]).order_by('id')
+    
+    for child in child_comments:
+        childcomment_data.append({
+            'id': child.id,
+            'parent_id': child.parent_id,
+            'player_id': child.player_id,
+            'texts': child.texts,
+            'player_nickname': child.player.nickname,
+        })
     
     context = {
         'scenario': scenario_data,
-        'comment': comment_data,
+        'comment': comment_data_updated,
         'childcomment': childcomment_data,
         'characters_id' : characters_id,
         'player_id' : player_id,

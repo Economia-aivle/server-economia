@@ -30,6 +30,9 @@
                 </form>
             </div>
         {% else %}
+        <div class="ai_comment_box">
+            <span  class="ai_comment_title">AI 답변</span>
+          </div>
             <div class="comment_box_head">
                 <span class="comment_box_head_same"><input type="button" value="유사도순"></span>|
                 <span class="comment_box_head_like"><input type="button" value="좋아요순"> </span>
@@ -52,22 +55,22 @@
                         </button>
                         <span id="like-count-{{ item.id }}" class="likecnt">{{ item.like_cnt }}</span>
                         
-                        <span class="comment_box1_nickname">{{ item.characters}}</span>
+                        <span class="comment_box1_nickname">{{ item.player_nickname}}</span>
                         <span class="comment_box1_same">유사도: {{ item.percents }}%</span><br>
                         <p>{{ item.texts }}</p>
                 
                     </div>
                     {% for child in childcomment %}
-                        {% if child.parent == item.id %}
+                        {% if child.parent_id == item.id %}
                             <div class="childcomment_container">
                                 <div class="child_comment_box">
-                                    {% if child.parent == player_id %}
+                                    {% if child.player_id == player_id %}
                                     <form method="post" action="{% url 'scenarios:delete_childcomment' child.id %}" class="deleteForm">
                                         {% csrf_token %}
                                         <input type="hidden" name="scenario_id" value="{{ scenario.0.id }}">
                                         <button type="submit" class="delete_button">삭제</button>
                                     </form>      {% endif %}
-                                    <span class="child_comment_nickname">닉네임2</span>
+                                    <span class="child_comment_nickname">{{child.player_nickname}}</span>
                                     <span class="child_comment_text"><p>{{ child.texts }}</p></span>
                                     <hr>
                                 </div>
