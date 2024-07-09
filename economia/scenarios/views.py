@@ -67,28 +67,34 @@ def scenario_list(request):
     scenario_response = requests.get('http://127.0.0.1:8000/scenarios/scenario_datas')
     scenario_data = scenario_response.json()
     
-    # 각 항목의 start_time을 UTC로 변환하고 is_overdue 필드를 추가
+    query = request.GET.get('search', '')
+    
+    if query:
+        scenario_data = [item for item in scenario_data if query.lower() in item['title'].lower()]
+
     for item in scenario_data:
         start_time = datetime.strptime(item['start_time'], '%Y-%m-%dT%H:%M:%S%z')
-        start_time_utc = start_time.astimezone(pytz.utc)  # UTC로 변환
+        start_time_utc = start_time.astimezone(pytz.utc)
         
         if start_time_utc + timedelta(days=7) < timezone.now():
             item['is_overdue'] = True
         else:
             item['is_overdue'] = False
 
-        # UTC로 변환된 start_time을 item에 추가 (정렬용)
         item['start_time_utc'] = start_time_utc
 
-    # start_time_utc 기준으로 내림차순 정렬
     scenario_data.sort(key=lambda x: x['start_time_utc'], reverse=True)
 
-    # 페이지네이션
-    paginator = Paginator(scenario_data, 10)  # 페이지 당 10개 항목
+    paginator = Paginator(scenario_data, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'page_obj': page_obj,
+        'query': query,
+    }
 
-    return render(request, 'scenario_list.html', {'page_obj': page_obj})
+    return render(request, 'scenario_list.html', context)
 
 def scenario(request, id):
     response = requests.get(f'http://127.0.0.1:8000/scenarios/scenario/{id}')

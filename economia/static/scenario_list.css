@@ -24,7 +24,7 @@ body {
 }
 
 .search {
-    width: 50%;
+    width: 500px;
     height: 50px;
     padding: 10px;
     border-radius: 15px;
@@ -36,16 +36,21 @@ body {
 }
 
 .search_button {
+    margin:auto;
     width: 50px;
     height: 50px;
     border: none;
-    border-radius: 15px;
     cursor: pointer;
-    display: flex;
     justify-content: center;
     align-items: center;
     background-color: #E0F4FF ;
 }
+
+.search_form{
+    width: 600px;
+    display: flex;
+}
+
 
 .search_button img {
     width: 75%;
