@@ -40,7 +40,7 @@ def update_info(request):
 
 urlpatterns = [
     path("",index),
-    path('users/', include('users.urls')),
+    
     path('educations/', include('educations.urls')),
     path('scenarios/', include('scenarios.urls')),
     path("chapter", chapter),
@@ -49,7 +49,7 @@ urlpatterns = [
     path("onboarding", onboarding),
     path("update_info", update_info),
     path('admin/', admin.site.urls),
-    path('users/', include('users.urls')),  # 'users' 앱의 URL을 포함
+    path('users/', include('users.urls')),
 ]
 
 

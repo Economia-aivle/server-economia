@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
+from .models import Notice
 
 # 기본 관리자 사이트 제목 변경
 admin.site.site_header = "Economia 관리자"
@@ -21,3 +22,5 @@ admin.site.register(User, CustomUserAdmin)
 # 다른 모델들에 대한 관리자 설정
 # 예: from .models import YourModel
 # admin.site.register(YourModel)
+
+admin.site.register(Notice)

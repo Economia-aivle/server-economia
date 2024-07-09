@@ -5,6 +5,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from .models import Notice
+
 
 # Create your views here.
 def char_create(request):
@@ -44,6 +46,11 @@ def admin_login(request):
             return render(request, 'admin_login.html', {'error': 'Invalid credentials or not an admin'})
     return render(request, 'admin_login.html')
 
+
+def notice_list(request):
+    notices = Notice.objects.all().order_by('-created_at')
+    return render(request, 'notice.html', {'notices': notices})
+
 @login_required
 def admin_dashboard(request):
     return render(request, 'admin_dashboard.html')
@@ -58,3 +65,6 @@ class AdminLoginAPI(APIView):
             return Response({"token": token.key}, status=status.HTTP_200_OK)
         else:
             return Response({"error": "Invalid credentials or not an admin"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+

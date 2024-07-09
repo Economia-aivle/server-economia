@@ -17,4 +17,6 @@ urlpatterns = [
     path('login/', views.admin_login, name='admin_login'),
     path('dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('api/login/', views.AdminLoginAPI.as_view(), name='admin_login_api'),
+    path('notice/', views.notice_list, name='notice_list'),
+
 ]

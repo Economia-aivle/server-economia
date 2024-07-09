@@ -24,18 +24,14 @@
                 </tr>
             </thead>
             <tbody>
+                {% for notice in notices %}
                 <tr>
-                    <td>1</td>
-                    <td>[6/21] 업데이트 예정사항 공지</td>
-                    <td>강현수</td>
-                    <td>24.06.21</td>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ notice.title }}</td>
+                    <td>{{ notice.author }}</td>
+                    <td>{{ notice.created_at|date:"y.m.d" }}</td>
                 </tr>
-                <tr>
-                    <td>행 2, 열 1</td>
-                    <td>행 2, 열 2</td>
-                    <td>행 2, 열 3</td>
-                    <td>행 2, 열 4</td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
