@@ -27,22 +27,23 @@ body {
 }
 
 .search_btn {
-    background: rgb(141, 204, 237);
-    background: linear-gradient(0deg, rgb(138, 195, 252) 0%, rgb(161, 169, 255) 100%);
+    background-color: #87CEEB; /* 하늘색 배경 */
+    color: white; /* 텍스트 색상 */
     border: none;
     padding: 10px 20px; /* 상하 10px, 좌우 20px 패딩 추가 */
     font-size: 24px; /* 글자 크기 조절 */
     width: 150px; /* 버튼 너비 조절 */
     height: 50px; /* 버튼 높이 조절 */
-    margin-top: 40px; /* 위쪽에 20픽셀의 마진 추가 */
-    margin-right: 30px; /* 오른쪽에 10픽셀의 마진 추가 */
-    margin-bottom: 20px; /* 아래쪽에 30픽셀의 마진 추가 */
-    margin-left: 40px; /* 왼쪽에 5픽셀의 마진 추가 */
+    margin-top: 40px; /* 위쪽에 40픽셀의 마진 추가 */
+    margin-right: 30px; /* 오른쪽에 30픽셀의 마진 추가 */
+    margin-bottom: 20px; /* 아래쪽에 20픽셀의 마진 추가 */
+    margin-left: 40px; /* 왼쪽에 40픽셀의 마진 추가 */
+    border-radius: 25px; /* 버튼 모서리를 둥글게 */
 }
 
 .search_btn:hover {
-    background: rgb(0, 96, 192);
-    background: linear-gradient(0deg, rgba(0,3,255,1) 0%, rgba(2,126,251,1) 100%);
+    background-color: #FFFFFF; /* 흰색 배경 */
+    color: #87CEEB; /* 하늘색 텍스트 */
 }
 
 
