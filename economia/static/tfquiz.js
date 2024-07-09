@@ -4,10 +4,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 let questionCount = 0;
 const maxQuestions = 5;
+const usedQuestionIds = [];
 
 function loadQuestion() {
   if (questionCount >= maxQuestions) {
-    // 퀴즈를 종료하고 결과를 보여줍니다.
     document.getElementById('question-container').innerHTML = '<h1>퀴즈가 완료되었습니다!</h1>';
     return;
   }
@@ -15,8 +15,14 @@ function loadQuestion() {
   fetch('/educations/tf_quiz/')
     .then(response => response.json())
     .then(data => {
+      if (usedQuestionIds.includes(data.question_id)) {
+        loadQuestion();
+        return;
+      }
+
       document.getElementById('question-text').innerText = data.question_text;
       document.getElementById('question-id').value = data.question_id;
+      usedQuestionIds.push(data.question_id);
     })
     .catch(error => console.error('Error:', error));
 }

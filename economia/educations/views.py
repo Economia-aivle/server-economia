@@ -10,25 +10,21 @@ def level_choice(request):
     return render(request, 'level_choice.html')
 
 @csrf_exempt
-def tf_quiz_view(request, question_id=None):
+def tf_quiz_view(request):
     if request.method == 'GET':
-        if question_id:
-            try:
-                question = Tf.objects.get(id=question_id)
-            except Tf.DoesNotExist:
-                return JsonResponse({"error": "Question not found."}, status=status.HTTP_404_NOT_FOUND)
-        else:
-            questions = list(Tf.objects.all())
-            if not questions:
-                return JsonResponse({"error": "No questions available."}, status=status.HTTP_404_NOT_FOUND)
-            question = random.choice(questions)
+        used_question_ids = request.GET.getlist('used_question_ids[]')
+        questions = Tf.objects.exclude(id__in=used_question_ids)
+        if not questions:
+            return JsonResponse({"error": "No questions available."}, status=status.HTTP_404_NOT_FOUND)
+        question = random.choice(questions)
 
-        return JsonResponse({
+        context = {
             "question_id": question.id,
             "question_text": question.question_text,
             "correct_answer": question.correct_answer,
             "explanation": question.explanation
-        })
+        }
+        return JsonResponse(context, status=status.HTTP_200_OK)
 
     elif request.method == 'POST':
         question_id = request.POST.get('question_id')
