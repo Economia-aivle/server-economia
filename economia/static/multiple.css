@@ -1,5 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+
 main{
 	background-color:rgba(224.000001847744, 244.0000006556511, 255, 1);
 	width:100%;
@@ -34,11 +35,11 @@ body{
 	
 }
 .character {
-    margin: 0% auto 3% auto;
+    margin: 0% auto 5% auto;
     height: 246px;
     width: 245px;
     text-align: center;
-	cursor: pointer;
+	cursor: url('images/sword.png') , auto;
 }
 .character img{
     height: 246px;
@@ -155,3 +156,16 @@ body{
 	margin-right: 20%;
 	
 }
+
+.hp-bar-container {
+	width: 200px;
+	height: 20px;
+	border: 1px solid #000;
+	background-color: #f3f3f3;
+	margin-left: 30px;
+  }
+  .hp-bar {
+	height: 100%;
+	background-color: #4caf50;
+	width: 100%; /* Start with full HP */
+  }

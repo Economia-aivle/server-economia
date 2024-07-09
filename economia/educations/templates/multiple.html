@@ -18,7 +18,11 @@
             </div>
             <div class="character" onclick="submitAnswer()">
                 <img src="{% static 'images/char1.png' %}" alt="char" />
+                <div class="hp-bar-container">
+                    <div id="hp-bar" class="hp-bar" style="width: {{ hp_percentage }}%;"></div>
+                </div>
             </div>
+            
             <div class="answer-container">
                 <form id="answer-form" method="post">
                     {% csrf_token %}
@@ -49,11 +53,11 @@
     <aside class="sidebar">
         <div class="top-num"><p class="progress-num">{{ num }}/5</p></div>
         <div class="progress">
-            <a href="#" class="progress-step  {% if num >= 1 %}active{% endif %}" id="step-1"></a>
-            <a href="#" class="progress-step  {% if num >= 2 %}active{% endif %}" id="step-2"></a>
-            <a href="#" class="progress-step  {% if num >= 3 %}active{% endif %}" id="step-3"></a>
-            <a href="#" class="progress-step  {% if num >= 4 %}active{% endif %}" id="step-4"></a>
-            <a href="#" class="progress-step  {% if num >= 5 %}active{% endif %}" id="step-5"></a>
+            <a href="#" class="progress-step {% if num >= 1 %}active{% endif %}" id="step-1"></a>
+            <a href="#" class="progress-step {% if num >= 2 %}active{% endif %}" id="step-2"></a>
+            <a href="#" class="progress-step {% if num >= 3 %}active{% endif %}" id="step-3"></a>
+            <a href="#" class="progress-step {% if num >= 4 %}active{% endif %}" id="step-4"></a>
+            <a href="#" class="progress-step {% if num >= 5 %}active{% endif %}" id="step-5"></a>
         </div>
     </aside>
 
@@ -65,19 +69,15 @@
         const num = {{ num }};
         
         function selectOption(selectedBtn) {
-            // 모든 버튼의 selected 클래스를 제거
             const buttons = document.querySelectorAll('.option-btn');
             buttons.forEach(btn => {
                 btn.classList.remove('selected');
             });
-            
-            // 클릭한 버튼에 selected 클래스 추가
             selectedBtn.classList.add('selected');
             selectedOption = selectedBtn;
         }
 
         function submitAnswer() {
-          var num = {{ num }};
             if (!selectedOption) {
                 alert('정답을 선택해주세요.');
                 return;
@@ -85,7 +85,6 @@
 
             const selectedAnswer = selectedOption.value;
 
-            // AJAX를 이용한 POST 요청
             const formData = new FormData();
             formData.append('answer', selectedAnswer);
 
@@ -105,14 +104,8 @@
                     alert(data.message);
                     document.querySelector('.wrap-container').style.display = 'none';
                     document.getElementById('wrong-container').style.display = 'block';
-                }else if (data.status === 'fail') {
-                  alert(data.message);
-                  window.location.href = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
-              }  
-                else {
-                  
+                } else {
                     alert(data.message);
-                    // 다음 문제로 넘어감
                     window.location.href = `/educations/multiple/${characters}/${subject}/${chapter}/${num + 1}`;
                 }
             })
@@ -127,28 +120,27 @@
             }
         }
 
-
         window.onload = function() {
 
 
-          function redirectToLevelChoice() {
-              var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
-              window.location.href = levelChoiceUrl;
-          }
-
-          var currentUrl = window.location.href;
-          var levelChoiceUrlPattern = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
-
-          if (currentUrl !== levelChoiceUrlPattern) {
-              history.pushState(null, null, levelChoiceUrlPattern);
-          }
-
-          window.addEventListener('popstate', function() {
-              if (window.location.href !== levelChoiceUrlPattern) {
-                  location.replace(levelChoiceUrlPattern);
-              }
-          });
-      };
+            function redirectToLevelChoice() {
+                var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+                window.location.href = levelChoiceUrl;
+            }
+  
+            var currentUrl = window.location.href;
+            var levelChoiceUrlPattern = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+  
+            if (currentUrl !== levelChoiceUrlPattern) {
+                history.pushState(null, null, levelChoiceUrlPattern);
+            }
+  
+            window.addEventListener('popstate', function() {
+                if (window.location.href !== levelChoiceUrlPattern) {
+                    location.replace(levelChoiceUrlPattern);
+                }
+            });
+        };
     </script>
 </body>
 </html>
