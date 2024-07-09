@@ -21,7 +21,7 @@
             </button>
         </span>
         <span class="btn-jung">
-            <button class="next-btn {% if chapter_sub is 2 or chapter_sub == 3 %}active{% endif %}">
+            <button class="next-btn {% if chapter_sub is 2 or chapter_sub == 3 %}active{% endif %}" onclick = "location.href = '{% url 'educations:multiple' characters=1 subject=subject chapter=chapter num=1 %}'">
                 <p>중급</p>
                 <div><img src="{% static 'images/unlock.png' %}" alt="중급"></div>
             </button>

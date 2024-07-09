@@ -1,12 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import requests
 from economia.models import *
 from .serializers import *
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
+
 
 
 @api_view(['GET'])
@@ -92,14 +92,58 @@ def tfquiz(request):
     return render(request,'tfquiz.html')
 
 
-def multiple(request):
-    return render(request,'multiple.html')
+def multiple(request, characters, subject, chapter, num):
+    # characters, subject, chapter에 해당하는 데이터를 필터링합니다.
+    multiple_response = requests.get(f'http://127.0.0.1:8000/educations/multipledatas/{characters}')
+    multiple_data = multiple_response.json()
+    
+    multiple_list = [item for item in multiple_data if item['characters'] == characters and item['subjects'] == subject and item['chapter'] == chapter]
+    
+    questions = []
+    max_num = min(5, len(multiple_list))
+    for i in range(max_num):
+        multiple_list[i]['num'] = i + 1
+        questions.append(multiple_list[i])
+    
+    question = questions[num - 1] if num <= max_num else None
+    
+    if num == 6:
+        return redirect('educations:level_choice', characters=characters, subject=subject, chapter=chapter)
+    # # POST 요청 처리
+    if request.method == 'POST':
+        user_answer = request.POST.get('answer')
+        correct_answer = question['correct_answer']
+        
+        if user_answer == correct_answer:
+            # 정답인 경우
+            correct_count = request.session.get('correct_count', 0) + 1
+            request.session['correct_count'] = correct_count
+            print(correct_count)
+            if correct_count == 5:
+                # 모든 문제를 맞춘 경우 Stage 모델의 chapter_sub를 3으로 업데이트
+                try:
+                    stage_data = Stage.objects.get(characters_id=characters, subject=subject, chapter=chapter)
+                    stage_data.chapter_sub = 3
+                    stage_data.save()
+                except Stage.DoesNotExist:
+                    pass
+                
+                # 세션 초기화
+                request.session['correct_count'] = 0
 
-def previous_quiz_answer(request):
-    return render(request,'previous_quiz_answer.html')
+                # JSON 응답 전송
+                return JsonResponse({'status': 'complete', 'message': '모든 문제를 맞췄습니다!'})
+            else:
+                # 아직 모든 문제를 맞추지 않은 경우
+                return JsonResponse({'status': 'correct', 'message': '정답입니다.'})
+        else:
+            # 오답인 경우
+            return JsonResponse({'status': 'wrong', 'message': '오답입니다.'})
+   
+    # GET 요청 처리
+    return render(request, 'multiple.html', {'question': question, 'num': num, 'characters': characters, 'subject': subject, 'chapter': chapter})
 
-from django.shortcuts import render
-import requests
+
 
 def blank(request, characters, subject, chapter, num):
     blank_response = requests.get(f'http://127.0.0.1:8000/educations/blankdatas/{characters}')
@@ -117,6 +161,7 @@ def blank(request, characters, subject, chapter, num):
     
     # 현재 num에 해당하는 질문을 가져옵니다.
     question = questions[num - 1] if num <= max_num else None
+
 
     return render(request, 'blank.html', {'question': question, 'num': num, 'characters': characters, 'subject': subject, 'chapter': chapter})
 
