@@ -27,13 +27,12 @@
                 {% for notice in notices %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td>{{ notice.title }}</td>
+                    <td><a href="{% url 'users:notice_detail' notice.id %}">{{ notice.title }}</a></td>
                     <td>{{ notice.author }}</td>
                     <td>{{ notice.created_at|date:"y.m.d" }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
-        </table>
     </div>
 </body>
 </html>

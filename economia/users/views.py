@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from rest_framework.views import APIView
@@ -51,6 +51,10 @@ def notice_list(request):
     notices = Notice.objects.all().order_by('-created_at')
     return render(request, 'notice.html', {'notices': notices})
 
+
+def notice_detail(request, notice_id):
+    notice = get_object_or_404(Notice, id=notice_id)
+    return render(request, 'notice_detail.html', {'notice': notice})
 @login_required
 def admin_dashboard(request):
     return render(request, 'admin_dashboard.html')
