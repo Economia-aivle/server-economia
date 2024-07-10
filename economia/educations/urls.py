@@ -3,10 +3,8 @@ from django.urls import path
 from django.contrib import admin
 from . import views
 
-
 app_name = 'educations'
 urlpatterns = [
-
     path('level_choice/', views.level_choice, name='level_choice'),
     path('tf_quiz/', views.tf_quiz_view, name='tf_quiz'),
     path('tf_quiz/<int:question_id>/', views.tf_quiz_view, name='tf_quiz_detail'),
@@ -18,5 +16,4 @@ urlpatterns = [
     path('previous_quiz', views.previous_quiz, name='previous_quiz'),
     path('study_video/', views.study_view, name='study_video'),
     path('summary_anime', views.summary_anime, name='summary_anime'),
-
 ]

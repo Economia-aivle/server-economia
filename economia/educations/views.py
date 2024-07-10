@@ -13,7 +13,13 @@ def level_choice(request):
 def tf_quiz_view(request):
     if request.method == 'GET':
         used_question_ids = request.GET.getlist('used_question_ids[]')
-        questions = Tf.objects.exclude(id__in=used_question_ids)
+        chapter = request.GET.get('chapter')
+        subjects = request.GET.get('subjects')  # 수정된 부분
+
+        if not chapter or not subjects:
+            return JsonResponse({"error": "Chapter and subjects are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        questions = Tf.objects.filter(chapter=chapter, subjects=subjects).exclude(id__in=used_question_ids)
         if not questions:
             return JsonResponse({"error": "No questions available."}, status=status.HTTP_404_NOT_FOUND)
         question = random.choice(questions)
@@ -29,6 +35,9 @@ def tf_quiz_view(request):
     elif request.method == 'POST':
         question_id = request.POST.get('question_id')
         submitted_answer = request.POST.get('submitted_answer')
+
+        if not question_id:
+            return JsonResponse({"error": "Question ID is required."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             question = Tf.objects.get(id=question_id)
@@ -52,6 +61,7 @@ def tf_quiz_view(request):
 
 def tf_quiz_page(request):
     return render(request, 'tfquiz.html')
+
 def choose_tf_chapter_view(request):
     if request.method == 'POST':
         chapter = request.POST.get('chapter')

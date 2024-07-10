@@ -13,6 +13,8 @@
     <div id="question-container" class="question-container">
       <h1 id="question-text">여기에 질문이 표시됩니다.</h1>
       <input type="hidden" id="question-id" value="">
+      <input type="hidden" id="subjects" value="{{ subjects|default:'1' }}">
+      <input type="hidden" id="chapter" value="{{ chapter|default:'1' }}">
     </div>
     <div class="wrap-container">
       <button class="o-btn" onclick="submitAnswer('O')">O</button>
