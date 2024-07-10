@@ -18,20 +18,19 @@
     font-size: 50px;
     font-weight: bold;
     letter-spacing: 0;
-    position: absolute;
-    top: 190px; /* 상단 여백 조정 */
+    position: flex;
+    top: 80px; /* 상단 여백 조정 */
 }
-
 
 .buttons-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
     gap: 50px; /* 각 버튼 사이의 간격 */
-    margin-top: 20px; /* 버튼과 캐릭터 이미지 사이 여백 조정 */
+    margin-top: 10px; /* 버튼과 캐릭터 이미지 사이 여백 조정 */
 }
 
-button.create_btn, button.update_btn, button.delete_btn {
+button.create_btn, button.update_btn {
     box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.25);
     border-radius: 25px;
     cursor: pointer;
@@ -50,28 +49,18 @@ button.create_btn {
 }
 
 button.update_btn {
-    background-color: rgba(57, 167, 255, 1);
-}
-
-button.delete_btn {
     background-color: #F24E1E;
 }
 
-button.delete_btn:active {
-    background-color: #CC3D00;
+button.create_btn:active {
+    background-color: rgba(45, 135, 205, 1); /* 채도가 낮은 파란색 */
 }
 
-button.create_btn:active,
 button.update_btn:active {
-    animation: blink 0.2s;
+    background-color: #D43D1E; /* 채도가 낮은 빨간색 */
 }
 
-@keyframes blink {
-    0%, 100% { background-color: rgba(57, 167, 255, 1); }
-    50% { background-color: rgba(30, 144, 255, 1); }
-}
-
-.create_str, .update_str, .delete_str {
+.create_str, .update_str {
     color: rgba(255, 255, 255, 1);
     font-family: Noto Sans;
     text-align: center;
@@ -84,7 +73,8 @@ button.update_btn:active {
     display: flex;
     justify-content: center;
     gap: 50px; /* 이미지 간의 간격 */
-    margin-bottom: 100px; /* 캐릭터 이미지와 버튼 사이 여백 조정 */
+    margin-bottom: 50px; /* 캐릭터 이미지와 버튼 사이 여백 조정 */
+    margin-top: 100px; /* 캐릭터 이미지와 버튼 사이 여백 조정 */
 }
 
 .char1, .char2, .char3, .char4, .char5 {
@@ -97,7 +87,7 @@ button.update_btn:active {
     border: none;
     border-radius: 0%; /* 원형 모양 설정 */
     background-color: transparent;
-    transition: transform 0.2s,  border 0.2s;
+    transition: transform 0.2s, border 0.2s;
 }
 
 .char1:hover, .char2:hover, .char3:hover, .char4:hover, .char5:hover {
@@ -109,21 +99,21 @@ button.update_btn:active {
 }
 
 .char1 {
-    background-image: url('ghost.png');
+    background-image: url('images/ghost.png');
 }
 
 .char2 {
-    background-image: url('baby_mummy.png');
+    background-image: url('images/baby_mummy.png');
 }
 
 .char3 {
-    background-image: url('ghost.png');
+    background-image: url('images/ghost.png');
 }
 
 .char4 {
-    background-image: url('baby_mummy.png');
+    background-image: url('images/baby_mummy.png');
 }
 
 .char5 {
-    background-image: url('ghost.png');
+    background-image: url('images/ghost.png');
 }

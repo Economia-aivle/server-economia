@@ -1,43 +1,138 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>문제풀이 - OX</title>
-    <link rel="stylesheet" href="{% static 'blank.css' %}" />
-  </head>
+    <link rel="stylesheet" href="{% static 'blank.css' %}">
+    <link rel="stylesheet" href="{% static 'wrong_explanation.css' %}">
+</head>
 
-  <body>
+<body>
     {% include 'quiz_header2.html' %}
     <main>
-      <div class="wrap-container">
-        <div class="question-container">
-          <h1>
-            Q2. 정해진 금액을 일정 기간 맡겼다 다시 찾아가는 방식을 [ ] 이라고
-            한다.
-          </h1>
+        <div class="wrap-container" id="wrap-container">
+            <div class="question-container">
+                <h1>
+                    Q{{ num }}. {{ question.question_text }}
+                </h1>
+            </div>
+            <div class="character" onclick="checkAnswer()">
+                <img src="{% static 'images/char1.png' %}" alt="char" />
+            </div>
+            <div class="answer_form">
+                <input type="text" class="answer" id="user-answer" placeholder="입력"/>
+                <button class="next-btn" onclick="checkAnswer()">Enter</button>
+            </div>
         </div>
-        <div class="character">
-          <img src="{% static 'images/char1.png' %}" alt="char" />
+        <div class="wrong-container" id="wrong-container" style="display:none;">
+            <div class="question-container">
+                <h1>Q{{ num }}. {{ question.question_text }}</h1>
+            </div>
+            <div class="answer-bubble">
+                <p class="ans">답: {{ question.correct_answer }}</p>
+                <p>
+                    {{ question.explanation }}
+                </p>
+            </div>
+            <div class="character">
+                <img src="{% static 'images/char1.png' %}" alt="char" />
+            </div>
+            <div class="next-button-container">
+                <button class="next" id="next-btn" onclick="nextQuestion()">{% if num == 5 %}Finish{% else %}다음문제{% endif %}</button>
+            </div>
         </div>
-        <div class="answer_form">
-          <input type="text" class="answer" placeholder="입력"/>
-            <button class="next-btn">Enter</button>
-
-        </div>
-      </div>
     </main>
     <aside class="sidebar">
-      <div class="top-num"><p class="progress-num">2/5</p></div>
-
-      <div class="progress">
-        <span class="progress-step active"></span>
-        <span class="progress-step active"></span>
-        <span class="progress-step"></span>
-        <span class="progress-step"></span>
-        <span class="progress-step"></span>
-      </div>
+        <div class="top-num"><p class="progress-num">{{ num }}/5</p></div>
+        <div class="progress">
+            <a href="#" class="progress-step  {% if num >= 1 %}active{% endif %}" id="step-1"></a>
+            <a href="#" class="progress-step  {% if num >= 2 %}active{% endif %}" id="step-2"></a>
+            <a href="#" class="progress-step  {% if num >= 3 %}active{% endif %}" id="step-3"></a>
+            <a href="#" class="progress-step  {% if num >= 4 %}active{% endif %}" id="step-4"></a>
+            <a href="#" class="progress-step  {% if num >= 5 %}active{% endif %}" id="step-5"></a>
+        </div>
     </aside>
-  </body>
+
+    <!-- JavaScript 코드 -->
+    <script>
+        // Django 템플릿 엔진으로부터 받은 값들을 JavaScript 변수에 할당
+        const characters = "{{ characters }}";
+        const subject = "{{ subject }}";
+        const chapter = "{{ chapter }}";
+
+        // 정답 체크 함수
+        function checkAnswer() {
+            const userAnswer = document.getElementById('user-answer').value.trim();
+            if (userAnswer === '') {
+                alert('답을 입력해주세요.');
+                return; // 입력값이 빈칸이면 함수 종료
+            }
+
+            const correctAnswer = "{{ question.correct_answer }}"; // Django 템플릿에서 correct_answer를 받아옵니다.
+            var num = {{ num }};
+            if (userAnswer !== correctAnswer) {
+                document.getElementById('wrap-container').style.display = 'none';
+                document.getElementById('wrong-container').style.display = 'block';
+            } else {
+                num++;
+              
+                // 6 이상이면 summary 페이지로 이동, 아니면 다음 문제 페이지로 이동
+                if (num >= 6) {
+                    window.location.href = "{% url 'educations:summary_anime' %}";
+                } else {
+                    window.location.href = `/educations/blank/${characters}/${subject}/${chapter}/${num}`;
+                }
+            }
+        }
+
+        // 다음 문제로 넘어가는 함수
+        function nextQuestion() {
+            var num = {{ num }};
+            num++; // 다음 문제 번호로 업데이트
+          
+            // 6 이상이면 summary 페이지로 이동, 아니면 다음 문제 페이지로 이동
+            if (num >= 6) {
+                window.location.href = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+            } else {
+                window.location.href = `/educations/blank/${characters}/${subject}/${chapter}/${num}`;
+            }
+        }
+
+        window.onload = function() {
+            // 특정 URL로 이동할 함수
+            function redirectToLevelChoice() {
+                var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+                window.location.href = levelChoiceUrl;
+            }
+
+            // 현재 페이지의 URL
+            var currentUrl = window.location.href;
+
+            // 특정 URL 패턴
+            var levelChoiceUrlPattern = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+
+            // 현재 URL이 특정 URL 패턴과 다를 경우
+            if (currentUrl !== levelChoiceUrlPattern) {
+                // history.pushState를 사용하여 현재 페이지를 특정 URL로 변경
+                history.pushState(null, null, levelChoiceUrlPattern);
+            }
+
+            // 브라우저에서 뒤로 가기 버튼을 클릭했을 때 이벤트 리스너 등록
+            window.addEventListener('popstate', function() {
+                // 현재 페이지가 특정 URL 패턴과 다를 경우
+                if (window.location.href !== levelChoiceUrlPattern) {
+                    // location.replace를 사용하여 특정 URL로 이동
+                    location.replace(levelChoiceUrlPattern);
+                }
+            });
+            
+            // 새로고침 시에도 특정 URL로 이동
+            window.onbeforeunload = function() {
+                location.replace(levelChoiceUrlPattern);
+            };
+        };
+    </script>
+</body>
 </html>
