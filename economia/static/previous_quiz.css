@@ -1,0 +1,182 @@
+body {
+    background-color: #E0F4FF;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 150px; /* 헤더의 높이보다 큰 값으로 설정 */
+    font-family: 'Arial', sans-serif; /* 기본 글꼴 설정 */
+}
+
+.search_container {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.search_input {
+    width: 550px;
+    height: 28px;
+    margin-top: 20px;
+    padding: 20px;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+}
+
+.search_btn {
+    height: 40px;
+    padding: 0 20px;
+    cursor: pointer;
+    background-image: url('images/search.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    margin-left: 30px;
+    margin-top: 15px;
+}
+
+.dropdown, .dropdown_level {
+    width: 200px; /* 드롭다운 메뉴 너비 */
+    height: 40px;
+    margin-left: 20px; /* 드롭다운 메뉴 간격 */
+    border: none; /* 테두리 스타일 */
+    outline: none;
+    padding: 5px; /* 내부 여백 */
+    background-color: transparent; /* 배경색 */
+    text-align: center; /* 글꼴 크기 */
+    font-size: 22px; /* 글꼴 크기 */
+    font-weight: bold;
+    color: #39A7FF;
+}
+
+.container {
+    width: 80%; /* 컨테이너 너비 */
+    max-width: 1000px;
+    margin-top: 50px; /* 위쪽 여백 */
+    padding: 30px; /* 안쪽 여백 */
+    border-radius: 20px; /* 모서리 둥글게 */
+    overflow: auto; /* 필요 시 스크롤바 표시 */
+}
+
+.list_box {
+    margin-top: 20px; /* 리스트 박스 위쪽 여백 */
+}
+
+.list_item {
+    background-color: #fff; /* 배경색 */
+    display: flex;
+    align-items: center; /* 세로 가운데 정렬을 위해 */
+    justify-content: space-between; /* 내부 요소들을 양쪽으로 정렬하기 위해 */
+    padding: 30px; /* 내부 여백 */
+    margin-bottom: 20px; /* 아래쪽 여백 */
+    border-radius: 20px; /* 모서리 둥글게 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 */
+    flex: 1; /* 내부 요소들이 동일한 공간을 차지하도록 설정 */
+}
+
+.list_content {
+    font-size: 22px;
+    font-weight: bold; /* 굵은 글꼴 */
+    margin-bottom: 10px; /* 제목 아래쪽 여백 */
+}
+
+.item_button {
+   border: none;
+   background-color: #fff;
+   align-items: flex-end;
+} 
+
+
+
+.item_button:active {
+    opacity: 0.8; /* 클릭 시 투명도 설정 */
+}
+
+.item_button img{
+    transition: transform 0.3s ease;
+    
+}
+
+.item_button img.rotated {
+    transform: rotate(-90deg);
+}
+
+/* 드롭 다운 정답 박스 */
+.answer_container {
+    margin-bottom: 1%;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.9s ease;
+}
+.answer_container.show {
+    max-height: 500px;
+}
+.white_box {
+    background-color: white;
+    padding: 30px;
+    overflow-y: auto; /* 내용이 넘칠 경우 수직 스크롤바 표시 */
+    max-height: 80vh; /* 최대 높이 설정 */
+    margin-bottom: 20px; /* 아래쪽 여백 */
+    border-radius: 20px; /* 모서리 둥글게 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.title_answer {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 100px;
+}
+
+.answer_list1 {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #555;
+}
+
+.answer_list2 {
+    margin-top: 42px;
+    font-size: 16px;
+    color: #555;
+}
+
+.answer_list3 {
+    margin-top: 64px;
+    font-size: 16px;
+    color: #555;
+}
+
+.answer_list4 {
+    margin-top: 86px;
+    font-size: 16px;
+    color: #555;
+}
+
+.line1, .line2, .line3, .line4 {
+    height: 1px;
+    background-color: #ddd;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.title_exp {
+    font-size: 20px;
+    font-weight: bold;
+    color: #39A7FF;
+    margin-top: 20px;
+}
+
+.exp_str {
+    font-size: 16px;
+    color: #555;
+    margin-top: 10px;
+    line-height: 1.6;
+}
+

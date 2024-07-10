@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="{% static 'signup.css' %}" />
+</head>
+<body>
+    <div class="signup-form">
+        <div style="text-align : center;">
+            <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fd8C45v%2FbtsIgLyqQyF%2FMKiQudSDdszgKyZPkbdyr0%2Fimg.png">
+        </div>
+        <form id="signupForm" onsubmit="register(event)">
+            <div>
+                <input type="text" id="user_id" name="user_id" placeholder="아이디" required>
+                <button type="button" onclick="checkUsername()">아이디 확인</button>
+                <div id="usernameCheckResult" style="margin-top: 10px;"></div>
+            </div>
+            <input type="email" id="email" name="email" placeholder="이메일" required>
+            <input type="password" id="password" name="password" placeholder="비밀번호" required>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="비밀번호 확인" required>
+            <input type="text" id="name" name="name" placeholder="이름" required>
+            <input type="text" id="school_name" name="school_name" placeholder="학교 이름" required>
+            <input type="text" id="nickname" name="nickname" placeholder="닉네임" required>
+            <button type="submit">가입하기</button>
+        </form>
+    </div>
+    <script>
+        async function checkUsername() {
+            const username = document.getElementById('user_id').value;
+            const resultDiv = document.getElementById('usernameCheckResult');
+            
+            if (username) {
+                const formData = new FormData();
+                formData.append('user_id', username);
+                
+                try {
+                    const response = await fetch("{% url 'users:check_username' %}", {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: formData
+                    });
+                    const data = await response.json();
+                    if (data.available) {
+                        resultDiv.textContent = '사용 가능한 아이디입니다.';
+                        resultDiv.style.color = 'green';
+                    } else {
+                        resultDiv.textContent = '이미 사용 중인 아이디입니다.';
+                        resultDiv.style.color = 'red';
+                    }
+                } catch (error) {
+                    resultDiv.textContent = '아이디 확인 중 오류가 발생했습니다.';
+                    resultDiv.style.color = 'red';
+                }
+            } else {
+                alert('아이디를 입력하세요.');
+            }
+        }
+
+        async function register(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            try {
+                const response = await fetch("{% url 'users:register' %}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: formData
+                });
+                const data = await response.json();
+                if (data.success) {
+                    window.location.href = 'success';
+                } else if (data.error) {
+                    alert(data.error);
+                }
+            } catch (error) {
+                alert('회원가입 중 오류가 발생했습니다.');
+            }
+        }
+    </script>
+</body>
+</html>

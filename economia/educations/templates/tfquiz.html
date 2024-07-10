@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>문제풀이 - OX</title>
+  <link rel="stylesheet" href="{% static 'tfquiz.css' %}" />
+</head>
+<body>
+  {% include 'quiz_header2.html' %}
+  <main>
+    <div id="question-container" class="question-container">
+      <h1 id="question-text">여기에 질문이 표시됩니다.</h1>
+      <input type="hidden" id="question-id" value="">
+    </div>
+    <div class="wrap-container">
+      <button class="o-btn" onclick="submitAnswer('O')">O</button>
+      <img src="{% static 'images/char1.png' %}" alt="char" />
+      <button class="x-btn" onclick="submitAnswer('X')">X</button>
+    </div>
+  </main>
+  <aside class="sidebar">
+    <div class="top-num"><p class="progress-num">0/5</p></div>
+    <div class="progress">
+      <span class="progress-step"></span>
+      <span class="progress-step"></span>
+      <span class="progress-step"></span>
+      <span class="progress-step"></span>
+      <span class="progress-step"></span>
+    </div>
+  </aside>
+  <script src="{% static 'tfquiz.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+
+body {
+    background-color: rgba(224.000001847744, 244.0000006556511, 255, 1); /* 배경색 */
+	justify-content: center;
+	display: flex;
+    align-items: center;
+	margin: 0;
+}
+
+.scenario_container { 
+	box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);
+	background-color:rgba(255, 255, 255, 1);
+	width:90%;
+	height:900px;
+	position:absolute;
+	display: flex;
+	top:150px;
+	justify-content: center;
+	align-items: center;
+	border:13px solid rgba(255, 255, 255, 1);
+	border-top-left-radius:15px;
+	border-top-right-radius:15px;
+	border-bottom-left-radius:15px;
+	border-bottom-right-radius:15px;
+}
+
+.title { 
+	color:rgba(0, 0, 0, 1);
+	width:50%;
+	height:49px;
+	position:absolute;
+	top:10px;
+	text-align: center;
+	font-size:36px;
+	letter-spacing:0;
+}
+
+.contents { 
+	color:rgba(0, 0, 0, 1);
+	width:86%;
+	height:80%;
+	max-width: 1600px;
+	max-height: 850px;
+	overflow: auto; /* 내용이 넘칠 경우 스크롤바 표시 */
+	position:absolute;
+	top:70px;
+	font-family:Noto Sans;
+	text-align:left;
+	font-size:32px;
+	letter-spacing:0;
+}
+
+.ai_comment_box { 
+	box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);
+	background-color:rgba(255, 255, 255, 1);
+	width:90%;
+	height:100px;
+	position:absolute;
+	display: flex;
+	top:1100px;
+	border:13px solid rgba(255, 255, 255, 1);
+	border-top-left-radius:15px;
+	border-top-right-radius:15px;
+	border-bottom-left-radius:15px;
+	border-bottom-right-radius:15px;
+}
+
+/* AI답변의 제목 */
+.ai_comment_title { 
+	color:rgba(57.00000040233135, 167.00000524520874, 255, 1);
+	width:119px;
+	height:48px;
+	position:absolute;
+	font-family:Noto Sans;
+	text-align:left;
+	font-size:24px;
+	letter-spacing:0;
+}
+
+.comment_box_head { 
+	width:90%;
+	height:50px;
+	position:absolute;
+	display: flex;
+	top:1250px;
+}
+
+.comment_box_head_same { 
+	color:rgba(136.41169220209122, 135.3886502981186, 135.3886502981186, 1);
+	width:98px;
+	height:35px;
+	position:absolute;
+	font-family:Noto Sans;
+	text-align:left;
+	font-size:24px;
+	letter-spacing:0;
+}
+
+.comment_box_head_like { 
+	color:rgb(44, 190, 212);
+	width:98px;
+	height:35px;
+	position:absolute;
+	left : 110px;
+	font-family:Noto Sans;
+	text-align:left;
+	font-size:24px;
+	letter-spacing:0;
+}
+
+.comment_box1 { 
+	box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);
+	background-color:rgba(255, 255, 255, 1);
+	width:90%;
+	height:500px;
+	position:absolute;
+	display: flex;
+	top:1300px;
+	border:13px solid rgba(255, 255, 255, 1);
+	border-top-left-radius:15px;
+	border-top-right-radius:15px;
+	border-bottom-left-radius:15px;
+	border-bottom-right-radius:15px;
+}
+
+
+
+.comment_box1_nickname { 
+	color:rgba(0, 0, 0, 1);
+	width:10%;
+	height:10%;
+	position:absolute;
+	font-family:Noto Sans;
+	text-align:left;
+	font-size:24px;
+	letter-spacing:0;
+}
+.comment_box1_same { 
+	color:rgba(0, 0, 0, 1);
+	width:15%;
+	height:10%;
+	position:absolute;
+	left: 100px;
+	font-family:Noto Sans;
+	text-align:left;
+	font-size:24px;
+	letter-spacing:0;
+}
+
+
+.comment_box1_heartimg { 
+	background-color:rgba(242.00000077486038, 78.00000295042992, 30.00000011175871, 1);
+	width:33.846153259277344px;
+	height:29.572307586669922px;
+	position:absolute;
+	right:10px;
+	top:100px;
+}
+
+.comment_box1_headline { 
+	transform: rotate(-1.4033419209422001e-14deg);
+	width:100%;
+	height:0px;
+	position:absolute;
+	top:140px;
+	border:3px solid rgba(191.00000381469727, 191.00000381469727, 191.00000381469727, 1);
+}
+
+.comment_box1_bullet1 { 
+	background-color:rgba(0, 0, 0, 1);
+	width:24px;
+	height:26.93751335144043px;
+	position:absolute;
+	left:10px;
+	top:170px;
+}
+
+.comment_box1_recoment1 { 
+	color:rgba(0, 0, 0, 1);
+	width:1209px;
+	height:76px;
+	position:absolute;
+	left:50px;
+	top:170px;
+	font-family:Noto Sans;
+	text-align:left;
+	font-size:24px;
+	letter-spacing:0;
+}
+
+.comment_box1_bullet2 { 
+	background-color:rgba(0, 0, 0, 1);
+	width:24px;
+	height:26.93751335144043px;
+	position:absolute;
+	left:10px;
+	top:270px;
+}
+
+
+.comment_box1_recoment2 { 
+	color:rgba(0, 0, 0, 1);
+	width:1209px;
+	height:76px;
+	position:absolute;
+	left:50px;
+	top:270px;
+	font-family:Noto Sans;
+	text-align:left;
+	font-size:24px;
+	letter-spacing:0;
+}
+
+.comment_box1_input { 
+	width:100%;
+	height:100px;
+	position:absolute;
+	font-size: 25px;
+	left: 50%;
+	bottom: 0px;
+    transform: translateX(-50%);
+	border-top-left-radius:30px;
+	border-top-right-radius:30px;
+	border-bottom-left-radius:30px;
+	border-bottom-right-radius:30px;
+}
+
+
+.comment_box1_input_button { 
+	background-color:rgba(57.00000040233135, 167.00000524520874, 255, 1);
+	width:107px;
+	height:68px;
+	position:absolute;
+	right:15px;
+	bottom:20px;
+	cursor: pointer;
+	color: white;
+	font-weight: bolder;
+	font-size: 20px;
+	border-top-left-radius:50px;
+	border-top-right-radius:50px;
+	border-bottom-left-radius:50px;
+	border-bottom-right-radius:50px;
+}
+
+.comment_box1_input_button:hover{
+	background: #0056b3; /* 마우스를 올렸을 때 버튼의 배경색 */
+	transform: scale(1.05); /* 마우스를 올렸을 때 버튼의 크기 확대 */
+}
+
+.comment_box1_input_button:active{
+	background: #004080; /* 버튼을 눌렀을 때의 배경색 */
+	transform: scale(0.95); /* 버튼을 눌렀을 때 약간 작아지게 */
+}
+
+.comment_box2 { 
+	box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);
+	background-color:rgba(255, 255, 255, 1);
+	width:90%;
+	height:100px;
+	position:absolute;
+	display: flex;
+	top:1850px;
+	border:13px solid rgba(255, 255, 255, 1);
+	border-top-left-radius:15px;
+	border-top-right-radius:15px;
+	border-bottom-left-radius:15px;
+	border-bottom-right-radius:15px;
+}
+
+.comment_box2_nickname { 
+	color:rgba(0, 0, 0, 1);
+	width:95px;
+	height:42px;
+	position:absolute;
+	font-family:Noto Sans;
+	text-align:left;
+	font-size:24px;
+	letter-spacing:0;
+}
+
+.comment_box2_same { 
+	color:rgba(0, 0, 0, 1);
+	width:95px;
+	height:42px;
+	left : 100px;
+	position:absolute;
+	font-family:Noto Sans;
+	text-align:left;
+	font-size:24px;
+	letter-spacing:0;
+}
+
+.comment_box2_likenum { 
+	color:rgba(0, 0, 0, 1);
+	width:79px;
+	height:35px;
+	position:absolute;
+	right:70px;
+	bottom:0px;
+	font-family:Noto Sans;
+	text-align:left;
+	font-size:24px;
+	letter-spacing:0;
+}
+
+.comment_box2_likeimg { 
+	background-color:rgba(242.00000077486038, 78.00000295042992, 30.00000011175871, 1);
+	width:33.846153259277344px;
+	height:29.572307586669922px;
+	position:absolute;
+	right:50px;
+	bottom:0px;
+}
+.comment_box2_recommemtimg { 
+	color:rgba(0, 0, 0, 1);
+	width:79px;
+	height:35px;
+	position:absolute;
+	left : 100px;
+	font-family:Noto Sans;
+	text-align:left;
+	font-size:24px;
+	letter-spacing:0;
+}

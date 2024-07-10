@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>onboarding</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'onboarding.css' %}" />
+  </head>
+  <body>
+    <div class="main-container">
+        <div class="left-panel">영상</div>
+        <div class="right-panel">
+          
+            <div class="logo"></div>
+            <form id="signupForm" onsubmit="handleLogin(event)">
+                {% csrf_token %}
+                <label>아이디</label>
+                <input type="text" id="player_id" name="player_id" placeholder="ID"><br>
+                <label>비밀번호</label>
+                
+                <input type="password" id="password" name="password" placeholder="PASSWORD"><br>
+                <button type="submit" id="login-btn">로그인</button>
+            </form>
+            <a class="first-account" href="{% url 'users:signup' %}">처음 오셨나요?</a>
+            <a class="forgot-account" href="{% url 'users:find_account_id' %}">계정을 잊으셨나요?</a>
+        </div>
+    </div>
+    <script>
+      const token = []
+      async function handleLogin(event) {
+        event.preventDefault();
+        const playerId = document.getElementById('player_id').value;
+        const password = document.getElementById('password').value;
+
+        console.log("Login Data:", { player_id: playerId, password: password });  // 디버깅 로그 추가
+
+        const response = await fetch('/onboarding/re', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+          },
+          body: JSON.stringify({ player_id: playerId, password: password })
+        });
+
+
+        if (response.ok) {
+          const data = await response.json();
+          window.location.href = 'home/1?token_access='+ data.access + "&token_refresh=" + data.refresh;
+        
+          // 로그인 성공 후 처리
+        } else {
+          console.error('Login failed');
+          alert('존재하지 않는 ID이거나 비밀번호가 틀렸습니다.');
+          window.location.href = 'onboarding'
+          // 로그인 실패 후 처리
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예금 설명</title>
+    <link rel="stylesheet" href="{% static 'admin_dashboard.css' %}" />
+</head>
+<body>
+    <header>
+        <div class="header-title">Django 관리</div>
+        <div class="header-right">
+            환영합니다, <strong>JINHONG</strong>. 
+            <a href="#">사이트 보기</a> / 
+            <a href="#">비밀번호 변경</a> / 
+            <a href="#">로그아웃</a>
+        </div>
+    </header>
+    <div class="container">
+        <aside>
+            <h2>사이트 관리</h2>
+            <table class="management-table">
+                <thead>
+                    <tr>
+                        <th>인증 및 권한</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>그룹</td>
+                        <td><a href="#">+ 추가</a> <a href="#">변경</a></td>
+                    </tr>
+                    <tr>
+                        <td>사용자(들)</td>
+                        <td><a href="#">+ 추가</a> <a href="#">변경</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </aside>
+        <main>
+            <h2>최근 활동</h2>
+            <div class="recent-activity">
+                <p>나의 활동</p>
+                <p>이용할 수 없습니다.</p>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

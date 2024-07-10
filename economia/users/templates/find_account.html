@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'find_account.css' %}" />
+    <title>Title</title>
+</head>
+<body>
+    <div class="container">
+        <div class="white_box"></div>
+        <form action="/users/find_account_id" method="GET">
+            <button class="id_btn" type="submit">아이디</button>
+        </form>
+        <form action="/users/find_account_pwd" method="GET">
+            <button class="pwd_btn" type="submit">비밀번호</button>
+        </form>
+        <span class="title1">무엇을 찾으시나요?</span>
+    </div>
+</body>
+</html>
