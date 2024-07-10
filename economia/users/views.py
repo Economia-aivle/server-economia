@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from .models import Notice
+from django.db.models import Q
 
 
 # Create your views here.
@@ -47,9 +48,18 @@ def admin_login(request):
     return render(request, 'admin_login.html')
 
 
+# def notice_list(request):
+#     notices = Notice.objects.all().order_by('-created_at')
+#     return render(request, 'notice.html', {'notices': notices})
+
 def notice_list(request):
+    search_query = request.GET.get('search', '')
     notices = Notice.objects.all().order_by('-created_at')
-    return render(request, 'notice.html', {'notices': notices})
+    
+    if search_query:
+        notices = notices.filter(Q(title__icontains=search_query))
+    
+    return render(request, 'notice.html', {'notices': notices, 'search_query': search_query})
 
 
 def notice_detail(request, notice_id):
