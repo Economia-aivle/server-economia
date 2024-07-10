@@ -5,6 +5,7 @@ from . import views
 app_name = 'users'
 urlpatterns = [
 
+    path('notice', views.notice, name='notice'),
     path('signup', views.signup, name='signup'),
     path('find_account_pwd', views.find_account_pwd, name='find_account_pwd'), 
     path('find_account_id', views.find_account_id, name='find_account_id'),
@@ -15,6 +16,7 @@ urlpatterns = [
     path('ranking', views.ranking, name='ranking'),
     path('api/subjects', views.getSubjectsDatas, name='subjects'),
     path('api/scores/<int:subject_id>', views.getSubjectsScoreDatas, name='subjects_score'),
+    path('delete_account/<str:player_id>/', views.delete_account, name='delete_account'),
     
 
 ]

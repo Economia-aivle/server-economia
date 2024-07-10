@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.pagination import PageNumberPagination
@@ -6,6 +7,9 @@ from economia.models import *
 from .serializers import *
 
 # Create your views here.
+def notice(request):
+    return render(request,'notice.html')
+
 def char_create(request):
     return render(request,'char_create.html')
 
@@ -70,3 +74,31 @@ def ranking(request):
         ranked_scores = []
 
     return render(request, 'ranking.html', {'subjects': subjects, 'ranked_scores': ranked_scores})
+
+def delete_account(request, player_id):
+    if request.method == "POST":
+        try:
+            # player_id에 해당하는 플레이어 가져오기
+            player = Player.objects.get(player_id=player_id)
+
+            # 관련된 데이터 삭제
+            Characters.objects.filter(player=player).delete()
+            ChildComments.objects.filter(player=player).delete()
+            Comments.objects.filter(characters__player=player).delete()
+            Tf.objects.filter(characters__player=player).delete()
+            Blank.objects.filter(characters__player=player).delete()
+            Multiple.objects.filter(characters__player=player).delete()
+            Stage.objects.filter(characters__player=player).delete()
+            SubjectsScore.objects.filter(characters__player=player).delete()
+            Blank.objects.filter(characters__player=player).delete()
+
+            # 플레이어 삭제
+            player.delete()
+
+            messages.success(request, "회원 탈퇴가 완료되었습니다.")
+            return redirect('onboarding')  # 회원 탈퇴 후 리디렉션할 페이지
+        except Player.DoesNotExist:
+            messages.error(request, "사용자를 찾을 수 없습니다.")
+            return redirect('mypage')  # 에러 발생 시 리디렉션할 페이지
+
+    return render(request, 'delete_account.html', {'player_id': player_id})

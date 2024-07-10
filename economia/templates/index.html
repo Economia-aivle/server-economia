@@ -4,13 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Montserrat Font Example</title>
-  <link rel="stylesheet" href="{% static 'css/test.css' %}" />
+  <title>페이지 인덱스</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
 
 </head>
 <body>
-  user
+  user <br>
 <a href="{% url 'users:signup' %}">signup</a><br>
 <a href="{% url 'users:find_account_pwd' %}">find_account_pwd</a><br>
 <a href="{% url 'users:find_account_id' %}">find_account_id</a><br>
@@ -19,8 +18,9 @@
 <a href="{% url 'users:ranking' %}">ranking</a><br>
 <a href="{% url 'users:char_create' %}">char_create</a><br>
 <a href="{% url 'users:char_delete' %}">char_delete</a><br>
+<a href="{% url 'users:notice' %}">notice</a><br>
 <hr>
-educations
+educations <br>
 <a href="{% url 'educations:level_choice' %}">level_choice</a><br>
 <a href="{% url 'educations:tfquiz' %}">tfquiz</a><br>
 <a href="{% url 'educations:blank' %}">blank</a><br>
@@ -30,16 +30,27 @@ educations
 <a href="{% url 'educations:study' %}">study</a><br>
 <a href="{% url 'educations:summary_anime' %}">summary_anime</a><br>
 <hr>
-scenarios
+scenarios <br>
 <a href="{% url 'scenarios:previous_scenario' %}">previous_scenario</a><br>
 <a href="{% url 'scenarios:scenario_list' %}">scenario_list</a><br>
 <a href="{% url 'scenarios:scenario' %}">scenario</a><br>
 <hr>
-home
+home <br>
 <a href="chapter">chpater</a><br>
 <a href="home">home</a><br>
 <a href="onboarding">onboarding</a><br>
 <a href="mypage">mypage</a><br>
 <a href="update_info">update_info</a><br>
-
+<a href="ask">ask</a><br>
+<hr>
+admin <br>
+<a href="admin_dashboard">admin_dashboard</a><br>
+<a href="admin_login">admin_login</a><br>
+<hr>
+terms <br>
+<a href="{% url 'community_term' %}">community_term</a><br>
+<a href="{% url 'service_term' %}">account_term</a><br>
+<a href="{% url 'account_term' %}">service_term</a><br>
+<a href="{% url 'teen_term' %}">teen_term</a><br>
+<a href="{% url 'service_agree' %}">service_agree</a><br>
 </body>
