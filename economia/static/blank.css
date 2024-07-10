@@ -41,6 +41,7 @@ body{
     height: 246px;
     width: 245px;
     text-align: center;
+	cursor: url('images/sword.png') , auto;
 }
 .character img{
     height: 246px;

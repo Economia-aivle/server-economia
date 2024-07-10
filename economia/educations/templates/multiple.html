@@ -51,13 +51,16 @@
         </div>
     </main>
     <aside class="sidebar">
-        <div class="top-num"><p class="progress-num">{{ num }}/5</p></div>
+        <div class="top-num"><p class="progress-num">{{ num }}/8</p></div>
         <div class="progress">
             <a href="#" class="progress-step {% if num >= 1 %}active{% endif %}" id="step-1"></a>
             <a href="#" class="progress-step {% if num >= 2 %}active{% endif %}" id="step-2"></a>
             <a href="#" class="progress-step {% if num >= 3 %}active{% endif %}" id="step-3"></a>
             <a href="#" class="progress-step {% if num >= 4 %}active{% endif %}" id="step-4"></a>
             <a href="#" class="progress-step {% if num >= 5 %}active{% endif %}" id="step-5"></a>
+            <a href="#" class="progress-step {% if num >= 6 %}active{% endif %}" id="step-6"></a>
+            <a href="#" class="progress-step {% if num >= 7 %}active{% endif %}" id="step-7"></a>
+            <a href="#" class="progress-step {% if num >= 8 %}active{% endif %}" id="step-8"></a>
         </div>
     </aside>
 
@@ -113,7 +116,7 @@
         }
 
         function nextQuestion() {
-            if (num >= 5) {
+            if (num >= 8) {
                 window.location.href = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
             } else {
                 window.location.href = `/educations/multiple/${characters}/${subject}/${chapter}/${num + 1}`;

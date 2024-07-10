@@ -1,12 +1,17 @@
 import json
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from economia.models import Characters
-from django.shortcuts import render
 from django.http import JsonResponse, HttpResponseBadRequest
 from .serializers import CreateCharacterSerializer
 from django.db import IntegrityError
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib import messages
+from economia.models import *
+import random
+
 @csrf_exempt
 def get_character_view(request, player_id):
     if request.method == 'GET':
@@ -89,3 +94,40 @@ def check_id(request):
 def ranking(request):
     return render(request,'ranking.html')
 
+def generate_verification_code():
+    return str(random.randint(100000, 999999))
+
+def find_account_id(request):
+    if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        email = request.POST.get('email', '')
+        code = request.POST.get('code', '')
+        action = request.POST.get('action', '')
+
+        if action == 'resend':
+            verification_code = generate_verification_code()
+            VerificationCode.objects.update_or_create(email=email, defaults={'code': verification_code})
+
+            send_mail(
+                'Your Verification Code',
+                f'Your verification code is {verification_code}.',
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=False,
+            )
+            return JsonResponse({'status': 'success', 'message': '인증 코드가 전송되었습니다.'})
+        
+        elif action == 'check':
+            try:
+                stored_code = VerificationCode.objects.get(email=email).code
+                if stored_code == code:
+                    user = Player.objects.get(email=email)
+                    return JsonResponse({'status': 'success', 'user_id': user.player_id})
+                else:
+                    return JsonResponse({'status': 'error', 'message': '잘못된 인증 코드입니다.'})
+            except VerificationCode.DoesNotExist:
+                return JsonResponse({'status': 'error', 'message': '이메일로 발송된 인증 코드가 없습니다.'})
+
+    return render(request, 'find_account_id.html')
+
+def check_id(request, player_id):
+    return render(request, 'check_id.html', {'player_id': player_id})

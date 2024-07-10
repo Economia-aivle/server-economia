@@ -96,8 +96,8 @@ body{
 }
 
 .progress-step {
-	width: 100px;
-	height: 100px;
+	width: 60px;
+	height: 60px;
 	background-color: white;
 	border-radius: 50%;
 	margin: 10px 0;
