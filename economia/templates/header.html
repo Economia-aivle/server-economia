@@ -1,7 +1,13 @@
 <style>
+<<<<<<< HEAD
+    
+    @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+    body, h1, h2, p, ul, li, a {
+=======
 
     @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
     body,h1, h2, p, ul, li, a {
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
         margin: 0;
         padding: 0;
         list-style: none;
@@ -15,19 +21,40 @@
         width: 80%;
         margin: 0 auto;
     }
+<<<<<<< HEAD
+    
+=======
 
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     .navbar {
         margin-top: 0%;
         background-color: white;
         color: white;
         padding: 10px 0;
         width: 100%;
+<<<<<<< HEAD
+        height: 70px;
+        min-height:60px;
+        border-bottom-width:1px; 
+=======
         min-height:60px;
         border-bottom-width:1px;
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
         border-bottom-style:solid;
         border-bottom-color:black;
 
     }
+<<<<<<< HEAD
+    
+    .navbar .logo {
+        float: left;
+    }
+    
+    .navbar nav {
+        float: right;
+    }
+    
+=======
 
     .navbar .logo {
         float: left;
@@ -37,36 +64,57 @@
         float: right;
     }
 
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     .navbar ul {
         display: flex;
         padding-top: 15px;
     }
+<<<<<<< HEAD
+    
+=======
 
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     .navbar ul li {
 
         margin-left: 100px;
     }
+<<<<<<< HEAD
+    
+=======
 
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     .navbar ul li a, .navbar ul li p {
         color: black;
         font-size: 30px;
         font-family: 'Noto Sans KR', sans-serif;
 
     }
+<<<<<<< HEAD
+    
+=======
 
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     .navbar:after {
         content: "";
         display: table;
         clear: both;
     }
 
+<<<<<<< HEAD
+    
+=======
 
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     /* Media Queries for Responsiveness */
     @media (max-width: 1200px) {
         .navbar ul li {
             margin-left: 50px;
         }
+<<<<<<< HEAD
+        
+=======
 
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
         .navbar ul li a, .navbar ul li p {
             font-size: 25px;
         }
@@ -126,12 +174,21 @@
 </head>
 <header class="navbar">
     <div class="head-container">
+<<<<<<< HEAD
+        <a href=""><img src="{% static 'images/logo.png' %}" alt="My Image"></a>
+        <nav>
+            <ul>
+                <li><a href="">학습하기</a></li>
+                <li><a href="">시나리오</a></li>
+                <li><a href="">마이페이지</a></li>
+=======
         <a href="/"><img src="{% static 'images/logo.png' %}" alt="My Image"></a>
         <nav>
             <ul>
                 <li><a href="">학습하기</a></li>
                 <li><a href="{% url 'scenarios:scenario_list' %}">시나리오</a></li>
                 <li><a href="/mypage">마이페이지</a></li>
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
                 <li><a href="">로그아웃</a></li>
             </ul>
         </nav>

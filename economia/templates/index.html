@@ -10,20 +10,41 @@
 
 </head>
 <body>
-  user<br>
+  user
 <a href="{% url 'users:signup' %}">signup</a><br>
 <a href="{% url 'users:find_account_pwd' %}">find_account_pwd</a><br>
 <a href="{% url 'users:find_account_id' %}">find_account_id</a><br>
 <a href="{% url 'users:find_account' %}">find_account</a><br>
+<<<<<<< HEAD
+<a href="{% url 'users:check_id' %}">check_id</a><br>
+<a href="{% url 'users:ranking' %}">ranking</a><br>
+<a href="{% url 'users:char_create' %}">char_create</a><br>
+<a href="{% url 'users:char_delete' %}">char_delete</a><br>\
+<a href="{% url 'users:notice' %}">char_delete</a><br>
+
+<hr>
+educations
+=======
 <a href="{% url 'users:ranking' %}">ranking</a><br>
 <a href="{% url 'users:char_create' %}">char_create</a><br>
 <hr>
 educations<br>
 <!--  -->
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 <a href="{% url 'educations:previous_quiz_answer' %}">previous_quiz_answer</a><br>
 <a href="{% url 'educations:previous_quiz' characters=1 %}">previous_quiz</a><br>
 <a href="{% url 'educations:study' %}">study</a><br>
 <a href="{% url 'educations:summary_anime' %}">summary_anime</a><br>
+<<<<<<< HEAD
+<hr>
+scenarios
+<a href="{% url 'scenarios:previous_scenario' id=1 %}">previous_scenario</a><br>
+<a href="{% url 'scenarios:scenario_list' %}">scenario_list</a><br>
+<hr>
+home
+<a href="chapter">chpater</a><br>
+<a href="home:1">home</a><br>
+=======
 <a href="{% url 'educations:wrong_explanation' %}">wrong_explanation</a><br>
 <a href="{% url 'educations:chapter_summary' %}">chapter_summary</a><br>
 <a href="{% url 'educations:chapter' subjects='금융' %}">chapter</a><br>
@@ -36,6 +57,7 @@ scenarios<br>
 <hr>
 home<br>
 <a href="home">home</a><br>
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 <a href="onboarding">onboarding</a><br>
 <a href="mypage">mypage</a><br>
 <a href="update_info">update_info</a><br>

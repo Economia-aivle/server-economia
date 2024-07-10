@@ -1,8 +1,33 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import render
+from django.urls import include
 from django.conf import settings
+from . import views
 from django.conf.urls.static import static
+from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView)
+
+
+
+
+urlpatterns = [
+    path("", views.index),
+    path('users/', include('users.urls')),
+    path('educations/', include('educations.urls')),
+    path('scenarios/', include('scenarios.urls')),
+    path("chapter", views.chapter),
+    path("home/<int:subject_id>", views.home, name='home'),
+    path("mypage", views.mypage),
+    path("onboarding", views.onboarding),
+    path("onboarding/re", views.LoginView.as_view(), name='login'),
+    path("onboarding/logout", views.LogoutView.as_view(), name='logout'),
+    path("update_info", views.update_info),
+    path('register', views.register, name='register'),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+]
+
+
 
 def index(request):
     return render(request, 'index.html')
@@ -37,4 +62,5 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

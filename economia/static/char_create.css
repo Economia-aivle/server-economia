@@ -18,19 +18,34 @@
     font-size: 50px;
     font-weight: bold;
     letter-spacing: 0;
+<<<<<<< HEAD
+    position: absolute;
+    top: 190px; /* 상단 여백 조정 */
+}
+
+
+=======
     position: flex;
     top: 80px; /* 상단 여백 조정 */
 }
 
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 .buttons-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
     gap: 50px; /* 각 버튼 사이의 간격 */
+<<<<<<< HEAD
+    margin-top: 20px; /* 버튼과 캐릭터 이미지 사이 여백 조정 */
+}
+
+button.create_btn, button.update_btn, button.delete_btn {
+=======
     margin-top: 10px; /* 버튼과 캐릭터 이미지 사이 여백 조정 */
 }
 
 button.create_btn, button.update_btn {
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.25);
     border-radius: 25px;
     cursor: pointer;
@@ -49,6 +64,30 @@ button.create_btn {
 }
 
 button.update_btn {
+<<<<<<< HEAD
+    background-color: rgba(57, 167, 255, 1);
+}
+
+button.delete_btn {
+    background-color: #F24E1E;
+}
+
+button.delete_btn:active {
+    background-color: #CC3D00;
+}
+
+button.create_btn:active,
+button.update_btn:active {
+    animation: blink 0.2s;
+}
+
+@keyframes blink {
+    0%, 100% { background-color: rgba(57, 167, 255, 1); }
+    50% { background-color: rgba(30, 144, 255, 1); }
+}
+
+.create_str, .update_str, .delete_str {
+=======
     background-color: #F24E1E;
 }
 
@@ -61,6 +100,7 @@ button.update_btn:active {
 }
 
 .create_str, .update_str {
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     color: rgba(255, 255, 255, 1);
     font-family: Noto Sans;
     text-align: center;
@@ -73,8 +113,12 @@ button.update_btn:active {
     display: flex;
     justify-content: center;
     gap: 50px; /* 이미지 간의 간격 */
+<<<<<<< HEAD
+    margin-bottom: 100px; /* 캐릭터 이미지와 버튼 사이 여백 조정 */
+=======
     margin-bottom: 50px; /* 캐릭터 이미지와 버튼 사이 여백 조정 */
     margin-top: 100px; /* 캐릭터 이미지와 버튼 사이 여백 조정 */
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 }
 
 .char1, .char2, .char3, .char4, .char5 {
@@ -87,7 +131,11 @@ button.update_btn:active {
     border: none;
     border-radius: 0%; /* 원형 모양 설정 */
     background-color: transparent;
+<<<<<<< HEAD
+    transition: transform 0.2s,  border 0.2s;
+=======
     transition: transform 0.2s, border 0.2s;
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 }
 
 .char1:hover, .char2:hover, .char3:hover, .char4:hover, .char5:hover {
@@ -99,6 +147,25 @@ button.update_btn:active {
 }
 
 .char1 {
+<<<<<<< HEAD
+    background-image: url('ghost.png');
+}
+
+.char2 {
+    background-image: url('baby_mummy.png');
+}
+
+.char3 {
+    background-image: url('ghost.png');
+}
+
+.char4 {
+    background-image: url('baby_mummy.png');
+}
+
+.char5 {
+    background-image: url('ghost.png');
+=======
     background-image: url('images/ghost.png');
 }
 
@@ -116,4 +183,5 @@ button.update_btn:active {
 
 .char5 {
     background-image: url('images/ghost.png');
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 }

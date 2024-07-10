@@ -6,82 +6,45 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 
-class AuthGroup(models.Model):
-    name = models.CharField(unique=True, max_length=150)
+class Player(AbstractBaseUser):
+    player_id = models.CharField(max_length=20, unique=True)
+    player_name = models.CharField(max_length=5, blank=True, null=True)
+    nickname = models.CharField(unique=True, max_length=255)
+    email = models.CharField(unique=True, max_length=255)
+    school = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
 
-    class Meta:
-        managed = False
-        db_table = 'auth_group'
+    USERNAME_FIELD = 'player_id'
+    REQUIRED_FIELDS = []
 
+    def __str__(self):
+        return self.player_id
 
-class AuthGroupPermissions(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
+    def has_perm(self, perm, obj=None):
+        return self.is_superuser
 
-    class Meta:
-        managed = False
-        db_table = 'auth_group_permissions'
-        unique_together = (('group', 'permission'),)
-
-
-class AuthPermission(models.Model):
-    name = models.CharField(max_length=255)
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
-    codename = models.CharField(max_length=100)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_permission'
-        unique_together = (('content_type', 'codename'),)
-
-
-class AuthUser(models.Model):
-    password = models.CharField(max_length=128)
-    last_login = models.DateTimeField(blank=True, null=True)
-    is_superuser = models.IntegerField()
-    username = models.CharField(unique=True, max_length=150)
-    first_name = models.CharField(max_length=150)
-    last_name = models.CharField(max_length=150)
-    email = models.CharField(max_length=254)
-    is_staff = models.IntegerField()
-    is_active = models.IntegerField()
-    date_joined = models.DateTimeField()
+    def has_module_perms(self, app_label):
+        return self.is_superuser
 
     class Meta:
         managed = False
-        db_table = 'auth_user'
-
-
-class AuthUserGroups(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user_groups'
-        unique_together = (('user', 'group'),)
-
-
-class AuthUserUserPermissions(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user_user_permissions'
-        unique_together = (('user', 'permission'),)
-
+        db_table = 'player'
 
 class Blank(models.Model):
     characters = models.ForeignKey('Characters', models.DO_NOTHING)
     question_text = models.CharField(max_length=500, blank=True, null=True)
     correct_answer = models.CharField(max_length=10, blank=True, null=True)
+<<<<<<< HEAD
+    subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
+=======
     subjects = models.CharField(max_length=10, blank=True, null=True)
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
 
@@ -104,7 +67,11 @@ class Characters(models.Model):
 
 
 class ChildComments(models.Model):
+<<<<<<< HEAD
+    parent = models.ForeignKey('Comments', models.DO_NOTHING)
+=======
     parent = models.ForeignKey('Comments', on_delete=models.CASCADE)
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     player = models.ForeignKey('Player', models.DO_NOTHING)
     texts = models.CharField(max_length=500, blank=True, null=True)
 
@@ -119,6 +86,7 @@ class Comments(models.Model):
     percents = models.IntegerField()
     texts = models.CharField(max_length=500, blank=True, null=True)
     like_cnt = models.IntegerField(blank=True, null=True)
+    time = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -136,51 +104,6 @@ class CommentsLikes(models.Model):
         unique_together = (('comment', 'player'),)
 
 
-class DjangoAdminLog(models.Model):
-    action_time = models.DateTimeField()
-    object_id = models.TextField(blank=True, null=True)
-    object_repr = models.CharField(max_length=200)
-    action_flag = models.PositiveSmallIntegerField()
-    change_message = models.TextField()
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'django_admin_log'
-
-
-class DjangoContentType(models.Model):
-    app_label = models.CharField(max_length=100)
-    model = models.CharField(max_length=100)
-
-    class Meta:
-        managed = False
-        db_table = 'django_content_type'
-        unique_together = (('app_label', 'model'),)
-
-
-class DjangoMigrations(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    app = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
-    applied = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'django_migrations'
-
-
-class DjangoSession(models.Model):
-    session_key = models.CharField(primary_key=True, max_length=40)
-    session_data = models.TextField()
-    expire_date = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'django_session'
-
-
 class Multiple(models.Model):
     characters = models.ForeignKey(Characters, models.DO_NOTHING)
     stage = models.IntegerField()
@@ -189,8 +112,13 @@ class Multiple(models.Model):
     option_b = models.CharField(max_length=255, blank=True, null=True)
     option_c = models.CharField(max_length=255, blank=True, null=True)
     option_d = models.CharField(max_length=255, blank=True, null=True)
+<<<<<<< HEAD
+    correct_answer = models.CharField(max_length=5, blank=True, null=True)
+    subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
+=======
     correct_answer = models.CharField(max_length=1, blank=True, null=True)
     subjects = models.CharField(max_length=10, blank=True, null=True)
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
 
@@ -210,6 +138,8 @@ class NoticeBoard(models.Model):
         db_table = 'notice_board'
 
 
+<<<<<<< HEAD
+=======
 class Player(models.Model):
     player_id = models.CharField(max_length=20)
     player_name = models.CharField(max_length=5, blank=True, null=True)
@@ -222,6 +152,7 @@ class Player(models.Model):
     class Meta:
         managed = False
         db_table = 'player'
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 
 
 class Rules(models.Model):
@@ -235,10 +166,17 @@ class Rules(models.Model):
 
 
 class Scenario(models.Model):
+<<<<<<< HEAD
+    subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
+    title = models.CharField(max_length=100, blank=True, null=True)
+    question_text = models.CharField(max_length=1000, blank=True, null=True)
+    start_time = models.DateTimeField()
+=======
     subjects = models.CharField(max_length=5)
     title = models.CharField(max_length=20, blank=True, null=True)
     question_text = models.CharField(max_length=500, blank=True, null=True)
     start_time = models.DateTimeField(auto_now_add=True)
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 
     class Meta:
         managed = False
@@ -247,7 +185,7 @@ class Scenario(models.Model):
 
 class Stage(models.Model):
     characters = models.ForeignKey(Characters, models.DO_NOTHING)
-    subject = models.CharField(max_length=5, blank=True, null=True)
+    subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
     chapter = models.IntegerField(blank=True, null=True)
     chapter_sub = models.IntegerField(blank=True, null=True)
 
@@ -279,7 +217,11 @@ class Tf(models.Model):
     characters = models.ForeignKey(Characters, models.DO_NOTHING)
     question_text = models.CharField(max_length=500, blank=True, null=True)
     correct_answer = models.CharField(max_length=1, blank=True, null=True)
+<<<<<<< HEAD
+    subjects = models.ForeignKey(Subjects, models.DO_NOTHING)
+=======
     subjects = models.CharField(max_length=10, blank=True, null=True)
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
 
