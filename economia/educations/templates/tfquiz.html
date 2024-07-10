@@ -6,102 +6,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>문제풀이 - OX</title>
   <link rel="stylesheet" href="{% static 'tfquiz.css' %}" />
-  
 </head>
 <body>
   {% include 'quiz_header2.html' %}
   <main>
-   <div class="quiz-container" style="display:block;">
     <div id="question-container" class="question-container">
-      <h1 id="question-text">Q{{ num }}. {{ question.question_text }}</h1>
+      <h1 id="question-text">여기에 질문이 표시됩니다.</h1>
       <input type="hidden" id="question-id" value="">
-    </div> <div class="wrap-container">
-      <form id="answer-form" method="post">
-        {% csrf_token %}
-        <button class="o-btn" onclick="submitAnswer('O')" value="O">O</button>
-        <img src="{% static 'images/char1.png' %}" alt="char" />
-        <button class="x-btn" onclick="submitAnswer('X')" value="X">X</button>
-      </form>
-    </div></div>
-    <div class="wrong-container" id="wrong-container" style="display:none;">
-      <div class="question-container">
-          <h1>Q{{ num }}. {{ question.question_text }}</h1>
-      </div>
-      <div class="answer-bubble">
-          <p class="ans">답: {{ question.correct_answer }}</p>
-          <p>{{ question.explanation }}</p>
-      </div>
-      <div class="character">
-          <img src="{% static 'images/char1.png' %}" alt="char" />
-      </div>
-      <div class="next-button-container">
-          <button class="next" id="next-btn" onclick="nextQuestion()">{% if num == 5 %}Finish{% else %}다음문제{% endif %}</button>
-      </div>
+      <input type="hidden" id="subjects" value="{{ subjects|default:'1' }}">
+      <input type="hidden" id="chapter" value="{{ chapter|default:'1' }}">
+    </div>
+    <div class="wrap-container">
+      <button class="o-btn" onclick="submitAnswer('O')">O</button>
+      <img src="{% static 'images/char1.png' %}" alt="char" />
+      <button class="x-btn" onclick="submitAnswer('X')">X</button>
     </div>
   </main>
   <aside class="sidebar">
-    <div class="top-num"><p class="progress-num">{{ num }}/8</p></div>
+    <div class="top-num"><p class="progress-num">0/5</p></div>
     <div class="progress">
-        <a href="#" class="progress-step {% if num >= 1 %}active{% endif %}" id="step-1"></a>
-        <a href="#" class="progress-step {% if num >= 2 %}active{% endif %}" id="step-2"></a>
-        <a href="#" class="progress-step {% if num >= 3 %}active{% endif %}" id="step-3"></a>
-        <a href="#" class="progress-step {% if num >= 4 %}active{% endif %}" id="step-4"></a>
-        <a href="#" class="progress-step {% if num >= 5 %}active{% endif %}" id="step-5"></a>
-        <a href="#" class="progress-step {% if num >= 6 %}active{% endif %}" id="step-6"></a>
-        <a href="#" class="progress-step {% if num >= 7 %}active{% endif %}" id="step-7"></a>
-        <a href="#" class="progress-step {% if num >= 8 %}active{% endif %}" id="step-8"></a>
+      <span class="progress-step"></span>
+      <span class="progress-step"></span>
+      <span class="progress-step"></span>
+      <span class="progress-step"></span>
+      <span class="progress-step"></span>
     </div>
   </aside>
-
-  <script>
-    let selectedOption = null;
-    const characters = "{{ characters }}";
-    const subject = "{{ subject }}";
-    const chapter = "{{ chapter }}";
-    const num = {{ num }};
-
-    function submitAnswer(value) {
-      const formData = new FormData();
-      formData.append('answer', value);
-  
-      fetch(`/educations/tf_quiz/${characters}/${subject}/${chapter}/${num}`, {
-          method: 'POST',
-          body: formData,
-          headers: {
-              'X-CSRFToken': '{{ csrf_token }}'
-          }
-      })
-      .then(response => response.json())
-      .then(data => {
-          if (data.status === 'complete') {
-              alert(data.message);
-              window.location.href = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
-          } else if (data.status === 'wrong') {
-              alert(data.message);
-              document.querySelector('.quiz-container').style.display = 'none';
-              document.getElementById('wrong-container').style.display = 'block';
-          } else if (data.status === 'correct') {
-              alert(data.message);
-              // 정답일 경우에 대한 추가 처리
-              // 다음 문제로 이동 또는 다른 작업 수행
-              window.location.href = `/educations/tf_quiz/${characters}/${subject}/${chapter}/${num + 1}`;
-          } else {
-              alert('서버에서 오류가 발생했습니다.');
-          }
-      })
-      .catch(error => console.error('Error:', error));
-  }
-
-    function nextQuestion() {
-        if (num >= 8) {
-            window.location.href = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
-        } else {
-            window.location.href = `/educations/tf_quiz/${characters}/${subject}/${chapter}/${num + 1}`;
-        }
-    }
-
-   
-  </script>
-
+  <script src="{% static 'tfquiz.js' %}"></script>
 </body>
+
+<script>
+  const initialData = {
+    subjects: "{{ subject }}", // Django 템플릿 변수를 사용하여 초기 데이터 설정
+    chapter: "{{ chapter }}",
+    characters: "{{ characters }}"
+  };
+</script>
 </html>

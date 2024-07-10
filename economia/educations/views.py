@@ -91,139 +91,105 @@ def level_choice(request, characters, subject, chapter):
     return render(request,'level_choice.html', context)
 
 
+@csrf_exempt
+def tf_quiz_view(request):
+    if request.method == 'GET':
+        used_question_ids = request.GET.getlist('used_question_ids[]')
+        chapter = request.GET.get('chapter')
+        subjects = request.GET.get('subjects')  # 수정된 부분
+        characters = request.GET.get('characters')
 
-# @csrf_exempt
-# def tf_quiz_view(request, question_id=None):
-#     if request.method == 'GET':
-#         if question_id:
-#             try:
-#                 question = Tf.objects.get(id=question_id)
-#             except Tf.DoesNotExist:
-#                 return JsonResponse({"error": "Question not found."}, status=status.HTTP_404_NOT_FOUND)
-#         else:
-#             questions = list(Tf.objects.all())
-#             if not questions:
-#                 return JsonResponse({"error": "No questions available."}, status=status.HTTP_404_NOT_FOUND)
-#             question = random.choice(questions)
+        if not chapter or not subjects:
+            return JsonResponse({"error": "Chapter and subjects are required."}, status=status.HTTP_400_BAD_REQUEST)
 
-#         return JsonResponse({
-#             "question_id": question.id,
-#             "question_text": question.question_text,
-#             "correct_answer": question.correct_answer,
-#             "explanation": question.explanation
-#         })
+        questions = Tf.objects.filter(chapter=chapter, subjects=subjects).exclude(id__in=used_question_ids)
+        if not questions:
+            return JsonResponse({"error": "No questions available."}, status=status.HTTP_404_NOT_FOUND)
+        question = random.choice(questions)
 
-#     elif request.method == 'POST':
-#         question_id = request.POST.get('question_id')
-#         submitted_answer = request.POST.get('submitted_answer')
+        context = {
+            "question_id": question.id,
+            "question_text": question.question_text,
+            "correct_answer": question.correct_answer,
+            "explanation": question.explanation
+        }
+        return JsonResponse(context, status=status.HTTP_200_OK)
 
-#         try:
-#             question = Tf.objects.get(id=question_id)
-#         except Tf.DoesNotExist:
-#             return JsonResponse({"error": "Question not found."}, status=status.HTTP_404_NOT_FOUND)
+    elif request.method == 'POST':
+        question_id = request.POST.get('question_id')
+        submitted_answer = request.POST.get('submitted_answer')
 
-#         correct_answer = question.correct_answer
-#         is_correct = submitted_answer.upper() == correct_answer.upper()
+        if not question_id:
+            return JsonResponse({"error": "Question ID is required."}, status=status.HTTP_400_BAD_REQUEST)
 
-#         response_data = {
-#             "question_id": question.id,
-#             "submitted_answer": submitted_answer,
-#             "correct_answer": correct_answer,
-#             "is_correct": is_correct,
-#             "explanation": question.explanation if not is_correct else None
-#         }
+        try:
+            question = Tf.objects.get(id=question_id)
+        except Tf.DoesNotExist:
+            return JsonResponse({"error": "Question not found."}, status=status.HTTP_404_NOT_FOUND)
 
-#         return JsonResponse(response_data, status=status.HTTP_200_OK)
-#     else:
-#         return JsonResponse({"error": "Invalid request method"}, status=status.HTTP_400_BAD_REQUEST)
-
-# def tf_quiz_page(request):
-#     return render(request, 'tfquiz.html')
-# def choose_tf_chapter_view(request):
-#     if request.method == 'POST':
-#         chapter = request.POST.get('chapter')
-#         if not chapter:
-#             return JsonResponse({"error": "Chapter number is required."}, status=status.HTTP_400_BAD_REQUEST)
-
-#         questions = Tf.objects.filter(chapter=chapter)[:5]  # 챕터별 문제 5개 가져오기
-
-#         if not questions:
-#             return JsonResponse({"error": "No questions found for the selected chapter."},
-#                                 status=status.HTTP_404_NOT_FOUND)
-
-#         question_data = [{
-#             "id": question.id,
-#             "question_text": question.question_text,
-#             "correct_answer": question.correct_answer,
-#             "explanation": question.explanation
-#         } for question in questions]
-
-#         return JsonResponse({"questions": question_data}, status=status.HTTP_200_OK)
-#     else:
-#         return JsonResponse({"error": "Invalid request method"}, status=status.HTTP_400_BAD_REQUEST)
-    
-
-
-def tf_quiz_view(request,characters, subject, chapter, num):
-    tf_response = requests.get(f'http://127.0.0.1:8000/educations/tfdatas/{characters}')
-    tf_data = tf_response.json()
-    
-    tf_list = [item for item in tf_data if item['characters'] == characters and item['subjects'] == subject and item['chapter'] == chapter]
-    
-    questions = []
-    max_num = min(8, len(tf_list))
-    for i in range(max_num):
-        tf_list[i]['num'] = i + 1
-        questions.append(tf_list[i])
-    
-    question = questions[num - 1] if num <= max_num else None
-    if num == 9:
-        return redirect('educations:level_choice', characters=characters, subject=subject, chapter=chapter)
-    # # POST 요청 처리
-    if request.method == 'POST':
-        user_answer = request.POST.get('answer')
-        correct_answer = question['correct_answer']
+        correct_answer = question.correct_answer
+        is_correct = submitted_answer.upper() == correct_answer.upper()
         
-        if user_answer == correct_answer:
-            # 정답인 경우
+        response_data = {
+            "question_id": question.id,
+            "submitted_answer": submitted_answer,
+            "correct_answer": correct_answer,
+            "is_correct": is_correct,
+            "explanation": question.explanation if not is_correct else None
+        }
+        if is_correct:
             correct_count = request.session.get('correct_count', 0) + 1
             request.session['correct_count'] = correct_count
             print(correct_count)
+
             if correct_count == 5:
-                # 모든 문제를 맞춘 경우 Stage 모델의 chapter_sub를 3으로 업데이트
+                # 모든 문제를 맞췄을 때 Stage 모델 업데이트
                 try:
-                    stage_data = Stage.objects.get(characters_id=characters, subject=subject, chapter=chapter)
-                    stage_data.chapter_sub = 2
-                    stage_data.save()
+                    stage = Stage.objects.get(characters_id=characters, subject=subjects, chapter=chapter)
+                    stage.chapter_sub = 2
+                    stage.save()
                 except Stage.DoesNotExist:
-                    pass
-                
+                    pass  # Stage가 없는 경우 pass
+
                 # 세션 초기화
                 request.session['correct_count'] = 0
 
-                # JSON 응답 전송
                 return JsonResponse({'status': 'complete', 'message': '모든 문제를 맞췄습니다!'})
-            else:
-                # 아직 모든 문제를 맞추지 않은 경우
-                return JsonResponse({'status': 'correct', 'message': '정답입니다.'})
-        else:
-            # 오답인 경우
-            return JsonResponse({'status': 'wrong', 'message': '오답입니다.'})
-    correct_count = request.session.get('correct_count', 0)
-    hp_percentage = max(0, 100 - (correct_count * 20))  # 체력 퍼센트 계산
-    
-    context ={'question': question,
-              'num': num,
-              'characters': characters,
+
+            return JsonResponse(response_data, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({"error": "Invalid request method"}, status=status.HTTP_400_BAD_REQUEST)
+
+def tf_quiz_page(request, characters, subject, chapter):
+    context = {
+            'characters': characters,
               'subject': subject,
               'chapter': chapter,
-              'correct_count': correct_count,
-              'hp_percentage': hp_percentage,
-              }
-    
-    
-    # GET 요청 처리
-    return render(request, 'tfquiz.html', context )
+    } 
+    return render(request, 'tfquiz.html', context)
+
+def choose_tf_chapter_view(request):
+    if request.method == 'POST':
+        chapter = request.POST.get('chapter')
+        if not chapter:
+            return JsonResponse({"error": "Chapter number is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        questions = Tf.objects.filter(chapter=chapter)[:5]  # 챕터별 문제 5개 가져오기
+
+        if not questions:
+            return JsonResponse({"error": "No questions found for the selected chapter."},
+                                status=status.HTTP_404_NOT_FOUND)
+
+        question_data = [{
+            "id": question.id,
+            "question_text": question.question_text,
+            "correct_answer": question.correct_answer,
+            "explanation": question.explanation
+        } for question in questions]
+
+        return JsonResponse({"questions": question_data}, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({"error": "Invalid request method"}, status=status.HTTP_400_BAD_REQUEST)
     
 
 
