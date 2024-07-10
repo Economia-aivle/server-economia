@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 html {
     width: 100%;
     height: 100%;
@@ -11,19 +12,30 @@ body {
 	display: flex;
     align-items: center;
     margin : 0 auto;
+=======
+body {
+    background-color: rgba(224, 244, 255, 1);
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 }
 
 .container {
     overflow: hidden;
     background-color: rgba(224, 244, 255, 1);
+<<<<<<< HEAD
     width: 50%;
     height: 90%;
     position: absolute;
     margin : 0 auto;
+=======
+    width: 1920px;
+    height: 1080px;
+    position: absolute;
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 }
 
 .white_box {
     background-color: rgba(255, 255, 255, 1);
+<<<<<<< HEAD
     flex-direction: column;
     width: 90%;
     height: 100%;
@@ -48,24 +60,53 @@ body {
     position: absolute;
     border: none;
     top : 40%;
+=======
+    width: 750px;
+    height: 860px;
+    position: absolute;
+    left: 585px;
+    top: 110px;
+    border-radius: 20px;
+}
+
+.email_input {
+    width: 380px;
+    height: 36px;
+    position: absolute;
+    left: 674px;
+    top: 450px;
+    border: none;
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     border-radius: 5px;
     padding: 8px;
     font-size: 30px;
     outline: none;
     letter-spacing: 0;
+<<<<<<< HEAD
     margin : 0 auto;
+=======
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     cursor: text;
 }
 
 .line1 {
+<<<<<<< HEAD
     width: 90%;
     height: 0px;
     top : 48%;
     position: absolute;
+=======
+    width: 390px;
+    height: 0px;
+    position: absolute;
+    left: 673px;
+    top: 520px;
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     border: 3px solid rgba(217, 217, 217, 1);
 }
 
 .code_input {
+<<<<<<< HEAD
     width: 80%;
     height: 36px;
     position: absolute;
@@ -73,6 +114,16 @@ body {
     border-radius: 5px;
     padding: 8px;
     top:56%;
+=======
+    width: 300px;
+    height: 36px;
+    position: absolute;
+    left: 672px;
+    top: 545px;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     font-size: 30px;
     outline: none;
     letter-spacing: 0;
@@ -80,19 +131,35 @@ body {
 }
 
 .line2 {
+<<<<<<< HEAD
     width: 90%;
     height: 0px;
     top : 64%;
     position: absolute;
+=======
+    width: 390px;
+    height: 0px;
+    position: absolute;
+    left: 673px;
+    top: 615px;
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     border: 3px solid rgba(217, 217, 217, 1);
 }
 
 .title_find_id {
     color: rgba(0, 0, 0, 1);
+<<<<<<< HEAD
     width: 90%;
     height: 100px;
     top : 10%;
     position: absolute;
+=======
+    width: 420px;
+    height: 100px;
+    position: absolute;
+    left: 665px;
+    top: 200px;
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     font-family: Inter;
     text-align: left;
     font-size: 50px;
@@ -100,6 +167,7 @@ body {
     letter-spacing: 0;
 }
 
+<<<<<<< HEAD
 .resend_btn, .check_btn {
     box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.25);
     background-color: rgba(57, 167, 255, 1);
@@ -128,6 +196,39 @@ body {
     height: 80px;
     right : 10%;
     top : 80%;
+=======
+button.resend_btn, button.check_btn {
+    box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.25);
+    background-color: rgba(57, 167, 255, 1);
+
+    position: absolute;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: background-color 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+button.resend_btn {
+    width: 136px;
+    height: 57px;
+    left: 1097px;
+    top: 450px;
+}
+
+button.check_btn {
+    width: 500px;
+    height: 80px;
+    top: 750px;
+    left: 700px;
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 }
 
 button:active {

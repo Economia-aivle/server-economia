@@ -40,7 +40,11 @@ class Blank(models.Model):
     characters = models.ForeignKey('Characters', models.DO_NOTHING)
     question_text = models.CharField(max_length=500, blank=True, null=True)
     correct_answer = models.CharField(max_length=10, blank=True, null=True)
+<<<<<<< HEAD
     subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
+=======
+    subjects = models.CharField(max_length=10, blank=True, null=True)
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
 
@@ -63,7 +67,11 @@ class Characters(models.Model):
 
 
 class ChildComments(models.Model):
+<<<<<<< HEAD
     parent = models.ForeignKey('Comments', models.DO_NOTHING)
+=======
+    parent = models.ForeignKey('Comments', on_delete=models.CASCADE)
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     player = models.ForeignKey('Player', models.DO_NOTHING)
     texts = models.CharField(max_length=500, blank=True, null=True)
 
@@ -83,6 +91,17 @@ class Comments(models.Model):
     class Meta:
         managed = False
         db_table = 'comments'
+    
+
+
+class CommentsLikes(models.Model):
+    comment = models.ForeignKey(Comments, on_delete=models.CASCADE)
+    player = models.ForeignKey('Player', models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'comments_likes'
+        unique_together = (('comment', 'player'),)
 
 
 class Multiple(models.Model):
@@ -93,8 +112,13 @@ class Multiple(models.Model):
     option_b = models.CharField(max_length=255, blank=True, null=True)
     option_c = models.CharField(max_length=255, blank=True, null=True)
     option_d = models.CharField(max_length=255, blank=True, null=True)
+<<<<<<< HEAD
     correct_answer = models.CharField(max_length=5, blank=True, null=True)
     subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
+=======
+    correct_answer = models.CharField(max_length=1, blank=True, null=True)
+    subjects = models.CharField(max_length=10, blank=True, null=True)
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
 
@@ -114,6 +138,21 @@ class NoticeBoard(models.Model):
         db_table = 'notice_board'
 
 
+<<<<<<< HEAD
+=======
+class Player(models.Model):
+    player_id = models.CharField(max_length=20)
+    player_name = models.CharField(max_length=5, blank=True, null=True)
+    nickname = models.CharField(unique=True, max_length=255)
+    email = models.CharField(unique=True, max_length=255)
+    school = models.CharField(max_length=255)
+    pwd = models.CharField(max_length=255)
+    admin_tf = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'player'
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 
 
 class Rules(models.Model):
@@ -127,10 +166,17 @@ class Rules(models.Model):
 
 
 class Scenario(models.Model):
+<<<<<<< HEAD
     subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
     title = models.CharField(max_length=100, blank=True, null=True)
     question_text = models.CharField(max_length=1000, blank=True, null=True)
     start_time = models.DateTimeField()
+=======
+    subjects = models.CharField(max_length=5)
+    title = models.CharField(max_length=20, blank=True, null=True)
+    question_text = models.CharField(max_length=500, blank=True, null=True)
+    start_time = models.DateTimeField(auto_now_add=True)
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 
     class Meta:
         managed = False
@@ -171,10 +217,22 @@ class Tf(models.Model):
     characters = models.ForeignKey(Characters, models.DO_NOTHING)
     question_text = models.CharField(max_length=500, blank=True, null=True)
     correct_answer = models.CharField(max_length=1, blank=True, null=True)
+<<<<<<< HEAD
     subjects = models.ForeignKey(Subjects, models.DO_NOTHING)
+=======
+    subjects = models.CharField(max_length=10, blank=True, null=True)
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'tf'
+
+class VerificationCode(models.Model):
+    email = models.EmailField(unique=True)
+    code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.email}: {self.code}'

@@ -37,7 +37,7 @@ body, html {
     position: absolute;
     top: 20px; /* 사이드바 상단으로부터의 거리 */
     left: 20px; /* 사이드바 왼쪽으로부터의 거리 */
-    background-image: url(images/logo_official.png);
+    background-image: url(images/logo.png);
     background-size: cover; 
     border: none; /* 테두리 없음 */
     background-repeat: no-repeat; /* 이미지 반복 방지 */
@@ -53,7 +53,7 @@ body, html {
     background-color: rgba(57, 167, 255, 1);
     border-radius: 10px;
     text-align: center;
-    font-size: 16px;
+    font-size: 16px;    
     font-family: 'Noto Sans';
     cursor: pointer; /* 마우스를 가져다 대면 포인터로 변경 */
     padding: 5px 10px; /* 상하 10px, 좌우 20px 패딩을 줘서 텍스트 주변에 여유 공간을 확보 */
@@ -163,6 +163,17 @@ body, html {
 }
 
 
+.progress-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: rgba(57, 167, 255, 1); /* 큰 파란색 원 */
+    position: relative; /* 자식 요소들의 위치를 절대적으로 지정하기 위해 필요 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .circle-inner {
     width: 100px; /* 외곽의 파란 원이 잘 보이도록 약간 작게 설정 */
     height: 100px; /* 외곽의 파란 원이 잘 보이도록 약간 작게 설정 */
@@ -175,6 +186,15 @@ body, html {
     z-index: 1; /* 자식 요소들이 부모 요소보다 위에 표시되도록 설정 */
 }
 
+.progress-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 정확히 가운데 정렬 */
+    font-size: 40px;
+    color: rgba(57, 167, 255, 1); /* 파란색 글씨 */
+    z-index: 2; /* 글씨가 흰색 원보다 위에 표시되도록 설정 */
+}
 
 .progress-pts {
     font-size: 20px;
@@ -222,7 +242,7 @@ body, html {
 	opacity: 0.8;
 }
 
-#category {
+.category {
     font-size: 48px;
     color: rgba(0, 0, 0, 1);
     margin-right: 20px; /* 카테고리와 버튼 사이의 간격을 설정 */
@@ -283,7 +303,7 @@ body, html {
 /* 세 번째 row 설정 */
 .advertiser {
     display: flex;
-    background-image: url(images/ads.jpg);
+    background-image: url(images/ads.png);
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 10px;
