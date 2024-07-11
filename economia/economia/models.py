@@ -40,6 +40,11 @@ class Blank(models.Model):
     question_text = models.CharField(max_length=500, blank=True, null=True)
     correct_answer = models.CharField(max_length=10, blank=True, null=True)
     subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
+<<<<<<< HEAD
+    subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
+=======
+    subjects = models.CharField(max_length=10, blank=True, null=True)
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
 
@@ -62,7 +67,11 @@ class Characters(models.Model):
 
 
 class ChildComments(models.Model):
+<<<<<<< HEAD
     parent = models.ForeignKey('Comments', models.DO_NOTHING)
+=======
+    parent = models.ForeignKey('Comments', on_delete=models.CASCADE)
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     player = models.ForeignKey('Player', models.DO_NOTHING)
     texts = models.CharField(max_length=500, blank=True, null=True)
 
@@ -75,13 +84,28 @@ class Comments(models.Model):
     scenario = models.ForeignKey('Scenario', models.DO_NOTHING)
     characters = models.ForeignKey(Characters, models.DO_NOTHING)
     percents = models.IntegerField()
+    scenario = models.ForeignKey('Scenario', models.DO_NOTHING)
+    characters = models.ForeignKey(Characters, models.DO_NOTHING)
+    percents = models.IntegerField()
     texts = models.CharField(max_length=500, blank=True, null=True)
     like_cnt = models.IntegerField(blank=True, null=True)
+    time = models.DateTimeField(blank=True, null=True)
     time = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'comments'
+    
+
+
+class CommentsLikes(models.Model):
+    comment = models.ForeignKey(Comments, on_delete=models.CASCADE)
+    player = models.ForeignKey('Player', models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'comments_likes'
+        unique_together = (('comment', 'player'),)
 
 
 class Multiple(models.Model):
@@ -92,8 +116,14 @@ class Multiple(models.Model):
     option_b = models.CharField(max_length=255, blank=True, null=True)
     option_c = models.CharField(max_length=255, blank=True, null=True)
     option_d = models.CharField(max_length=255, blank=True, null=True)
+<<<<<<< HEAD
     correct_answer = models.CharField(max_length=5, blank=True, null=True)
     subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
+=======
+    correct_answer = models.CharField(max_length=5, blank=True, null=True)
+    subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
+    subjects = models.CharField(max_length=10, blank=True, null=True)
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
 
@@ -177,3 +207,11 @@ class Tf(models.Model):
     class Meta:
         managed = False
         db_table = 'tf'
+
+class VerificationCode(models.Model):
+    email = models.EmailField(unique=True)
+    code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.email}: {self.code}'

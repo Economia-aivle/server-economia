@@ -1,38 +1,51 @@
-"""
-URL configuration for economia project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.shortcuts import render
 from django.urls import include
 from django.conf import settings
+from . import views
 from django.conf.urls.static import static
+from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView)
+
+
+
+
+urlpatterns = [
+    path("", views.index),
+    path('users/', include('users.urls')),
+    path('educations/', include('educations.urls')),
+    path('scenarios/', include('scenarios.urls')),
+    path("chapter", views.chapter),
+    path("home/<int:subject_id>", views.home, name='home'),
+    path("mypage", views.mypage),
+    path("onboarding", views.onboarding),
+    path("onboarding/re", views.LoginView.as_view(), name='login'),
+    path("onboarding/logout", views.LogoutView.as_view(), name='logout'),
+    path("update_info", views.update_info),
+    path('register', views.register, name='register'),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+]
+
+
 
 def index(request):
-    return render(request,'index.html')
+    return render(request, 'index.html')
+
 def chapter(request):
-    return render(request,'chapter.html')
+    return render(request, 'chapter.html')
+
 def home(request):
-    return render(request,'home.html')
+    return render(request, 'home.html')
+
 def mypage(request):
-    return render(request,'mypage.html')
+    return render(request, 'mypage.html')
+
 def onboarding(request):
-    return render(request,'onboarding.html')
+    return render(request, 'onboarding.html')
+
 def update_info(request):
-    return render(request,'update_info.html')
+    return render(request, 'update_info.html')
 
 def admin_dashboard(request):
     return render(request,'admin_dashboard.html')
@@ -52,10 +65,9 @@ def service_term(request):
 def teen_term(request):
     return render(request,'terms/teen_term.html')
 
-
-
+# URL Patterns
 urlpatterns = [
-    path("",index),
+    path("", index),
     path('users/', include('users.urls')),
     path('educations/', include('educations.urls')),
     path('scenarios/', include('scenarios.urls')),
@@ -73,9 +85,8 @@ urlpatterns = [
     path('service_agree/', service_agree, name='service_agree'),
     path('ask', ask, name='ask'),
 
+
 ]
-
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

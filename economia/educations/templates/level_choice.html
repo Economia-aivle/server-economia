@@ -14,20 +14,24 @@
       <h1>학습 난이도를 선택 해주세요!</h1>
       <div class="wrap-container">
         <span class="btn-cho">
-            <button class="next-btn active">
+<<<<<<< HEAD
+            <button class="next-btn {% if chapter_sub is None or chapter_sub == 1 or chapter_sub == 2 or chapter_sub == 3 %}active{% endif %}"onclick = "location.href = '{% url 'educations:tf_quiz_page'  %}'">
+=======
+            <button class="next-btn {% if chapter_sub is None or chapter_sub == 1 or chapter_sub == 2 or chapter_sub == 3 %}active{% endif %}"onclick = "location.href = '{% url 'educations:tf_quiz_page' characters=1 subject=subject chapter=chapter %}'">
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
                 <p>초급</p>
                 <div><img src="{% static 'images/unlock.png' %}" alt="초급"></div>
                 
             </button>
         </span>
         <span class="btn-jung">
-            <button class="next-btn active">
+            <button class="next-btn {% if chapter_sub is 2 or chapter_sub == 3 %}active{% endif %}" onclick = "location.href = '{% url 'educations:multiple' characters=1 subject=subject chapter=chapter num=1 %}'">
                 <p>중급</p>
                 <div><img src="{% static 'images/unlock.png' %}" alt="중급"></div>
             </button>
         </span>
         <span class="btn-go">
-            <button class="next-btn">
+            <button class="next-btn {% if chapter_sub is 3 %}active{% endif %}"  onclick = "location.href = '{% url 'educations:blank' characters=1 subject=subject chapter=chapter num=1 %}'">
                 <p>고급</p>
                 <div><img src="{% static 'images/unlock.png' %}" alt="고급"></div>
                 

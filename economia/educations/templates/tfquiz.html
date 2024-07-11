@@ -1,35 +1,52 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>문제풀이 - OX</title>
-    <link rel="stylesheet" href="{% static 'tfquiz.css' %}" />
-  </head>
-
-  <body>
-    {% include 'quiz_header2.html' %}
-    <main>
-      <div class="question-container">
-        <h1>Q3. 예금은 누구나 다 가입할 수 있다.</h1>
-      </div>
-      <div class="wrap-container">
-        <button class="o-btn">O</button>
-        <img src="{% static 'images/char1.png' %}" alt="char" />
-        <button class="x-btn">X</button>
-      </div>
-    </main>
-    <aside class="sidebar">
-      <div class="top-num"><p class="progress-num">3/5</p></div>
-
-      <div class="progress">
-        <span class="progress-step active"></span>
-        <span class="progress-step active"></span>
-        <span class="progress-step active"></span>
-        <span class="progress-step"></span>
-        <span class="progress-step"></span>
-      </div>
-    </aside>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>문제풀이 - OX</title>
+  <link rel="stylesheet" href="{% static 'tfquiz.css' %}" />
+</head>
+<body>
+  {% include 'quiz_header2.html' %}
+  <main>
+    <div id="question-container" class="question-container">
+      <h1 id="question-text">여기에 질문이 표시됩니다.</h1>
+      <input type="hidden" id="question-id" value="">
+<<<<<<< HEAD
+=======
+      <input type="hidden" id="subjects" value="{{ subjects|default:'1' }}">
+      <input type="hidden" id="chapter" value="{{ chapter|default:'1' }}">
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
+    </div>
+    <div class="wrap-container">
+      <button class="o-btn" onclick="submitAnswer('O')">O</button>
+      <img src="{% static 'images/char1.png' %}" alt="char" />
+      <button class="x-btn" onclick="submitAnswer('X')">X</button>
+    </div>
+  </main>
+  <aside class="sidebar">
+    <div class="top-num"><p class="progress-num">0/5</p></div>
+    <div class="progress">
+      <span class="progress-step"></span>
+      <span class="progress-step"></span>
+      <span class="progress-step"></span>
+      <span class="progress-step"></span>
+      <span class="progress-step"></span>
+    </div>
+  </aside>
+  <script src="{% static 'tfquiz.js' %}"></script>
+</body>
+<<<<<<< HEAD
 </html>
+=======
+
+<script>
+  const initialData = {
+    subjects: "{{ subject }}", // Django 템플릿 변수를 사용하여 초기 데이터 설정
+    chapter: "{{ chapter }}",
+    characters: "{{ characters }}"
+  };
+</script>
+</html>
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
