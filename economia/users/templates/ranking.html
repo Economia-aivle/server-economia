@@ -5,8 +5,12 @@
 </head>
 <body>
   <div id="ranking_head_container">
-    <span  id="subject"># 금융</span>
-    <span  id="title">RANKING</span>
+    <select class="dropdown" id="subject_dropdown">
+      {% for subject in subjects %}
+        <option value="{{ subject.id }}">{{ subject.subjects }}</option>
+      {% endfor %}
+    </select>
+    <div id="title">RANKING</div>
   </div>
   <table>
     <thead>
@@ -15,46 +19,58 @@
         <th>닉네임</th>
         <th>학교</th>
         <th>스코어</th>
-        <th>날짜</th>
     </tr>
     </thead>
-    <tbody>
-    <tr>
-        <td>1</td>
-        <td>player1</td>
-        <td>00고등학교</td>
-        <td>300점</td>
-        <td>06.25.</td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>player2</td>
-        <td>00고등학교</td>
-        <td>261점</td>
-        <td>06.24.</td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td>player3</td>
-        <td>00고등학교</td>
-        <td>20점</td>
-        <td>06.29.</td>
-    </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
+    <tbody id="ranking_table_body">
+      {% for score in ranked_scores %}
+        <tr>
+          <td>{{ score.rank }}</td>
+          <td>{{ score.nickname }}</td>
+          <td>{{ score.school }}</td>
+          <td>{{ score.score }}점</td>
+        </tr>
+      {% endfor %}
     </tbody>
   </table>
-
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropdown = document.getElementById('subject_dropdown');
+      
+      function fetchScores(subjectId) {
+          const url = `/users/api/scores/${subjectId}`;
+          
+          fetch(url)
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                  }
+                  return response.json();
+              })
+              .then(data => {
+                  const tbody = document.getElementById('ranking_table_body');
+                  tbody.innerHTML = '';
+                  data.forEach(score => {
+                      const row = document.createElement('tr');
+                      row.innerHTML = `
+                          <td>${score.rank}</td>
+                          <td>${score.nickname}</td>
+                          <td>${score.school}</td>
+                          <td>${score.score}점</td>
+                      `;
+                      tbody.appendChild(row);
+                  });
+              })
+              .catch(error => console.error('Error fetching data:', error));
+      }
+  
+      dropdown.addEventListener('change', function() {
+          const subjectId = this.value;
+          fetchScores(subjectId);
+      });
+      
+      // 페이지 로드시 첫 번째 과목의 ID로 데이터 로드
+      const firstSubjectId = dropdown.value;
+      fetchScores(firstSubjectId);
+  });
+  </script>
 </body>

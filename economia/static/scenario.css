@@ -1,3 +1,112 @@
+<<<<<<< HEAD
+body {
+    background-color: rgba(224.000001847744, 244.0000006556511, 255, 1); /* 배경색 */
+	justify-content: center;
+	display: flex;
+    align-items: center;
+	margin: 0;
+}
+
+.scenario_container { 
+	box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);
+	background-color:rgba(255, 255, 255, 1);
+	width:90%;
+	height:900px;
+	position:absolute;
+	display: flex;
+	top:150px;
+	justify-content: center;
+	align-items: center;
+	border:13px solid rgba(255, 255, 255, 1);
+	border-top-left-radius:15px;
+	border-top-right-radius:15px;
+	border-bottom-left-radius:15px;
+	border-bottom-right-radius:15px;
+}
+
+.title { 
+	color:rgba(0, 0, 0, 1);
+	width:50%;
+	height:49px;
+	position:absolute;
+	top:10px;
+	text-align: center;
+	font-size:36px;
+	letter-spacing:0;
+}
+
+.contents { 
+	color:rgba(0, 0, 0, 1);
+	width:86%;
+	height:80%;
+	max-width: 1600px;
+	max-height: 850px;
+	overflow: auto; /* 내용이 넘칠 경우 스크롤바 표시 */
+	position:absolute;
+	top:70px;
+	font-family:Noto Sans;
+	text-align:left;
+	font-size:32px;
+	letter-spacing:0;
+}
+
+.answer_box {
+	background-color:#E0F4FF;
+	width:90%;
+	height:160px;
+	position:absolute;
+	display:flex;
+	top:1100px;
+	border-top-left-radius:15px;
+	border-top-right-radius:15px;
+	border-bottom-left-radius:15px;
+	border-bottom-right-radius:15px;
+}
+
+.answer_box {
+	border:13px solid #ffffff;
+}
+
+.scenario_answer {
+	width:100%;
+	height:140px;
+	font-size: 25px;
+	border:13px solid #ffffff;
+}
+
+.button_box{
+	background-color:#E0F4FF;
+	width:90%;
+	height:150px;
+	position:absolute;
+	display:flex;
+	justify-content: flex-end;
+	top:1300px;
+}
+
+.save_button,.submit_button{
+	border-radius:15px;
+	border: none; /* 버튼의 기본 테두리 제거 */
+	width: 5%;
+	height: 30%;
+	top : 0px;
+	margin-left: 20px;
+	color : #fff;
+	float: right;
+	background-color: #39A7FF;
+	cursor: pointer; /* 마우스 커서 모양 변경 */
+}
+
+.save_button:hover,.submit_button:hover {
+	background: #0056b3; /* 마우스를 올렸을 때 버튼의 배경색 */
+	transform: scale(1.05); /* 마우스를 올렸을 때 버튼의 크기 확대 */
+}
+
+.save_button:active, .submit_button:active {
+	background: #004080; /* 버튼을 눌렀을 때의 배경색 */
+	transform: scale(0.95); /* 버튼을 눌렀을 때 약간 작아지게 */
+}
+=======
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
 
 body {
@@ -110,3 +219,4 @@ body {
     background: #004080; /* 버튼을 눌렀을 때의 배경색 */
     transform: scale(0.95); /* 버튼을 눌렀을 때 약간 작아지게 */
 }
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3

@@ -1,10 +1,70 @@
 <!DOCTYPE html>
 {% load static %}
+<<<<<<< HEAD
+<html lang="en">
+=======
 <html lang="ko">
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'find_account_id.css' %}">
     <title>아이디 찾기</title>
+<<<<<<< HEAD
+</head>
+<body>
+    <form class="container" id="find-id-form" onsubmit="sendCode(event)">
+        <div class="white_box">
+            <form>
+                {% csrf_token %}
+                <span class="title_find_id">아이디 찾기</span>
+                    <input type="email" id="email" name="email" class="email_input" placeholder="가입된 이메일">
+                <div class="line1"></div>
+                <button type="button" class="resend_btn" onclick="sendCode()">재전송</button>
+                <input type="text" id="code" class="code_input" placeholder="인증번호">
+                <div class="line2"></div>
+                <button type="button" class="check_btn" onclick="verifyCode()">인증하기</button>
+            </form>
+        </div>
+    </form>
+    <script>
+        async function sendCode(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+
+            const response = await fetch("/users/send_code", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: `email=${email}`
+            });
+
+            const data = await response.json();
+            alert(data.message);
+        }
+
+        async function verifyCode() {
+            const email = document.getElementById('email').value;
+            const code = document.getElementById('code').value;
+
+            const response = await fetch("/users/verify_code", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: `email=${email}&code=${code}`
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                window.location.href = `/users/show_id?username=${data.username}`;
+            } else {
+                alert(data.error);
+            }
+        }
+=======
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         .timer {
@@ -114,6 +174,7 @@
                 });
             });
         });
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     </script>
 </body>
 </html>

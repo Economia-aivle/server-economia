@@ -27,23 +27,29 @@ body {
 }
 
 .search_btn {
-    height: 40px;
-    padding: 0 20px;
-    cursor: pointer;
-    background-image: url('search.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    outline: none;
+    background-color: #87CEEB; /* 하늘색 배경 */
+    color: white; /* 텍스트 색상 */
     border: none;
-    background-color: transparent;
-    margin-left: 30px;
-    margin-top: 15px;
+    padding: 10px 20px; /* 상하 10px, 좌우 20px 패딩 추가 */
+    font-size: 24px; /* 글자 크기 조절 */
+    width: 150px; /* 버튼 너비 조절 */
+    height: 50px; /* 버튼 높이 조절 */
+    margin-top: 40px; /* 위쪽에 40픽셀의 마진 추가 */
+    margin-right: 30px; /* 오른쪽에 30픽셀의 마진 추가 */
+    margin-bottom: 20px; /* 아래쪽에 20픽셀의 마진 추가 */
+    margin-left: 40px; /* 왼쪽에 40픽셀의 마진 추가 */
+    border-radius: 25px; /* 버튼 모서리를 둥글게 */
 }
+
+.search_btn:hover {
+    background-color: #FFFFFF; /* 흰색 배경 */
+    color: #87CEEB; /* 하늘색 텍스트 */
+}
+
 
 .white_box {
     width: 80%;
-    max-height: 700px
+    max-height: 700px;
     max-width: 1000px;
     background-color: white;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

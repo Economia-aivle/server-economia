@@ -1,6 +1,9 @@
 
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+<<<<<<< HEAD
+=======
 
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 main{
 	background-color:rgba(224.000001847744, 244.0000006556511, 255, 1);
 	width:100%;
@@ -35,11 +38,18 @@ body{
 	
 }
 .character {
+<<<<<<< HEAD
+    margin: 0% auto 3% auto;
+    height: 246px;
+    width: 245px;
+    text-align: center;
+=======
     margin: 0% auto 5% auto;
     height: 246px;
     width: 245px;
     text-align: center;
 	cursor: url('images/sword.png') , auto;
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 }
 .character img{
     height: 246px;
@@ -96,8 +106,13 @@ body{
 }
 
 .progress-step {
+<<<<<<< HEAD
+	width: 100px;
+	height: 100px;
+=======
 	width: 60px;
 	height: 60px;
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 	background-color: white;
 	border-radius: 50%;
 	margin: 10px 0;
@@ -120,6 +135,9 @@ body{
 	border-bottom-width:1px; 
     border-bottom-style:solid;
     border-bottom-color:black;
+<<<<<<< HEAD
+}
+=======
 }
 
 .next-btn{
@@ -169,3 +187,4 @@ body{
 	background-color: #4caf50;
 	width: 100%; /* Start with full HP */
   }
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
