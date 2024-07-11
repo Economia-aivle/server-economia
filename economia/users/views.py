@@ -15,18 +15,11 @@ from django.conf import settings
 from django.contrib import messages
 from rest_framework.decorators import api_view
 from .form import PlayerForm
-from .models import Player, Notice, Characters, VerificationCode, Subjects, SubjectsScore
+from .models import Notice
 from .serializers import CreateCharacterSerializer, SubjectsSerializer, SubjectsScoreSerializer
 import json
 import random
-from django.http import JsonResponse, HttpResponseBadRequest
-from django.db import IntegrityError
-from django.conf import settings
-from django.contrib import messages
-import json
-import random
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
+import string
 from rest_framework.pagination import PageNumberPagination
 from economia.models import *
 from .serializers import *
@@ -62,46 +55,7 @@ def delete_account(request, player_id):
 
     return render(request, 'delete_account.html', {'player_id': player_id})
 
-def find_id(request):
-    return render(request, 'find_id.html')
 
-def send_code(request):
-    email = request.POST.get('email')
-    code = get_random_string(length=6, allowed_chars='1234567890')
-    verification_codes[email] = code
-
-    send_mail(
-        '인증번호 발송',
-        f'인증번호는 {code} 입니다.',
-        'your_email@example.com',
-        [email],
-        fail_silently=False,
-    )
-
-    return JsonResponse({'message': '인증번호가 발송되었습니다.'})
-
-def verify_code(request):
-    email = request.POST.get('email')
-    code = request.POST.get('code')
-
-    if verification_codes.get(email) == code:
-        user = User.objects.get(email=email)
-        return JsonResponse({'success': True, 'username': user.username})
-    else:
-        return JsonResponse({'success': False, 'error': '인증번호가 올바르지 않습니다.'})
-
-def show_id(request):
-    username = request.GET.get('username')
-    return render(request, 'show_id.html', {'username': username})
-
-def notice(request):
-    return render(request, 'notice.html')
-
-def char_create(request):
-    return render(request, 'char_create.html')
-
-def char_delete(request):
-    return render(request, 'char_delete.html')
 
 def check_username(request):
     if request.method == 'POST':
@@ -134,21 +88,6 @@ def register(request):
         Player.objects.create(player_id=user_id, password=password, email=email, player_name=name, school=school_name, nickname=nickname, admin_tf=True)
         return JsonResponse({'success': '회원가입이 완료되었습니다.'})
     return JsonResponse({'error': 'Invalid request'}, status=400)
-
-def signup(request):
-    return render(request, 'signup.html')
-
-def find_account_pwd(request):
-    return render(request, 'find_account_pwd.html')
-
-def find_account_id(request):
-    return render(request, 'find_account_id.html')
-
-def find_account(request):
-    return render(request, 'find_account.html')
-
-def check_id(request):
-    return render(request, 'check_id.html')
 
 @csrf_exempt
 def get_character_view(request, player_id):
@@ -311,8 +250,8 @@ def find_account_id(request):
             VerificationCode.objects.update_or_create(email=email, defaults={'code': verification_code})
 
             send_mail(
-                'Your Verification Code',
-                f'Your verification code is {verification_code}.',
+                'Economia 아이디 찾기 인증 코드',
+                f'당신의 인증 코드는 {verification_code} 입니다.',
                 settings.DEFAULT_FROM_EMAIL,
                 [email],
                 fail_silently=False,
@@ -324,7 +263,14 @@ def find_account_id(request):
                 stored_code = VerificationCode.objects.get(email=email).code
                 if stored_code == code:
                     user = Player.objects.get(email=email)
+                    verification = VerificationCode.objects.get(email=email, code=code)
+                    if not verification.is_expired():
+                        verification.delete()  # 코드 삭제
+                    else:
+                        verification.delete()
+                        return JsonResponse({'status': 'error',  'message': '유효하지 않은 인증 코드입니다.'})   
                     return JsonResponse({'status': 'success', 'user_id': user.player_id})
+                    
                 else:
                     return JsonResponse({'status': 'error', 'message': '잘못된 인증 코드입니다.'})
             except VerificationCode.DoesNotExist:
@@ -334,3 +280,52 @@ def find_account_id(request):
 
 def check_id(request, player_id):
     return render(request, 'check_id.html', {'player_id': player_id})
+
+
+def send_verification_email(email, code):
+    send_mail(
+        'Economia 비밀번호 찾기 인증 코드',
+        f'당신의 인증 코드는 {code} 입니다.',
+        settings.DEFAULT_FROM_EMAIL,
+        [email],
+        fail_silently=False,
+    )
+
+def find_account_pwd(request):
+    if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        email = request.POST.get('email', '')
+        code = request.POST.get('code', '')
+        player_id = request.POST.get('player_id', '')
+        action = request.POST.get('action', '')
+
+        if action == 'resend':
+            verification_code = generate_verification_code()
+            VerificationCode.objects.update_or_create(email=email, defaults={'code': verification_code})
+
+            send_verification_email(email, verification_code)
+            return JsonResponse({'status': 'success', 'message': '인증 코드가 전송되었습니다.'})
+        
+        elif action == 'check':
+            try:
+                stored_code = VerificationCode.objects.get(email=email).code
+                if stored_code == code:
+                    user = Player.objects.get(email=email, player_id=player_id)
+                    verification = VerificationCode.objects.get(email=email, code=code)
+                    if not verification.is_expired():
+                    # 인증 코드가 유효한 경우
+                        verification.delete()  # 코드 삭제
+                    else:
+                        verification.delete()  # 코드 삭제
+                        return JsonResponse({'status': 'error',  'message': '유효하지 않은 인증 코드입니다.'})   
+                    return JsonResponse({'status': 'success', 'user_id': user.player_id, 'pwd': user.pwd})
+                else:
+                    return JsonResponse({'status': 'error', 'message': '잘못된 인증 코드입니다.'})
+            except VerificationCode.DoesNotExist:
+                return JsonResponse({'status': 'error', 'message': '이메일로 발송된 인증 코드가 없습니다.'})
+            except Player.DoesNotExist:
+                return JsonResponse({'status': 'error', 'message': '해당 이메일과 플레이어 ID를 가진 사용자가 존재하지 않습니다.'})
+
+    return render(request, 'find_account_pwd.html')
+
+def check_password(request, pwd):
+    return render(request, 'check_password.html', {'pwd': pwd})

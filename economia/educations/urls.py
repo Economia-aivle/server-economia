@@ -9,7 +9,7 @@ from . import views
 >>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 app_name = 'educations'
 urlpatterns = [
-    path('level_choice/<int:characters>/<str:subject>/<int:chapter>/', views.level_choice, name='level_choice'),
+    path('level_choice/<int:characters>/<str:subject>/<int:chapter>', views.level_choice, name='level_choice'),
     path('chapter_summary', views.chapter_summary, name='chapter_summary'),
     path('blank/<int:characters>/<str:subject>/<int:chapter>/<int:num>', views.blank, name='blank'),
     path('multiple/<int:characters>/<str:subject>/<int:chapter>/<int:num>', views.multiple, name='multiple'),
@@ -39,4 +39,5 @@ urlpatterns = [
     path('getSubjectDatas/<str:subjects>/', views.getSubjectDatas, name='get_subject_datas'),
     path('chapter/<str:subjects>/', views.chapter, name='chapter'),
     path('getStageDatas/<int:characters>/', views.getStageDatas, name='StageDatas'),
+    path('update_stage/', views.update_stage, name='update_stage'),
 ]

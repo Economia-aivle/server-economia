@@ -6,6 +6,8 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.utils import timezone
+import datetime
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 class Player(AbstractBaseUser):
@@ -200,3 +202,10 @@ class VerificationCode(models.Model):
 
     def __str__(self):
         return f'{self.email}: {self.code}'
+
+    def is_expired(self):
+        # 현재 시간과 생성 시간을 비교하여 3분 이내면 False 반환, 그렇지 않으면 True 반환
+        expiration_time = self.created_at + datetime.timedelta(minutes=3)
+        now = timezone.now()
+        return now > expiration_time
+    
