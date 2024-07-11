@@ -141,3 +141,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'tmdxor00@gmail.com'
 EMAIL_HOST_PASSWORD = 'diat tzmz zlne iydv'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db' # 데이터베이스 세션 백엔드 사용
+SESSION_SAVE_EVERY_REQUEST = True

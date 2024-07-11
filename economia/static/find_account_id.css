@@ -1,118 +1,41 @@
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
 body {
     background-color: rgba(224, 244, 255, 1);
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
 .container {
     overflow: hidden;
     background-color: rgba(224, 244, 255, 1);
-    width: 1920px;
-    height: 1080px;
-    position: absolute;
 }
 
 .white_box {
     background-color: rgba(255, 255, 255, 1);
     width: 750px;
-    height: 860px;
+    height: 700px;
     position: absolute;
     left: 585px;
     top: 110px;
     border-radius: 20px;
 }
 
-.email_input {
-    width: 380px;
-    height: 36px;
-    position: absolute;
-    left: 674px;
-    top: 450px;
-    border: none;
-    border-radius: 5px;
-    padding: 8px;
-    font-size: 30px;
-    outline: none;
-    letter-spacing: 0;
-    cursor: text;
-}
 
-.line1 {
-    width: 390px;
-    height: 0px;
-    position: absolute;
-    left: 673px;
-    top: 520px;
-    border: 3px solid rgba(217, 217, 217, 1);
-}
 
-.code_input {
-    width: 300px;
+.input_container input {
+    width: 400px;
     height: 36px;
-    position: absolute;
     left: 672px;
     top: 545px;
     border: none;
-    border-radius: 5px;
     padding: 8px;
     font-size: 30px;
     outline: none;
     letter-spacing: 0;
     cursor: text;
-}
-
-.line2 {
-    width: 390px;
-    height: 0px;
-    position: absolute;
-    left: 673px;
-    top: 615px;
-    border: 3px solid rgba(217, 217, 217, 1);
-}
-
-.title_find_id {
-    color: rgba(0, 0, 0, 1);
-    width: 420px;
-    height: 100px;
-    position: absolute;
-    left: 665px;
-    top: 200px;
-    font-family: Inter;
-    text-align: left;
-    font-size: 50px;
-    font-weight: bold;
-    letter-spacing: 0;
-}
-
-button.resend_btn, button.check_btn {
-    box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.25);
-    background-color: rgba(57, 167, 255, 1);
-
-    position: absolute;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-    border-bottom-left-radius: 30px;
-    border-bottom-right-radius: 30px;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    transition: background-color 0.1s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-
-button.resend_btn {
-    width: 136px;
-    height: 57px;
-    left: 1097px;
-    top: 450px;
-}
-
-button.check_btn {
-    width: 500px;
-    height: 80px;
-    top: 750px;
-    left: 700px;
+    border-bottom-width:3px;
+    border-bottom-style:solid;
+    border-bottom-color:rgba(217, 217, 217, 1);
+    margin-right: 30px;
 }
 
 button:active {
@@ -131,4 +54,65 @@ button:active {
     font-size: 24px;
     font-weight: bold;
     letter-spacing: 0;
+}
+
+.title_find_id {
+    color: rgba(0, 0, 0, 1);
+    width: 420px;
+    height: 100px;
+    text-align: left;
+    font-size: 50px;
+    font-weight: bold;
+    letter-spacing: 0;
+    padding-bottom: 30px;
+}
+.input_container{
+    margin-left: 80px;
+    margin-top:  80px;
+}
+.input_container input{
+    margin-bottom: 30px;
+}
+
+#resend-btn{
+    box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.25);
+    background-color: rgba(57, 167, 255, 1);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: background-color 0.1s;
+    width: 136px;
+    height: 57px;
+    color: rgba(255, 255, 255, 1);
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 0;
+}
+
+#check-btn{
+    box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.25);
+    background-color: rgba(57, 167, 255, 1);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: background-color 0.1s;
+    width: 500px;
+    height: 80px;
+    color: rgba(255, 255, 255, 1);
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 0;
+    margin-left: 45px;
+    margin-top: 30px;
+
 }

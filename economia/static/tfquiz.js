@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function() {
     loadQuestion();
 });
@@ -5,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
 let questionCount = 0;
 const maxQuestions = 5;
 const usedQuestionIds = [];
+let correctCount = 0; // 클라이언트 측에서 맞춘 문제 개수
 
 function loadQuestion() {
     if (questionCount >= maxQuestions) {
@@ -57,12 +59,42 @@ function submitAnswer(answer) {
     .then(data => {
         if (data.is_correct) {
             alert('정답입니다!');
+            correctCount++;
         } else {
             alert('오답입니다. 설명: ' + data.explanation);
         }
         questionCount++;
         updateProgressBar();
-        loadQuestion();
+        console.log(correctCount)
+        if (correctCount === 5) {
+            document.querySelector('.wrap-container').style.display = 'none';
+            document.querySelector('.wrong-container').style.display = 'block';
+            document.getElementById('question-text').style.display = 'none';
+            // 모든 문제를 맞췄을 때 Stage 모델 업데이트 요청
+            fetch('/educations/update_stage/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: new URLSearchParams({
+                    characters: initialData.characters,
+                    subjects: initialData.subjects,
+                    chapter: initialData.chapter
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('모든 문제를 맞췄습니다!');
+                } else {
+                    alert('Stage 업데이트 중 오류가 발생했습니다.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        } else {
+            loadQuestion();
+        }
     })
     .catch(error => console.error('Error:', error));
 }
@@ -93,3 +125,5 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+

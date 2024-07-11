@@ -137,28 +137,30 @@ def tf_quiz_view(request):
             "is_correct": is_correct,
             "explanation": question.explanation if not is_correct else None
         }
-        if is_correct:
-            correct_count = request.session.get('correct_count', 0) + 1
-            request.session['correct_count'] = correct_count
-            print(correct_count)
-
-            if correct_count == 5:
-                # 모든 문제를 맞췄을 때 Stage 모델 업데이트
-                try:
-                    stage = Stage.objects.get(characters_id=characters, subject=subjects, chapter=chapter)
-                    stage.chapter_sub = 2
-                    stage.save()
-                except Stage.DoesNotExist:
-                    pass  # Stage가 없는 경우 pass
-
-                # 세션 초기화
-                request.session['correct_count'] = 0
-
-                return JsonResponse({'status': 'complete', 'message': '모든 문제를 맞췄습니다!'})
-
-            return JsonResponse(response_data, status=status.HTTP_200_OK)
+        
+        return JsonResponse(response_data, status=status.HTTP_200_OK)
     else:
         return JsonResponse({"error": "Invalid request method"}, status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+def update_stage(request):
+    if request.method == 'POST':
+        characters = request.POST.get('characters')
+        subjects = request.POST.get('subjects')
+        chapter = request.POST.get('chapter')
+
+        if not characters or not subjects or not chapter:
+            return JsonResponse({"error": "Characters, subjects, and chapter are required."}, status=400)
+
+        try:
+            stage = Stage.objects.get(characters_id=characters, subject=subjects, chapter=chapter)
+            stage.chapter_sub = 2
+            stage.save()
+            return JsonResponse({'status': 'success', 'message': 'Stage updated successfully!'})
+        except Stage.DoesNotExist:
+            return JsonResponse({"error": "Stage not found."}, status=404)
+    else:
+        return JsonResponse({"error": "Invalid request method"}, status=400)
 
 def tf_quiz_page(request, characters, subject, chapter):
     context = {

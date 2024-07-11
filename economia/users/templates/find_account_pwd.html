@@ -3,21 +3,136 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'find_account_pwd.css' %}" />
-    <title>Title</title>
+    <title>비밀번호 재설정</title>
+    <link rel="stylesheet" href="{% static 'find_account_pwd.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        .timer {
+            display: none;
+            font-size: 16px;
+            color: #333;
+            margin-top: 10px;
+        }
+        .timer.active {
+            display: block;
+        }
+        .timer-message {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
 </head>
+
 <body>
     <div class="container">
-        <div class="white_box"></div>
-        <input type="email" class="id_input" placeholder="가입된 아이디">
-        <div class="line1"></div>
-        <input type="email" class="email_input" placeholder="가입된 이메일">
-        <div class="line2"></div>
-        <input type="text" class="code_input" placeholder="인증번호">
-        <span class="title_find_pwd">비밀번호 찾기</span>
-        <div class="line3"></div>
-        <button class="resend_btn"><span class="resend_str">재전송</span></button>
-        <button class="check_btn"><span class="check_str">인증하기</span></button>
+        <div class="white_box">
+            <div class="input_container">
+                <h2 class="title_find_id">비밀번호 재설정</h2>
+                <input type="email" class="email_input" id="email" placeholder="가입된 이메일">
+                <button id="resend-btn">전송</button><br>
+                <input type="text" class="id_input" id="player_id" placeholder="플레이어 ID"><br>
+                <input type="text" class="code_input" id="code" placeholder="인증 코드"><br>
+                <div id="message"></div>
+                <div class="timer" id="timers">남은 시간: <span id="timer"></span></div>
+                <div class="timer-message" id="timer-message"></div> 
+                <button id="check-btn">인증하기</button>
+
+            </div>
+        </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            var csrftoken = getCookie('csrftoken');
+            var countdown; // 타이머 객체 변수
+
+            $('#resend-btn').click(function() {
+                var email = $('#email').val();
+                if (email) {
+                    $.ajax({
+                        type: 'POST',
+                        headers: {'X-Requested-With': 'XMLHttpRequest'},
+                        data: {'email': email, 'action': 'resend', 'csrfmiddlewaretoken': csrftoken},
+                        success: function(response) {
+                            $('#message').text(response.message);
+                            startTimer(180); // 3분 타이머 시작
+                            $('#timers').addClass('active');
+                            $('#resend-btn').prop('disabled', true);
+                        },
+                        error: function(xhr, status, error) {
+                            $('#message').text('재전송 요청 중 오류가 발생했습니다.');
+                        }
+                    });
+                } else {
+                    $('#message').text('이메일을 입력하세요.');
+                }
+            });
+
+            $('#check-btn').click(function() {
+                var email = $('#email').val();
+                var code = $('#code').val();
+                var player_id = $('#player_id').val();
+                if (email && code && player_id) {
+                    $.ajax({
+                        type: 'POST',
+                        headers: {'X-Requested-With': 'XMLHttpRequest'},
+                        data: {'email': email, 'code': code, 'player_id': player_id, 'action': 'check', 'csrfmiddlewaretoken': csrftoken},
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                var pwd = response.pwd;
+                                var redirectUrl = "{% url 'users:check_password' pwd='pwd' %}".replace('pwd', pwd);
+                                window.location.href = redirectUrl;
+                            } else {
+                                $('#message').text(response.message);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Ajax 오류:', error);
+                            $('#message').text('서버와의 통신 중 문제가 발생했습니다.');
+                        }
+                    });
+                } else {
+                    $('#message').text('이메일, 인증 코드, 플레이어 ID를 모두 입력하세요.');
+                }
+            });
+
+            // 타이머 시작 함수
+            function startTimer(duration) {
+                var timer = duration, minutes, seconds;
+                countdown = setInterval(function () {
+                    minutes = parseInt(timer / 60, 10);
+                    seconds = parseInt(timer % 60, 10);
+
+                    minutes = minutes < 10 ? "0" + minutes : minutes;
+                    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                    $('#timer').text(minutes + ":" + seconds);
+
+                    if (--timer < 0) {
+                        clearInterval(countdown);
+                        $('#timer').removeClass('active');
+                        $('#message').text('인증 시간이 만료되었습니다. 다시 시도해주세요.');
+                        $('#resend-btn').prop('disabled', false);
+                    }
+                }, 1000);
+            }
+
+            // CSRF 토큰을 쿠키에서 가져오는 함수
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        });
+    </script>
 </body>
 </html>

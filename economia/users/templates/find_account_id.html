@@ -3,45 +3,90 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'find_account_id.css' %}" />
+    <link rel="stylesheet" href="{% static 'find_account_id.css' %}">
     <title>아이디 찾기</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .timer {
+            display: none;
+            font-size: 16px;
+            color: #333;
+            margin-top: 10px;
+        }
+        .timer.active {
+            display: block;
+        }
+        .timer-message {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <div class="white_box"></div>
-        <form id="find-id-form" method="post" action="{% url 'users:find_account_id' %}">
-            {% csrf_token %}
-            <input type="email" name="email" class="email_input" placeholder="가입된 이메일" required>
-            <div class="line1"></div>
-            <input type="text" name="code" class="code_input" placeholder="인증번호">
-            <div class="line2"></div>
-            <span class="title_find_id">아이디 찾기</span>
-            <button type="button" id="resend-btn" class="resend_btn"><span class="resend_str">전송</span></button>
-            <button type="button" id="check-btn" class="check_btn"><span class="check_str">인증하기</span></button>
-        </form>
-    </div>
+        <div class="white_box">
+            <form id="find-id-form" method="post" action="{% url 'users:find_account_id' %}">
+                {% csrf_token %}
+                <div class="input_container">
+                    <h2 class="title_find_id">아이디 찾기</h2>
+                    <input type="email" name="email" class="email_input" placeholder="가입된 이메일" required>
+                    <button type="button" id="resend-btn" class="resend_btn"><span class="resend_str">전송</span></button><br>
+                    <input type="text" name="code" class="code_input" placeholder="인증번호" required><br>
+                    <div id="message"></div>
+                    <div class="timer" id="timer">남은 시간: <span id="time-left"></span></div>
+                    <div class="timer-message" id="timer-message"></div>
+                    <button type="button" id="check-btn" class="check_btn"><span class="check_str">인증하기</span></button>
 
-    <div id="result-container"></div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script>
         $(document).ready(function() {
-            $('#resend-btn').click(function() {
-                $.ajax({
-                    type: 'POST',
-                    url: "{% url 'users:find_account_id' %}",
-                    data: {
-                        email: $('input[name="email"]').val(),
-                        action: 'resend',
-                        csrfmiddlewaretoken: '{{ csrf_token }}'
-                    },
-                    success: function(response) {
-                        alert(response.message);
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Error: ' + error);
+            var timerInterval;
+            var timeLeft = 180;  // 3분 타이머 설정 (180초)
+
+            function startTimer() {
+                $('#timer').addClass('active');
+                timerInterval = setInterval(function() {
+                    timeLeft--;
+                    var minutes = Math.floor(timeLeft / 60);
+                    var seconds = timeLeft % 60;
+                    $('#time-left').text(minutes + ':' + (seconds < 10 ? '0' : '') + seconds);
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        $('#timer').removeClass('active');
+                        $('#message').text('인증 시간이 만료되었습니다. 다시 시도해주세요.');
+                        $('#resend-btn').prop('disabled', false);
                     }
-                });
+                }, 1000);
+            }
+
+            $('#resend-btn').click(function() {
+                var email = $('input[name="email"]').val();
+                if (email) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "{% url 'users:find_account_id' %}",
+                        data: {
+                            email: email,
+                            action: 'resend',
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                            $('#message').text(response.message);
+                            $('#resend-btn').prop('disabled', true);
+                            timeLeft = 180;  // 타이머 초기화
+                            startTimer();  // 타이머 시작
+                        },
+                        error: function(xhr, status, error) {
+                            $('#message').text('재전송 요청 중 오류가 발생했습니다.');
+                        }
+                    });
+                } else {
+                    $('#message').text('이메일을 입력하세요.');
+                }
             });
 
             $('#check-btn').click(function() {
@@ -56,19 +101,15 @@
                     },
                     success: function(response) {
                         if (response.status === 'success') {
-                            if (response.user_id) {
-                                var player_id = response.user_id;
-                                var redirectUrl = "{% url 'users:check_id' player_id='player_id' %}".replace('player_id', player_id);
-                                window.location.href = redirectUrl;
-                            } else {
-                                alert('사용자 아이디를 찾을 수 없습니다.');
-                            }
+                            var player_id = response.user_id;
+                            var redirectUrl = "{% url 'users:check_id' player_id='player_id' %}".replace('player_id', player_id);
+                            window.location.href = redirectUrl;
                         } else {
-                            alert(response.message);
+                            $('#message').text(response.message);
                         }
                     },
                     error: function(xhr, status, error) {
-                        alert('Error: ' + error);
+                        $('#message').text('Error: ' + error);
                     }
                 });
             });
