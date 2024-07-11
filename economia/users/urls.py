@@ -1,49 +1,32 @@
 from django.urls import path, include
 from django.contrib import admin
 from . import views
-<<<<<<< HEAD
-from django.urls import include
 
 app_name = 'users'
+
 urlpatterns = [
-
-    path('notice', views.notice, name='notice'),
-    path('signup', views.signup, name='signup'),
-    path('find_account_pwd', views.find_account_pwd, name='find_account_pwd'), 
-    path('find_account_id', views.find_account_id, name='find_account_id'),
-    path('find_account', views.find_account, name='find_account'),
-    path('check_id', views.check_id, name='check_id'),
-    path('char_create', views.char_create, name='char_create'),
-    path('char_delete', views.char_delete, name='char_delete'),
-    path('ranking', views.ranking, name='ranking'),
-    path('api/subjects', views.getSubjectsDatas, name='subjects'),
-    path('api/scores/<int:subject_id>', views.getSubjectsScoreDatas, name='subjects_score'),
-    path('delete_account/<str:player_id>/', views.delete_account, name='delete_account'),
-    
-    path('success', views.success, name='success'),
-    path('check_username', views.check_username, name='check_username'),
-    path('register', views.register, name='register'),  # 회원가입 페이지
-    path('send_code', views.send_code, name='send_code'),
-    path('show_id', views.show_id, name='show_id'),
-    path('verify_code', views.verify_code, name='verify_code'),
-    path('notice', views.notice, name='notice'),
-    path('delete_account', views.delete_account, name='delete_account'),
+    path('signup/', views.signup, name='signup'),
+    path('find/account/pwd/', views.find_account_pwd, name='find_account_pwd'),
+    path('find/account/id/', views.find_account_id, name='find_account_id'),
+    path('find/account/', views.find_account, name='find_account'),
+    path('check/id/<str:player_id>/', views.check_id, name='check_id'),
+    path('ranking/', views.ranking, name='ranking'),
+    path('char/create/', views.character_create_view, name='char_create'),
+    path('char/delete/', views.char_delete, name='char_delete'),
+    path('char/update/', views.character_update_view, name='char_update'),
+    path('get/character/<int:player_id>/', views.get_character_view, name='get_character'),
+    path('login/', views.admin_login, name='admin_login'),
+    path('dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('api/login/', views.AdminLoginAPI.as_view(), name='admin_login_api'),
+    path('notice/', views.notice_list, name='notice_list'),
+    path('notice/<int:notice_id>/', views.notice_detail, name='notice_detail'),
+    path('api/subjects/', views.getSubjectsDatas, name='subjects'),
+    path('api/scores/<int:subject_id>/', views.getSubjectsScoreDatas, name='subjects_score'),
+    path('delete/account/<str:player_id>/', views.delete_account, name='delete_account'),
+    path('success/', views.success, name='success'),
+    path('check/username/', views.check_username, name='check_username'),
+    path('register/', views.register, name='register'),
+    path('send/code/', views.send_code, name='send_code'),
+    path('show/id/', views.show_id, name='show_id'),
+    path('verify/code/', views.verify_code, name='verify_code'),
 ]
-=======
-
-app_name = 'users'
-urlpatterns = [ 
-
-    path('signup', views.signup, name='signup'),
-    path('find_account_pwd', views.find_account_pwd, name='find_account_pwd'),
-    path('find_account_id', views.find_account_id, name='find_account_id'),
-    path('find_account', views.find_account, name='find_account'),
-    path('check_id/<str:player_id>', views.check_id, name='check_id'),
-    path('ranking', views.ranking, name='ranking'),
-    path('char_create/', views.character_create_view, name='char_create'),
-    path('get_character/<int:player_id>/', views.get_character_view, name='get_character'),
-    path('char_update/', views.character_update_view, name='char_update'),
-
-
-]
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3

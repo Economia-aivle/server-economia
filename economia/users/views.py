@@ -1,14 +1,28 @@
-from django.shortcuts import render, redirect
-from .form import PlayerForm
-from economia.models import Player
-from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.authtoken.models import Token
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.core.mail import send_mail
-from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.crypto import get_random_string
+from django.db import IntegrityError
+from django.db.models import Q
+from django.conf import settings
+from django.contrib import messages
+from rest_framework.decorators import api_view
+from .form import PlayerForm
+from .models import Player, Notice, Characters, VerificationCode, Subjects, SubjectsScore
+from .serializers import CreateCharacterSerializer, SubjectsSerializer, SubjectsScoreSerializer
+import json
+import random
 
 verification_codes = {}
 
+# 뷰 함수
 def delete_account(request):
     return render(request, 'delete_account.html')
 
@@ -20,7 +34,6 @@ def send_code(request):
     code = get_random_string(length=6, allowed_chars='1234567890')
     verification_codes[email] = code
 
-    # 이메일로 인증번호 전송
     send_mail(
         '인증번호 발송',
         f'인증번호는 {code} 입니다.',
@@ -45,18 +58,14 @@ def show_id(request):
     username = request.GET.get('username')
     return render(request, 'show_id.html', {'username': username})
 
-# Create your views here.
 def notice(request):
-    return render(request,'notice.html')
+    return render(request, 'notice.html')
 
 def char_create(request):
-    return render(request,'char_create.html')
+    return render(request, 'char_create.html')
 
 def char_delete(request):
-    return render(request,'char_delete.html')
-
-def notice(request):
-    return render(request,'notice.html')
+    return render(request, 'char_delete.html')
 
 def check_username(request):
     if request.method == 'POST':
@@ -67,7 +76,7 @@ def check_username(request):
             return JsonResponse({'available': True})
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
-def register(request):  # 함수 이름을 'register'로 변경
+def register(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
         confirm_password = request.POST.get('confirm_password')
@@ -90,21 +99,20 @@ def register(request):  # 함수 이름을 'register'로 변경
         return JsonResponse({'success': '회원가입이 완료되었습니다.'})
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
-def signup(request):  # 함수 이름을 'signup'으로 변경
-    return render(request, 'signup.html')  # 템플릿 이름을 'signup.html'로 변경
-import json
+def signup(request):
+    return render(request, 'signup.html')
 
-from django.shortcuts import render, redirect
-from django.views.decorators.csrf import csrf_exempt
-from economia.models import Characters
-from django.http import JsonResponse, HttpResponseBadRequest
-from .serializers import CreateCharacterSerializer
-from django.db import IntegrityError
-from django.core.mail import send_mail
-from django.conf import settings
-from django.contrib import messages
-from economia.models import *
-import random
+def find_account_pwd(request):
+    return render(request, 'find_account_pwd.html')
+
+def find_account_id(request):
+    return render(request, 'find_account_id.html')
+
+def find_account(request):
+    return render(request, 'find_account.html')
+
+def check_id(request):
+    return render(request, 'check_id.html')
 
 @csrf_exempt
 def get_character_view(request, player_id):
@@ -115,7 +123,7 @@ def get_character_view(request, player_id):
         except Characters.DoesNotExist:
             return JsonResponse({"error": "Character not found"}, status=404)
     return HttpResponseBadRequest("Invalid request method")
-# 캐릭터 생성하기
+
 @csrf_exempt
 def character_create_view(request):
     if request.method == 'POST':
@@ -128,7 +136,6 @@ def character_create_view(request):
         if not player_id:
             return JsonResponse({"error": "Missing player_id"}, status=400)
 
-        # 해당 플레이어의 캐릭터가 이미 존재하는지 확인
         existing_character = Characters.objects.filter(player_id=player_id).first()
         if existing_character:
             return JsonResponse({"error": "Character already exists for this player"}, status=400)
@@ -164,33 +171,11 @@ def character_update_view(request):
         except Characters.DoesNotExist:
             return JsonResponse({"error": "Character not found"}, status=404)
 
-        character.kind_url = new_image_url  # Update the image URL
+        character.kind_url = new_image_url
         character.save()
         return JsonResponse({"message": "Character image updated successfully"}, status=200)
 
     return HttpResponseBadRequest("Invalid request method")
-
-def signup(request):
-    return render(request,'signup.html')
-
-def find_account_pwd(request):
-    return render(request,'find_account_pwd.html')
-
-def find_account_id(request):
-    return render(request,'find_account_id.html')
-
-def find_account(request):
-    return render(request,'find_account.html')
-
-def check_id(request):
-    return render(request,'check_id.html')
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework.pagination import PageNumberPagination
-from economia.models import *
-from .serializers import *
 
 @api_view(['GET'])
 def getSubjectsDatas(request):
@@ -206,7 +191,6 @@ def getSubjectsScoreDatas(request, subject_id):
 
     serializer = SubjectsScoreSerializer(scores, many=True)
     
-
     ranked_scores = []
     current_rank = 1
     current_score = None
@@ -235,6 +219,46 @@ def ranking(request):
         ranked_scores = []
 
     return render(request, 'ranking.html', {'subjects': subjects, 'ranked_scores': ranked_scores})
+
+def admin_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_staff:
+            login(request, user)
+            return redirect('admin_dashboard')
+        else:
+            return render(request, 'admin_login.html', {'error': 'Invalid credentials or not an admin'})
+    return render(request, 'admin_login.html')
+
+def notice_list(request):
+    search_query = request.GET.get('search', '')
+    notices = Notice.objects.all().order_by('-created_at')
+    
+    if search_query:
+        notices = notices.filter(Q(title__icontains=search_query))
+    
+    return render(request, 'notice.html', {'notices': notices, 'search_query': search_query})
+
+def notice_detail(request, notice_id):
+    notice = get_object_or_404(Notice, id=notice_id)
+    return render(request, 'notice_detail.html', {'notice': notice})
+
+@login_required
+def admin_dashboard(request):
+    return render(request, 'admin_dashboard.html')
+
+class AdminLoginAPI(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_staff:
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({"token": token.key}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "Invalid credentials or not an admin"}, status=status.HTTP_400_BAD_REQUEST)
 
 def generate_verification_code():
     return str(random.randint(100000, 999999))
