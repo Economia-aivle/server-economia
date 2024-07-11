@@ -1,16 +1,51 @@
 from django.shortcuts import render, redirect
 from .form import PlayerForm
-from economia.models import Player
-from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.crypto import get_random_string
+from django.http import JsonResponse, HttpResponseBadRequest
+from django.db import IntegrityError
+from django.conf import settings
+from django.contrib import messages
+import json
+import random
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework.pagination import PageNumberPagination
+from economia.models import *
+from .serializers import *
+
 
 verification_codes = {}
 
-def delete_account(request):
-    return render(request, 'delete_account.html')
+def delete_account(request, player_id):
+    if request.method == "POST":
+        try:
+            # player_id에 해당하는 플레이어 가져오기
+            player = Player.objects.get(player_id=player_id)
+
+            # 관련된 데이터 삭제
+            Characters.objects.filter(player=player).delete()
+            ChildComments.objects.filter(player=player).delete()
+            Comments.objects.filter(characters__player=player).delete()
+            Tf.objects.filter(characters__player=player).delete()
+            Blank.objects.filter(characters__player=player).delete()
+            Multiple.objects.filter(characters__player=player).delete()
+            Stage.objects.filter(characters__player=player).delete()
+            SubjectsScore.objects.filter(characters__player=player).delete()
+            Blank.objects.filter(characters__player=player).delete()
+
+            # 플레이어 삭제
+            player.delete()
+
+            messages.success(request, "회원 탈퇴가 완료되었습니다.")
+            return redirect('onboarding')  # 회원 탈퇴 후 리디렉션할 페이지
+        except Player.DoesNotExist:
+            messages.error(request, "사용자를 찾을 수 없습니다.")
+            return redirect('mypage')  # 에러 발생 시 리디렉션할 페이지
+
+    return render(request, 'delete_account.html', {'player_id': player_id})
 
 def find_id(request):
     return render(request, 'find_id.html')
@@ -92,19 +127,6 @@ def register(request):  # 함수 이름을 'register'로 변경
 
 def signup(request):  # 함수 이름을 'signup'으로 변경
     return render(request, 'signup.html')  # 템플릿 이름을 'signup.html'로 변경
-import json
-
-from django.shortcuts import render, redirect
-from django.views.decorators.csrf import csrf_exempt
-from economia.models import Characters
-from django.http import JsonResponse, HttpResponseBadRequest
-from .serializers import CreateCharacterSerializer
-from django.db import IntegrityError
-from django.core.mail import send_mail
-from django.conf import settings
-from django.contrib import messages
-from economia.models import *
-import random
 
 @csrf_exempt
 def get_character_view(request, player_id):
@@ -115,6 +137,7 @@ def get_character_view(request, player_id):
         except Characters.DoesNotExist:
             return JsonResponse({"error": "Character not found"}, status=404)
     return HttpResponseBadRequest("Invalid request method")
+
 # 캐릭터 생성하기
 @csrf_exempt
 def character_create_view(request):
@@ -184,13 +207,7 @@ def find_account(request):
 
 def check_id(request):
     return render(request,'check_id.html')
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework.pagination import PageNumberPagination
-from economia.models import *
-from .serializers import *
+
 
 @api_view(['GET'])
 def getSubjectsDatas(request):
