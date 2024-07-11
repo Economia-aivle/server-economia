@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from django.shortcuts import render, redirect
 from .form import PlayerForm
 from economia.models import Player
@@ -93,7 +92,6 @@ def register(request):  # 함수 이름을 'register'로 변경
 
 def signup(request):  # 함수 이름을 'signup'으로 변경
     return render(request, 'signup.html')  # 템플릿 이름을 'signup.html'로 변경
-=======
 import json
 
 from django.shortcuts import render, redirect
@@ -174,7 +172,6 @@ def character_update_view(request):
 
 def signup(request):
     return render(request,'signup.html')
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 
 def find_account_pwd(request):
     return render(request,'find_account_pwd.html')
@@ -239,11 +236,6 @@ def ranking(request):
 
     return render(request, 'ranking.html', {'subjects': subjects, 'ranked_scores': ranked_scores})
 
-<<<<<<< HEAD
-def success(request):
-    return render(request,'success.html')
-
-=======
 def generate_verification_code():
     return str(random.randint(100000, 999999))
 
@@ -281,4 +273,3 @@ def find_account_id(request):
 
 def check_id(request, player_id):
     return render(request, 'check_id.html', {'player_id': player_id})
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
