@@ -46,12 +46,21 @@ INSTALLED_APPS = [
     "users",
     "educations",
     "scenarios",
+    
+    'rest_framework',
+    'rest_framework.authtoken',
     'rest_framework_simplejwt',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
 }
 
 MIDDLEWARE = [
@@ -185,6 +194,8 @@ STATICFILES_DIRS = [ BASE_DIR / 'static', ]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+LOGIN_URL = '/admin/login/'
+LOGIN_REDIRECT_URL = '/admin/dashboard/'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
