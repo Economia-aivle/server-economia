@@ -1,4 +1,5 @@
 from django.db import models
+from economia.models import models
 
 class Notice(models.Model):
     title = models.CharField(max_length=200)

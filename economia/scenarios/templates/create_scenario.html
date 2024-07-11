@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'create_scenario.css' %}">
+  <title>Create Scenario</title>
+</head>
+<body>
+  {% include "header.html" %}
+  <div class="container">
+    <div class="scenario_container">
+      <span class="title">Create Scenario</span><br>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="button_box">
+          <button type="submit" class="save_button">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

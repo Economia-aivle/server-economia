@@ -1,54 +1,168 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
-  <head>
+<html lang="ko">
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>문제풀이 - OX</title>
     <link rel="stylesheet" href="{% static 'multiple.css' %}" />
-  </head>
+    <link rel="stylesheet" href="{% static 'wrong_explanation.css' %}">
+</head>
 
-  <body>
+<<<<<<< HEAD
+<body>
+=======
+<body>      
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     {% include 'quiz_header2.html' %}
     <main>
-      <div class="wrap-container">
-        <div class="question-container">
-          <h1>
-            Q3. 예금에 대한 설명으로 옳지 않은것은?
-          </h1>
+        <div class="wrap-container">
+            <div class="question-container">
+                <h1>Q{{ num }}. {{ question.question_text }}</h1>
+            </div>
+            <div class="character" onclick="submitAnswer()">
+                <img src="{% static 'images/char1.png' %}" alt="char" />
+                <div class="hp-bar-container">
+                    <div id="hp-bar" class="hp-bar" style="width: {{ hp_percentage }}%;"></div>
+                </div>
+            </div>
+            
+            <div class="answer-container">
+                <form id="answer-form" method="post">
+<<<<<<< HEAD
+                    {% csrf_token %}
+=======
+                    
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
+                    <input type="hidden" id="answer" name="answer" value="">
+                    <button class="option-btn" type="button" id="option1" onclick="selectOption(this)" name="answer" value="1">1. {{ question.option_a }}</button>
+                    <button class="option-btn" type="button" id="option2" onclick="selectOption(this)" name="answer" value="2">2. {{ question.option_b }}</button>
+                    <button class="option-btn" type="button" id="option3" onclick="selectOption(this)" name="answer" value="3">3. {{ question.option_c }}</button>
+                    <button class="option-btn" type="button" id="option4" onclick="selectOption(this)" name="answer" value="4">4. {{ question.option_d }}</button>
+                </form>
+            </div>
         </div>
-        <div class="character">
-          <img src="{% static 'images/char1.png' %}" alt="char" />
+        <div class="wrong-container" id="wrong-container" style="display:none;">
+            <div class="question-container">
+                <h1>Q{{ num }}. {{ question.question_text }}</h1>
+            </div>
+            <div class="answer-bubble">
+                <p class="ans">답: {{ question.correct_answer }}</p>
+                <p>{{ question.explanation }}</p>
+            </div>
+            <div class="character">
+                <img src="{% static 'images/char1.png' %}" alt="char" />
+            </div>
+            <div class="next-button-container">
+                <button class="next" id="next-btn" onclick="nextQuestion()">{% if num == 5 %}Finish{% else %}다음문제{% endif %}</button>
+            </div>
         </div>
-        <div class="anwer-container">
-            <button class="option-btn" id="option1" onclick="selectOption(this)">1. 예금은 금이다.</button>
-            <button class="option-btn" id="option2" onclick="selectOption(this)">2. 누구나 다 가입할 수 있다.</button>
-            <button class="option-btn" id="option3" onclick="selectOption(this)">3. 다양한 종류가 있다.</button>
-            <button class="option-btn" id="option4" onclick="selectOption(this)">4. 적금의 친구다.</button>
-          </div>
     </main>
     <aside class="sidebar">
-      <div class="top-num"><p class="progress-num">3/5</p></div>
-
-      <div class="progress">
-        <span class="progress-step active"></span>
-        <span class="progress-step active"></span>
-        <span class="progress-step active"></span>
-        <span class="progress-step"></span>
-        <span class="progress-step"></span>
-      </div>
+<<<<<<< HEAD
+        <div class="top-num"><p class="progress-num">{{ num }}/5</p></div>
+=======
+        <div class="top-num"><p class="progress-num">{{ num }}/8</p></div>
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
+        <div class="progress">
+            <a href="#" class="progress-step {% if num >= 1 %}active{% endif %}" id="step-1"></a>
+            <a href="#" class="progress-step {% if num >= 2 %}active{% endif %}" id="step-2"></a>
+            <a href="#" class="progress-step {% if num >= 3 %}active{% endif %}" id="step-3"></a>
+            <a href="#" class="progress-step {% if num >= 4 %}active{% endif %}" id="step-4"></a>
+            <a href="#" class="progress-step {% if num >= 5 %}active{% endif %}" id="step-5"></a>
+<<<<<<< HEAD
+=======
+            <a href="#" class="progress-step {% if num >= 6 %}active{% endif %}" id="step-6"></a>
+            <a href="#" class="progress-step {% if num >= 7 %}active{% endif %}" id="step-7"></a>
+            <a href="#" class="progress-step {% if num >= 8 %}active{% endif %}" id="step-8"></a>
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
+        </div>
     </aside>
-  </body>
+
+    <script>
+        let selectedOption = null;
+        const characters = "{{ characters }}";
+        const subject = "{{ subject }}";
+        const chapter = "{{ chapter }}";
+        const num = {{ num }};
+        
+        function selectOption(selectedBtn) {
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            selectedBtn.classList.add('selected');
+            selectedOption = selectedBtn;
+        }
+
+        function submitAnswer() {
+            if (!selectedOption) {
+                alert('정답을 선택해주세요.');
+                return;
+            }
+
+            const selectedAnswer = selectedOption.value;
+
+            const formData = new FormData();
+            formData.append('answer', selectedAnswer);
+
+            fetch(`/educations/multiple/${characters}/${subject}/${chapter}/${num}`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'complete') {
+                    alert(data.message);
+                    window.location.href = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+                } else if (data.status === 'wrong') {
+                    alert(data.message);
+                    document.querySelector('.wrap-container').style.display = 'none';
+                    document.getElementById('wrong-container').style.display = 'block';
+                } else {
+                    alert(data.message);
+                    window.location.href = `/educations/multiple/${characters}/${subject}/${chapter}/${num + 1}`;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function nextQuestion() {
+<<<<<<< HEAD
+            if (num >= 5) {
+=======
+            if (num >= 8) {
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
+                window.location.href = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+            } else {
+                window.location.href = `/educations/multiple/${characters}/${subject}/${chapter}/${num + 1}`;
+            }
+        }
+
+        window.onload = function() {
+
+
+            function redirectToLevelChoice() {
+                var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+                window.location.href = levelChoiceUrl;
+            }
+  
+            var currentUrl = window.location.href;
+            var levelChoiceUrlPattern = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+  
+            if (currentUrl !== levelChoiceUrlPattern) {
+                history.pushState(null, null, levelChoiceUrlPattern);
+            }
+  
+            window.addEventListener('popstate', function() {
+                if (window.location.href !== levelChoiceUrlPattern) {
+                    location.replace(levelChoiceUrlPattern);
+                }
+            });
+        };
+    </script>
+</body>
 </html>
-<script>
-    function selectOption(selectedBtn) {
-        // 모든 버튼의 selected 클래스를 제거
-        const buttons = document.querySelectorAll('.option-btn');
-        buttons.forEach(btn => {
-          btn.classList.remove('selected');
-        });
-      
-        // 클릭한 버튼에 selected 클래스 추가
-        selectedBtn.classList.add('selected');
-      }
-</script>
