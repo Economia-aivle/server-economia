@@ -9,6 +9,7 @@ app_name = 'users'
 urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('find_account_id', views.find_account_id, name='find_account_id'),
+    path('find_account', views.find_account, name='find_account'),
     path('check_id/<str:player_id>', views.check_id, name='check_id'),
     path('find_account_pwd/', views.find_account_pwd, name='find_account_pwd'),
     path('check_password/<str:pwd>', views.check_password, name='check_password'),
@@ -19,7 +20,7 @@ urlpatterns = [
     path('login/', views.admin_login, name='admin_login'),
     path('dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('api/login/', views.AdminLoginAPI.as_view(), name='admin_login_api'),
-    path('notice/', views.notice_list, name='notice_list'),
+    path('notice/', views.notice_list, name='notice'),
     path('notice/<int:notice_id>/', views.notice_detail, name='notice_detail'),
     path('api/subjects/', views.getSubjectsDatas, name='subjects'),
     path('api/scores/<int:subject_id>/', views.getSubjectsScoreDatas, name='subjects_score'),
@@ -27,7 +28,6 @@ urlpatterns = [
     path('success/', views.success, name='success'),
     path('check/username/', views.check_username, name='check_username'),
     path('register/', views.register, name='register'),
-    path('send/code/', views.send_code, name='send_code'),
-    path('show/id/', views.show_id, name='show_id'),
-    path('verify/code/', views.verify_code, name='verify_code'),
+    path('success', views.success, name='success'),
+    
 ]

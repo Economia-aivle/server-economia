@@ -3,34 +3,20 @@ from django.urls import path
 from django.contrib import admin
 from . import views
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 app_name = 'educations'
 urlpatterns = [
     path('level_choice/<int:characters>/<str:subject>/<int:chapter>', views.level_choice, name='level_choice'),
     path('chapter_summary', views.chapter_summary, name='chapter_summary'),
     path('blank/<int:characters>/<str:subject>/<int:chapter>/<int:num>', views.blank, name='blank'),
     path('multiple/<int:characters>/<str:subject>/<int:chapter>/<int:num>', views.multiple, name='multiple'),
-<<<<<<< HEAD
-=======
     path('tf_quiz/', views.tf_quiz_view, name='tf_quiz'),
     path('tf_quiz/<int:question_id>/', views.tf_quiz_view, name='tf_quiz_detail'),
     path('tf_quiz_page/<int:characters>/<str:subject>/<int:chapter>', views.tf_quiz_page, name='tf_quiz_page'),
     path('choose_tf_chapter/', views.choose_tf_chapter_view, name='choose_tf_chapter'),
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     path('previous_quiz_answer', views.previous_quiz_answer, name='previous_quiz_answer'),
     path('previous_quiz/<int:characters>', views.previous_quiz, name='previous_quiz'),
     path('study', views.study, name='study'),
     path('wrong_explanation', views.wrong_explanation, name='wrong_explanation'),
-<<<<<<< HEAD
-    path('tf_quiz/', views.tf_quiz_view, name='tf_quiz'),
-    path('tf_quiz/<int:question_id>/', views.tf_quiz_view, name='tf_quiz_detail'),
-    path('tf_quiz_page/', views.tf_quiz_page, name='tf_quiz_page'),
-    path('choose_tf_chapter/', views.choose_tf_chapter_view, name='choose_tf_chapter'),
-=======
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     path('study_video/', views.study_view, name='study_video'),
     path('summary_anime', views.summary_anime, name='summary_anime'),
     path('blankdatas/<int:characters>', views.getBlankDatas, name="BlankDatas"),
