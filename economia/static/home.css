@@ -24,7 +24,7 @@ body, html {
     /* padding: 20px; */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     border-radius: 10px;
     position: relative;
 }
@@ -35,28 +35,28 @@ body, html {
     width: 140px;
     height: 30px;
     position: absolute;
-    top: 20px; /* 사이드바 상단으로부터의 거리 */
-    left: 20px; /* 사이드바 왼쪽으로부터의 거리 */
-    background-image: url(images/logo.png);
+    top: 20px; /* ì‚¬ì´ë“œë°” ìƒë‹¨ìœ¼ë¡œë¶€í„°ì˜ ê±°ë¦¬ */
+    left: 20px; /* ì‚¬ì´ë“œë°” ì™¼ìª½ìœ¼ë¡œë¶€í„°ì˜ ê±°ë¦¬ */
+    background-image: url(images/logo_official.png);
     background-size: cover; 
-    border: none; /* 테두리 없음 */
-    background-repeat: no-repeat; /* 이미지 반복 방지 */
-    background-position: top; /* 이미지 중앙 정렬 */
+    border: none; /* í…Œë‘ë¦¬ ì—†ìŒ */
+    background-repeat: no-repeat; /* ì´ë¯¸ì§€ ë°˜ë³µ ë°©ì§€ */
+    background-position: top; /* ì´ë¯¸ì§€ ì¤‘ì•™ ì •ë ¬ */
 }
 
 .logout-btn {
     color: rgb(255, 255, 255);
     position: absolute;
-    top: 20px; /* 사이드바 상단으로부터의 거리 */
-    right: 20px; /* 사이드바 오른쪽으로부터의 거리 */
+    top: 20px; /* ì‚¬ì´ë“œë°” ìƒë‹¨ìœ¼ë¡œë¶€í„°ì˜ ê±°ë¦¬ */
+    right: 20px; /* ì‚¬ì´ë“œë°” ì˜¤ë¥¸ìª½ìœ¼ë¡œë¶€í„°ì˜ ê±°ë¦¬ */
     border: none;
     background-color: rgba(57, 167, 255, 1);
     border-radius: 10px;
     text-align: center;
     font-size: 16px;    
     font-family: 'Noto Sans';
-    cursor: pointer; /* 마우스를 가져다 대면 포인터로 변경 */
-    padding: 5px 10px; /* 상하 10px, 좌우 20px 패딩을 줘서 텍스트 주변에 여유 공간을 확보 */
+    cursor: pointer; /* ë§ˆìš°ìŠ¤ë¥¼ ê°€ì ¸ë‹¤ ëŒ€ë©´ í¬ì¸í„°ë¡œ ë³€ê²½ */
+    padding: 5px 10px; /* ìƒí•˜ 10px, ì¢Œìš° 20px íŒ¨ë”©ì„ ì¤˜ì„œ í…ìŠ¤íŠ¸ ì£¼ë³€ì— ì—¬ìœ  ê³µê°„ì„ í™•ë³´ */
 }
 
 
@@ -70,27 +70,27 @@ body, html {
 .character {
     width: 294px;
     height: 222px;
-    top: 100px;
+    top: 125px;
     background-image: url(images/character.png);
     background-repeat: no-repeat;
     background-size: cover;
     /* margin: 0 auto; */
     position: absolute;
+    margin-top: 10px;
 }
 
 #nickname {
     font-size: 25px;
     text-align: center;
     display: block;
-    top: 320px;
+    top: 350px;
     position: absolute;
     margin-top: 10px;
     font-weight: bold;
-
 }
 
 .username {
-    top: 355px;
+    top: 385px;
     font-size: 20px;
     text-align: center;
     display: block;
@@ -100,14 +100,13 @@ body, html {
 }
 
 .school {
-    top: 380px;
+    top: 420px;
     font-size: 20px;
     text-align: center;
     display: block;
-    position: absolute; 
+    position: absolute;
     margin-top: 25px;
     font-weight: bold;
-
 }
 
 .user-setting {
@@ -122,8 +121,8 @@ body, html {
     font-size: 10px;
     text-decoration: none;
     position: absolute;
-    top: 80px; /* 캐릭터 이미지 위쪽 대각선 위치 */
-    right: 100px; /* 캐릭터 이미지 오른쪽 대각선 위치 */
+    top: 105px; /* ìºë¦­í„° ì´ë¯¸ì§€ ìœ„ìª½ ëŒ€ê°ì„  ìœ„ì¹˜ */
+    right: 100px; /* ìºë¦­í„° ì´ë¯¸ì§€ ì˜¤ë¥¸ìª½ ëŒ€ê°ì„  ìœ„ì¹˜ */
     border: none;
     background-color: rgba(57, 167, 255, 1);
     border-radius: 10px;
@@ -135,7 +134,7 @@ body, html {
     font-size: 10px;
     text-decoration: none;
     position: absolute;
-    top: 80px;
+    top: 105px;
     left: 100px;
     border: none;
     background-color: rgba(57, 167, 255, 1);
@@ -145,18 +144,18 @@ body, html {
 
 .level-info {
     position: relative;
-    width: 150px; /* progress-circle 크기에 맞추기 */
-    margin: 50px auto; /* 가운데 정렬 및 상하 마진 */
-    text-align: center; /* 텍스트 중앙 정렬 */
-    overflow: visible; /* 부모 요소의 경계를 넘어서도 자식 요소가 표시되도록 설정 */
+    width: 150px; /* progress-circle í¬ê¸°ì— ë§žì¶”ê¸° */
+    margin: 50px auto; /* ê°€ìš´ë° ì •ë ¬ ë° ìƒí•˜ ë§ˆì§„ */
+    text-align: center; /* í…ìŠ¤íŠ¸ ì¤‘ì•™ ì •ë ¬ */
+    overflow: visible; /* ë¶€ëª¨ ìš”ì†Œì˜ ê²½ê³„ë¥¼ ë„˜ì–´ì„œë„ ìžì‹ ìš”ì†Œê°€ í‘œì‹œë˜ë„ë¡ ì„¤ì • */
 
 }
 
 .level {
     position: absolute;
-    top: -40px; /* progress-circle의 좌상단으로 이동 */
-    left: 5%; /* 중앙 정렬 */
-    transform: translateX(-50%); /* 중앙 정렬 보정 */
+    top: -40px; /* progress-circleì˜ ì¢Œìƒë‹¨ìœ¼ë¡œ ì´ë™ */
+    left: 5%; /* ì¤‘ì•™ ì •ë ¬ */
+    transform: translateX(-50%); /* ì¤‘ì•™ ì •ë ¬ ë³´ì • */
     font-size: 30px;
     font-weight: bold;
     color: rgba(57, 167, 255, 1);
@@ -167,40 +166,40 @@ body, html {
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    background-color: rgba(57, 167, 255, 1); /* 큰 파란색 원 */
-    position: relative; /* 자식 요소들의 위치를 절대적으로 지정하기 위해 필요 */
+    background-color: rgba(57, 167, 255, 1); /* í° íŒŒëž€ìƒ‰ ì› */
+    position: relative; /* ìžì‹ ìš”ì†Œë“¤ì˜ ìœ„ì¹˜ë¥¼ ì ˆëŒ€ì ìœ¼ë¡œ ì§€ì •í•˜ê¸° ìœ„í•´ í•„ìš” */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .circle-inner {
-    width: 100px; /* 외곽의 파란 원이 잘 보이도록 약간 작게 설정 */
-    height: 100px; /* 외곽의 파란 원이 잘 보이도록 약간 작게 설정 */
+    width: 100px; /* ì™¸ê³½ì˜ íŒŒëž€ ì›ì´ ìž˜ ë³´ì´ë„ë¡ ì•½ê°„ ìž‘ê²Œ ì„¤ì • */
+    height: 100px; /* ì™¸ê³½ì˜ íŒŒëž€ ì›ì´ ìž˜ ë³´ì´ë„ë¡ ì•½ê°„ ìž‘ê²Œ ì„¤ì • */
     border-radius: 50%;
-    background-color: white; /* 흰색 원 */
-    position: absolute; /* 부모 요소인 .progress-circle 안에 배치 */
-    display: flex; /* 가운데 정렬을 위한 Flexbox 사용 */
+    background-color: white; /* í°ìƒ‰ ì› */
+    position: absolute; /* ë¶€ëª¨ ìš”ì†Œì¸ .progress-circle ì•ˆì— ë°°ì¹˜ */
+    display: flex; /* ê°€ìš´ë° ì •ë ¬ì„ ìœ„í•œ Flexbox ì‚¬ìš© */
     justify-content: center;
     align-items: center;
-    z-index: 1; /* 자식 요소들이 부모 요소보다 위에 표시되도록 설정 */
+    z-index: 1; /* ìžì‹ ìš”ì†Œë“¤ì´ ë¶€ëª¨ ìš”ì†Œë³´ë‹¤ ìœ„ì— í‘œì‹œë˜ë„ë¡ ì„¤ì • */
 }
 
 .progress-percentage {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* 정확히 가운데 정렬 */
+    transform: translate(-50%, -50%); /* ì •í™•ížˆ ê°€ìš´ë° ì •ë ¬ */
     font-size: 40px;
-    color: rgba(57, 167, 255, 1); /* 파란색 글씨 */
-    z-index: 2; /* 글씨가 흰색 원보다 위에 표시되도록 설정 */
+    color: rgba(57, 167, 255, 1); /* íŒŒëž€ìƒ‰ ê¸€ì”¨ */
+    z-index: 2; /* ê¸€ì”¨ê°€ í°ìƒ‰ ì›ë³´ë‹¤ ìœ„ì— í‘œì‹œë˜ë„ë¡ ì„¤ì • */
 }
 
 .progress-pts {
     font-size: 20px;
     font-weight: bold;
     text-align: center;
-    margin-top: 10px; /* progress-circle 아래에 위치하도록 조정 */
+    margin-top: 10px; /* progress-circle ì•„ëž˜ì— ìœ„ì¹˜í•˜ë„ë¡ ì¡°ì • */
     display: block;
 }
 
@@ -212,13 +211,13 @@ body, html {
     /* justify-content: space-between; */
     display: flex;
     flex-direction: column;
-    position: relative; /* 부모 요소를 relative로 설정 */
+    position: relative; /* ë¶€ëª¨ ìš”ì†Œë¥¼ relativeë¡œ ì„¤ì • */
     /* flex-wrap: wrap; */
 }
 
 .content-header {
     display: flex;
-    align-items: center; /* 수직 중앙 정렬 */
+    align-items: center; /* ìˆ˜ì§ ì¤‘ì•™ ì •ë ¬ */
     padding: 10px;
     justify-content: center;
 }
@@ -227,15 +226,15 @@ body, html {
     width: 40px;
     height: 50px;
     background-image: url(images/category-btn.png);
-    background-size: contain; /* 이미지 크기를 컨테이너에 맞추기 */
-    background-repeat: no-repeat; /* 이미지 반복 방지 */
-    background-position: center; /* 이미지 중앙 정렬 */
-    border: none; /* 테두리 없음 */
-    cursor: pointer; /* 마우스를 가져다 대면 포인터로 변경 */
-    outline: none; /* 포커스시 외곽선 없음 */
-    background-color: transparent; /* 배경색을 투명하게 설정 */
-    display: inline-block; /* 기본 버튼 스타일 제거 */
-    margin-right: 30px; /* 버튼과 텍스트 사이의 간격 */
+    background-size: contain; /* ì´ë¯¸ì§€ í¬ê¸°ë¥¼ ì»¨í…Œì´ë„ˆì— ë§žì¶”ê¸° */
+    background-repeat: no-repeat; /* ì´ë¯¸ì§€ ë°˜ë³µ ë°©ì§€ */
+    background-position: center; /* ì´ë¯¸ì§€ ì¤‘ì•™ ì •ë ¬ */
+    border: none; /* í…Œë‘ë¦¬ ì—†ìŒ */
+    cursor: pointer; /* ë§ˆìš°ìŠ¤ë¥¼ ê°€ì ¸ë‹¤ ëŒ€ë©´ í¬ì¸í„°ë¡œ ë³€ê²½ */
+    outline: none; /* í¬ì»¤ìŠ¤ì‹œ ì™¸ê³½ì„  ì—†ìŒ */
+    background-color: transparent; /* ë°°ê²½ìƒ‰ì„ íˆ¬ëª…í•˜ê²Œ ì„¤ì • */
+    display: inline-block; /* ê¸°ë³¸ ë²„íŠ¼ ìŠ¤íƒ€ì¼ ì œê±° */
+    margin-right: 30px; /* ë²„íŠ¼ê³¼ í…ìŠ¤íŠ¸ ì‚¬ì´ì˜ ê°„ê²© */
 }
 
 .category-btn:hover {
@@ -245,7 +244,7 @@ body, html {
 .category {
     font-size: 48px;
     color: rgba(0, 0, 0, 1);
-    margin-right: 20px; /* 카테고리와 버튼 사이의 간격을 설정 */
+    margin-right: 20px; /* ì¹´í…Œê³ ë¦¬ì™€ ë²„íŠ¼ ì‚¬ì´ì˜ ê°„ê²©ì„ ì„¤ì • */
 }
 
 .learning-btn, .scenario-btn {
@@ -285,7 +284,7 @@ body, html {
 }
 
 
-/* 첫 번째 row 설정 */
+/* ì²« ë²ˆì§¸ row ì„¤ì • */
 .current-problem,
 .current-scenario,
 .points,
@@ -293,14 +292,14 @@ body, html {
     flex: 1;
 }
 
-/* 두 번째 row 설정 */
+/* ë‘ ë²ˆì§¸ row ì„¤ì • */
 .view-solved,
 .created-scenarios,
 .announcement {
     flex: 1;
 }
 
-/* 세 번째 row 설정 */
+/* ì„¸ ë²ˆì§¸ row ì„¤ì • */
 .advertiser {
     display: flex;
     background-image: url(images/ads.png);
@@ -324,7 +323,7 @@ body, html {
     text-align: center;
     font-size: 15px;
     cursor: pointer; 
-    margin: auto auto; /* 가운데 정렬 */
+    margin: auto auto; /* ê°€ìš´ë° ì •ë ¬ */
     flex-direction: column;
     align-items: center;
 }
@@ -342,7 +341,7 @@ body, html {
     text-align: center;
     font-size: 15px;
     cursor: pointer; 
-    margin: auto auto; /* 가운데 정렬 */
+    margin: auto auto; /* ê°€ìš´ë° ì •ë ¬ */
     flex-direction: column;
     align-items: center;
     display: flex;
@@ -357,7 +356,7 @@ body, html {
     flex-direction: column;
     align-items: center;
     font-size: 20px;
-    margin: auto auto; /* 가운데 정렬 */
+    margin: auto auto; /* ê°€ìš´ë° ì •ë ¬ */
     text-align: center;
     cursor: pointer; 
     display: flex;
@@ -388,12 +387,12 @@ body, html {
 
 .rank .crown {
     display: flex;
-    width: 24px; /* 이미지의 너비 설정 */
-    height: 24px; /* 이미지의 높이 설정 */
-    background-image: url('images/crown.png'); /* 실제 crown 이미지의 경로 */
+    width: 24px; /* ì´ë¯¸ì§€ì˜ ë„ˆë¹„ ì„¤ì • */
+    height: 24px; /* ì´ë¯¸ì§€ì˜ ë†’ì´ ì„¤ì • */
+    background-image: url('images/crown.png'); /* ì‹¤ì œ crown ì´ë¯¸ì§€ì˜ ê²½ë¡œ */
     background-size: contain;
     background-repeat: no-repeat;
-    margin-left: 10px; /* 텍스트와 이미지 간격 조절 */
+    margin-left: 10px; /* í…ìŠ¤íŠ¸ì™€ ì´ë¯¸ì§€ ê°„ê²© ì¡°ì ˆ */
 }
 
 .content-body button:hover,
@@ -411,7 +410,7 @@ body, html {
     text-align: center;
     font-size: 15px;
     cursor: pointer; 
-    margin: auto auto; /* 가운데 정렬 */
+    margin: auto auto; /* ê°€ìš´ë° ì •ë ¬ */
     flex-direction: column;
     align-items: center;
     display: flex;

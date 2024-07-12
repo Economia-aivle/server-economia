@@ -6,8 +6,9 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.utils import timezone
+import datetime
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-
 
 class Player(AbstractBaseUser):
     player_id = models.CharField(max_length=20, unique=True)
@@ -76,8 +77,12 @@ class Comments(models.Model):
     scenario = models.ForeignKey('Scenario', models.DO_NOTHING)
     characters = models.ForeignKey(Characters, models.DO_NOTHING)
     percents = models.IntegerField()
+    scenario = models.ForeignKey('Scenario', models.DO_NOTHING)
+    characters = models.ForeignKey(Characters, models.DO_NOTHING)
+    percents = models.IntegerField()
     texts = models.CharField(max_length=500, blank=True, null=True)
     like_cnt = models.IntegerField(blank=True, null=True)
+    time = models.DateTimeField(blank=True, null=True)
     time = models.DateTimeField(blank=True, null=True)
 
     class Meta:
@@ -125,16 +130,16 @@ class NoticeBoard(models.Model):
         db_table = 'notice_board'
 
 
-
-
-class Rules(models.Model):
-    communit_rule = models.CharField(max_length=500, blank=True, null=True)
-    personal_rule = models.CharField(max_length=500, blank=True, null=True)
-    youth_protection_rule = models.CharField(max_length=500, blank=True, null=True)
+class QnA(models.Model):
+    title = models.CharField(max_length=50, blank=True, null=True)
+    question_text = models.CharField(max_length=500, blank=True, null=True)
+    admin_answer = models.CharField(max_length=500, blank=True, null=True)
+    time = models.DateTimeField(max_length=500, blank=True, null=True)
+    player = models.ForeignKey('Player', models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'rules'
+        db_table = 'qna'
 
 
 class Scenario(models.Model):
@@ -197,3 +202,10 @@ class VerificationCode(models.Model):
 
     def __str__(self):
         return f'{self.email}: {self.code}'
+
+    def is_expired(self):
+        # 현재 시간과 생성 시간을 비교하여 3분 이내면 False 반환, 그렇지 않으면 True 반환
+        expiration_time = self.created_at + datetime.timedelta(minutes=3)
+        now = timezone.now()
+        return now > expiration_time
+    

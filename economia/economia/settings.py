@@ -46,12 +46,21 @@ INSTALLED_APPS = [
     "users",
     "educations",
     "scenarios",
+    
+    'rest_framework',
+    'rest_framework.authtoken',
     'rest_framework_simplejwt',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
 }
 
 MIDDLEWARE = [
@@ -185,6 +194,8 @@ STATICFILES_DIRS = [ BASE_DIR / 'static', ]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+LOGIN_URL = '/admin/login/'
+LOGIN_REDIRECT_URL = '/admin/dashboard/'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -192,3 +203,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'tmdxor00@gmail.com'
 EMAIL_HOST_PASSWORD = 'diat tzmz zlne iydv'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db' # 데이터베이스 세션 백엔드 사용
+SESSION_SAVE_EVERY_REQUEST = True

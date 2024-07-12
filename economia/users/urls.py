@@ -1,10 +1,12 @@
-# blog/urls.py
-from django.urls import path
+from django.urls import path, include
 from django.contrib import admin
 from . import views
 from django.urls import include
 
 app_name = 'users'
+
+
+
 urlpatterns = [
 
     path('signup', views.signup, name='signup'),

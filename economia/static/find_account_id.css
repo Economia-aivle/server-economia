@@ -147,3 +147,64 @@ button:active {
     font-weight: bold;
     letter-spacing: 0;
 }
+
+.title_find_id {
+    color: rgba(0, 0, 0, 1);
+    width: 420px;
+    height: 100px;
+    text-align: left;
+    font-size: 50px;
+    font-weight: bold;
+    letter-spacing: 0;
+    padding-bottom: 30px;
+}
+.input_container{
+    margin-left: 80px;
+    margin-top:  80px;
+}
+.input_container input{
+    margin-bottom: 30px;
+}
+
+#resend-btn{
+    box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.25);
+    background-color: rgba(57, 167, 255, 1);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: background-color 0.1s;
+    width: 136px;
+    height: 57px;
+    color: rgba(255, 255, 255, 1);
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 0;
+}
+
+#check-btn{
+    box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.25);
+    background-color: rgba(57, 167, 255, 1);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: background-color 0.1s;
+    width: 500px;
+    height: 80px;
+    color: rgba(255, 255, 255, 1);
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 0;
+    margin-left: 45px;
+    margin-top: 30px;
+
+}

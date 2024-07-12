@@ -7,14 +7,16 @@
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet" />
     <title>회원탈퇴</title>
 </head>
-{% include 'header.html' %}
 <body>
-    <h1>회원탈퇴</h1>
-    <p>정말로 회원탈퇴를 하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">회원탈퇴</button>
-    </form>
-    <a href="/mypage">취소</a>
+    {% include 'header.html' %}
+    <main>
+        <h1>회원탈퇴</h1>
+        <p>정말로 회원탈퇴를 하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
+        <form method="post" action="{% url 'delete_account' player_id=player_id %}">
+            {% csrf_token %}
+            <button type="submit">회원탈퇴</button>
+        </form>
+        <a href="{% url 'mypage' %}">취소</a>
+    </main>
 </body>
 </html>
