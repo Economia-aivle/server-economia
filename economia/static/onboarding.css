@@ -53,11 +53,7 @@
   .logo {
     width: 200px; /* Adjust as per your logo dimensions */
     height: 150px; /* Adjust as per your logo dimensions */
-<<<<<<< HEAD
     background-image: url(images/logo.png); /* Replace with your logo image */
-=======
-    background-image: url(images/logo2.png); /* Replace with your logo image */
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     background-size: cover;
     background-repeat: no-repeat;
     margin-top: 10px;

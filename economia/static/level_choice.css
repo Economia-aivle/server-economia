@@ -43,14 +43,6 @@ main h1{
 }
 
 
-<<<<<<< HEAD
-.next-btn.active{
-    background-color:#39A7FF ;
-}
-.next-btn.active:hover{
-    background-color:#1A85D6 ;
-}
-=======
 .btn-cho .next-btn.active{
     background-color:rgb(28, 177, 28) ;
 }
@@ -72,7 +64,6 @@ main h1{
     background-color:rgb(148, 5, 5) ;
 }
 
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 .next-btn:disabled {
     background-color: gray; /* 비활성화된 버튼 색상 */
     cursor: not-allowed;      /* 마우스 커서를 금지 모양으로 변경 */

@@ -33,7 +33,6 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-<<<<<<< HEAD
 }
 
 #user_id{
@@ -49,6 +48,4 @@
 .signup-form button:active{
     background: #004080; /* 버튼을 눌렀을 때의 배경색 */
 	transform: scale(0.95); /* 버튼을 눌렀을 때 약간 작아지게 */
-=======
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 }
