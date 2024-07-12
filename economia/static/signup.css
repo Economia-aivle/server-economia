@@ -34,3 +34,18 @@
     border-radius: 4px;
     cursor: pointer;
 }
+
+#user_id{
+    width: 70.5%;
+    cursor: pointer;
+}
+
+.signup-form button:hover{
+    background: #0056b3; /* 마우스를 올렸을 때 버튼의 배경색 */
+	transform: scale(1.05); /* 마우스를 올렸을 때 버튼의 크기 확대 */
+}
+
+.signup-form button:active{
+    background: #004080; /* 버튼을 눌렀을 때의 배경색 */
+	transform: scale(0.95); /* 버튼을 눌렀을 때 약간 작아지게 */
+}

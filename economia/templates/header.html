@@ -1,7 +1,7 @@
 <style>
-
+    
     @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
-    body,h1, h2, p, ul, li, a {
+    body, h1, h2, p, ul, li, a {
         margin: 0;
         padding: 0;
         list-style: none;
@@ -15,7 +15,7 @@
         width: 80%;
         margin: 0 auto;
     }
-
+    
     .navbar {
         margin-top: 0%;
         background-color: white;
@@ -41,32 +41,27 @@
         display: flex;
         padding-top: 15px;
     }
-
     .navbar ul li {
 
         margin-left: 100px;
     }
-
     .navbar ul li a, .navbar ul li p {
         color: black;
         font-size: 30px;
         font-family: 'Noto Sans KR', sans-serif;
 
     }
-
     .navbar:after {
         content: "";
         display: table;
         clear: both;
     }
 
-
     /* Media Queries for Responsiveness */
     @media (max-width: 1200px) {
         .navbar ul li {
             margin-left: 50px;
         }
-
         .navbar ul li a, .navbar ul li p {
             font-size: 25px;
         }
@@ -126,12 +121,12 @@
 </head>
 <header class="navbar">
     <div class="head-container">
-        <a href="/"><img src="{% static 'images/logo.png' %}" alt="My Image"></a>
+        <a href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt="My Image"></a>
         <nav>
             <ul>
-                <li><a href="">학습하기</a></li>
+                <li><a href="{% url 'home' %}">학습하기</a></li>
                 <li><a href="{% url 'scenarios:scenario_list' %}">시나리오</a></li>
-                <li><a href="/mypage">마이페이지</a></li>
+                <li><a href="{% url 'mypage' %}">마이페이지</a></li>
                 <li><a href="">로그아웃</a></li>
             </ul>
         </nav>

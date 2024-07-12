@@ -8,76 +8,40 @@
 from django.db import models
 from django.utils import timezone
 import datetime
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
+<<<<<<< HEAD
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
+=======
+class Player(AbstractBaseUser):
+    player_id = models.CharField(max_length=20, unique=True)
+    player_name = models.CharField(max_length=5, blank=True, null=True)
+    nickname = models.CharField(unique=True, max_length=255)
+    email = models.CharField(unique=True, max_length=255)
+    school = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+
+    USERNAME_FIELD = 'player_id'
+    REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return self.player_id
+
+    def has_perm(self, perm, obj=None):
+        return self.is_superuser
+
+    def has_module_perms(self, app_label):
+        return self.is_superuser
+>>>>>>> 7011c2a3436cdd1982ecee474163ce44e1a2ffd6
 
     class Meta:
         managed = False
-        db_table = 'auth_group'
-
-
-class AuthGroupPermissions(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_group_permissions'
-        unique_together = (('group', 'permission'),)
-
-
-class AuthPermission(models.Model):
-    name = models.CharField(max_length=255)
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
-    codename = models.CharField(max_length=100)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_permission'
-        unique_together = (('content_type', 'codename'),)
-
-
-class AuthUser(models.Model):
-    password = models.CharField(max_length=128)
-    last_login = models.DateTimeField(blank=True, null=True)
-    is_superuser = models.IntegerField()
-    username = models.CharField(unique=True, max_length=150)
-    first_name = models.CharField(max_length=150)
-    last_name = models.CharField(max_length=150)
-    email = models.CharField(max_length=254)
-    is_staff = models.IntegerField()
-    is_active = models.IntegerField()
-    date_joined = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user'
-
-
-class AuthUserGroups(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user_groups'
-        unique_together = (('user', 'group'),)
-
-
-class AuthUserUserPermissions(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user_user_permissions'
-        unique_together = (('user', 'permission'),)
-
+        db_table = 'player'
 
 class AuthtokenToken(models.Model):
     key = models.CharField(primary_key=True, max_length=40)
@@ -129,9 +93,17 @@ class Comments(models.Model):
     scenario = models.ForeignKey('Scenario', models.DO_NOTHING)
     characters = models.ForeignKey(Characters, models.DO_NOTHING)
     percents = models.IntegerField()
+    scenario = models.ForeignKey('Scenario', models.DO_NOTHING)
+    characters = models.ForeignKey(Characters, models.DO_NOTHING)
+    percents = models.IntegerField()
     texts = models.CharField(max_length=500, blank=True, null=True)
     like_cnt = models.IntegerField(blank=True, null=True)
+<<<<<<< HEAD
     time = models.DateTimeField(auto_now_add=True)
+=======
+    time = models.DateTimeField(blank=True, null=True)
+    time = models.DateTimeField(blank=True, null=True)
+>>>>>>> 7011c2a3436cdd1982ecee474163ce44e1a2ffd6
 
     class Meta:
         managed = False
@@ -148,6 +120,7 @@ class CommentsLikes(models.Model):
         unique_together = (('comment', 'player'),)
 
 
+<<<<<<< HEAD
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
@@ -212,6 +185,8 @@ class EconomiaVerificationcode(models.Model):
         return now > expiration_time
 
 
+=======
+>>>>>>> 7011c2a3436cdd1982ecee474163ce44e1a2ffd6
 class Multiple(models.Model):
     characters = models.ForeignKey(Characters, models.DO_NOTHING)
     question_text = models.CharField(max_length=500, blank=True, null=True)
@@ -219,7 +194,11 @@ class Multiple(models.Model):
     option_b = models.CharField(max_length=255, blank=True, null=True)
     option_c = models.CharField(max_length=255, blank=True, null=True)
     option_d = models.CharField(max_length=255, blank=True, null=True)
+<<<<<<< HEAD
     correct_answer = models.CharField(max_length=1, blank=True, null=True)
+=======
+    correct_answer = models.CharField(max_length=5, blank=True, null=True)
+>>>>>>> 7011c2a3436cdd1982ecee474163ce44e1a2ffd6
     subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)

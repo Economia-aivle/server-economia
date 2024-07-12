@@ -42,6 +42,7 @@ def getStageDatas(request, characters):
     return Response(serializer.data)
 
 def previous_quiz(request, characters):
+    characters=1
     
     # player = request.player
     # characters = Characters.objects.get(player=player) #로그인한 player의 characters 속성을 가져옵니다.

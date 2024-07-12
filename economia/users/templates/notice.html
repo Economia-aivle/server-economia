@@ -10,8 +10,10 @@
 <body>
     {% include 'header.html' %}
     <div class="search_container">
-        <input type="text" class="search_input" placeholder="검색">
-        <input type="button" class="search_btn">
+        <form method="GET" action="{% url 'users:notice_list' %}">
+            <input type="text" class="search_input" name="search" placeholder="검색" value="{{ search_query }}">
+            <button type="submit" class="search_btn">찾기</button>
+        </form>
     </div>
     <div class="white_box">
         <table>
@@ -24,18 +26,14 @@
                 </tr>
             </thead>
             <tbody>
+                {% for notice in notices %}
                 <tr>
-                    <td>1</td>
-                    <td>[6/21] 업데이트 예정사항 공지</td>
-                    <td>강현수</td>
-                    <td>24.06.21</td>
+                    <td>{{ forloop.counter }}</td>
+                    <td><a href="{% url 'users:notice_detail' notice.id %}">{{ notice.title }}</a></td>
+                    <td>{{ notice.author }}</td>
+                    <td>{{ notice.created_at|date:"y.m.d" }}</td>
                 </tr>
-                <tr>
-                    <td>행 2, 열 1</td>
-                    <td>행 2, 열 2</td>
-                    <td>행 2, 열 3</td>
-                    <td>행 2, 열 4</td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

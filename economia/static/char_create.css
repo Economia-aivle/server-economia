@@ -18,9 +18,10 @@
     font-size: 50px;
     font-weight: bold;
     letter-spacing: 0;
-    position: flex;
-    top: 80px; /* 상단 여백 조정 */
+    position: absolute;
+    top: 190px; /* 상단 여백 조정 */
 }
+
 
 .buttons-container {
     display: flex;
@@ -49,18 +50,28 @@ button.create_btn {
 }
 
 button.update_btn {
+    background-color: rgba(57, 167, 255, 1);
+}
+
+button.delete_btn {
     background-color: #F24E1E;
 }
 
-button.create_btn:active {
-    background-color: rgba(45, 135, 205, 1); /* 채도가 낮은 파란색 */
+button.delete_btn:active {
+    background-color: #CC3D00;
 }
 
+button.create_btn:active,
 button.update_btn:active {
-    background-color: #D43D1E; /* 채도가 낮은 빨간색 */
+    animation: blink 0.2s;
 }
 
-.create_str, .update_str {
+@keyframes blink {
+    0%, 100% { background-color: rgba(57, 167, 255, 1); }
+    50% { background-color: rgba(30, 144, 255, 1); }
+}
+
+.create_str, .update_str, .delete_str {
     color: rgba(255, 255, 255, 1);
     font-family: Noto Sans;
     text-align: center;

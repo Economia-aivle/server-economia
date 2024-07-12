@@ -1,8 +1,5 @@
 
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
-
-
-
 main{
 	background-color:rgba(224.000001847744, 244.0000006556511, 255, 1);
 	width:100%;
@@ -62,11 +59,22 @@ body{
 	border-top-right-radius:20px;
 	border-bottom-left-radius:20px;
 	border-bottom-right-radius:20px;
-
 }
 input::placeholder {
     font-weight: bold;
     text-align: center;
+}
+.video { 
+	width: 0;
+	height: 0;
+	border-bottom: 30px solid transparent;
+	border-top: 30px solid transparent;
+	border-left: 50px solid #39A7FF;
+	border-right: 50px solid transparent;
+	position:absolute;
+	border-radius:10px;
+	top : 40%;
+	left: 50%;
 }
 .btn {
 	margin-top: 30px;
@@ -129,7 +137,9 @@ color: #E0E0E0;
 	background-color: #39A7FF;
 }
 
-
+.progress-step:not(.active):hover {
+	background-color: #75BFFF;
+}
 .top-num{
 	text-align: center;
 	width: 100%;

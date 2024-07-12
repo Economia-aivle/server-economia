@@ -25,7 +25,7 @@
             
             <div class="answer-container">
                 <form id="answer-form" method="post">
-                    
+                    {% csrf_token %}
                     <input type="hidden" id="answer" name="answer" value="">
                     <button class="option-btn" type="button" id="option1" onclick="selectOption(this)" name="answer" value="1">1. {{ question.option_a }}</button>
                     <button class="option-btn" type="button" id="option2" onclick="selectOption(this)" name="answer" value="2">2. {{ question.option_b }}</button>
@@ -116,7 +116,11 @@
         }
 
         function nextQuestion() {
+<<<<<<< HEAD
+            if (num >= 5) {
+=======
             if (num >= 8) {
+>>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
                 window.location.href = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
             } else {
                 window.location.href = `/educations/multiple/${characters}/${subject}/${chapter}/${num + 1}`;
