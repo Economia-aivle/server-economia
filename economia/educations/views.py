@@ -72,14 +72,14 @@ def previous_quiz_answer(request, characters):
 
 # Create your views here.
 def level_choice(request, characters, subject, chapter):
-    characters = 1
+    characters = 1 
     try:
         stage_data = Stage.objects.get(characters_id=characters, subject=subject, chapter=chapter)
         chapter_sub = stage_data.chapter_sub
-        print(type(chapter_sub))
     except Stage.DoesNotExist:
-        chapter_sub = None
-        print(chapter_sub)
+        # Stage가 없을 경우 새로운 Stage 객체를 생성합니다.
+        stage_data = Stage.objects.create(characters_id=characters, subject=subject, chapter=chapter, chapter_sub=1)
+        chapter_sub = stage_data.chapter_sub
     
     context = {
         'characters': characters,
@@ -88,7 +88,7 @@ def level_choice(request, characters, subject, chapter):
         'chapter_sub': chapter_sub,
     }
     
-    return render(request,'level_choice.html', context)
+    return render(request, 'level_choice.html', context)
 
 
 @csrf_exempt
@@ -295,11 +295,12 @@ def chapter_summary(request):
     return render(request,'chapter_summary.html')
 
 def chapter(request, subjects):
-    subjects='금융'
+    subjects='국어'
     response = requests.get(f'http://127.0.0.1:8000/educations/getSubjectDatas/{subjects}/')
     data = response.json()
-    
+    print(data)
     return render(request,'chapter.html', {'chapter': data})
+
 @csrf_exempt
 def study_view(request):
     if request.method == 'GET':

@@ -14,7 +14,7 @@ urlpatterns = [
     path('get_character/<int:player_id>/', views.get_character_view, name='get_character'),
     path('char_update/', views.character_update_view, name='char_update'),
     path('find_account_pwd/', views.find_account_pwd, name='find_account_pwd'),
-    path('check_password/<str:pwd>', views.check_password, name='check_password'),
+    path('check_pwd/<str:password>', views.check_pwd, name='check_pwd'),
 
 
 ]

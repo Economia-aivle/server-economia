@@ -24,7 +24,7 @@
       
       <div class="chapters">
         {% for item in chapter %} 
-        <a class="chap{{item.id}}" href="{% url 'educations:level_choice' characters=1 subject=chapter.0.subjects chapter=item.id %}" target="_self"> Chapter {{ item.chapters }}</a>
+        <a class="chap{{item.id}}" href="{% url 'educations:level_choice' characters=1 subject=item.id  %}" > Chapter {{ item.chapters }}</a>
         {% endfor %}
       </div>
       

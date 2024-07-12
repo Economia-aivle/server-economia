@@ -9,6 +9,7 @@ from django.db import models
 from django.utils import timezone
 import datetime
 
+
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
 
@@ -78,11 +79,21 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
+class AuthtokenToken(models.Model):
+    key = models.CharField(primary_key=True, max_length=40)
+    created = models.DateTimeField()
+    user_id = models.BigIntegerField(unique=True)
+
+    class Meta:
+        managed = False
+        db_table = 'authtoken_token'
+
+
 class Blank(models.Model):
     characters = models.ForeignKey('Characters', models.DO_NOTHING)
     question_text = models.CharField(max_length=500, blank=True, null=True)
     correct_answer = models.CharField(max_length=10, blank=True, null=True)
-    subjects = models.CharField(max_length=10, blank=True, null=True)
+    subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
 
@@ -105,7 +116,7 @@ class Characters(models.Model):
 
 
 class ChildComments(models.Model):
-    parent = models.ForeignKey('Comments', on_delete=models.CASCADE)
+    parent = models.ForeignKey('Comments', models.DO_NOTHING)
     player = models.ForeignKey('Player', models.DO_NOTHING)
     texts = models.CharField(max_length=500, blank=True, null=True)
 
@@ -120,15 +131,15 @@ class Comments(models.Model):
     percents = models.IntegerField()
     texts = models.CharField(max_length=500, blank=True, null=True)
     like_cnt = models.IntegerField(blank=True, null=True)
+    time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False
         db_table = 'comments'
-    
 
 
 class CommentsLikes(models.Model):
-    comment = models.ForeignKey(Comments, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comments, models.DO_NOTHING)
     player = models.ForeignKey('Player', models.DO_NOTHING)
 
     class Meta:
@@ -182,16 +193,34 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
+class EconomiaVerificationcode(models.Model):
+    email = models.CharField(unique=True, max_length=254)
+    code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        managed = False
+        db_table = 'economia_verificationcode'
+
+    def __str__(self):
+        return f'{self.email}: {self.code}'
+
+    def is_expired(self):
+        # 현재 시간과 생성 시간을 비교하여 3분 이내면 False 반환, 그렇지 않으면 True 반환
+        expiration_time = self.created_at + datetime.timedelta(minutes=3)
+        now = timezone.now()
+        return now > expiration_time
+
+
 class Multiple(models.Model):
     characters = models.ForeignKey(Characters, models.DO_NOTHING)
-    stage = models.IntegerField()
     question_text = models.CharField(max_length=500, blank=True, null=True)
     option_a = models.CharField(max_length=255, blank=True, null=True)
     option_b = models.CharField(max_length=255, blank=True, null=True)
     option_c = models.CharField(max_length=255, blank=True, null=True)
     option_d = models.CharField(max_length=255, blank=True, null=True)
     correct_answer = models.CharField(max_length=1, blank=True, null=True)
-    subjects = models.CharField(max_length=10, blank=True, null=True)
+    subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
 
@@ -215,14 +244,29 @@ class Player(models.Model):
     player_id = models.CharField(max_length=20)
     player_name = models.CharField(max_length=5, blank=True, null=True)
     nickname = models.CharField(unique=True, max_length=255)
+    last_login = models.DateTimeField()
     email = models.CharField(unique=True, max_length=255)
     school = models.CharField(max_length=255)
-    pwd = models.CharField(max_length=255)
-    admin_tf = models.IntegerField(blank=True, null=True)
+    is_superuser = models.IntegerField()
+    is_staff = models.IntegerField()
+    is_active = models.IntegerField()
+    password = models.CharField(max_length=255)
 
     class Meta:
         managed = False
         db_table = 'player'
+
+
+class Qna(models.Model):
+    title = models.CharField(max_length=50, blank=True, null=True)
+    question_text = models.CharField(max_length=500, blank=True, null=True)
+    admin_answer = models.CharField(max_length=500, blank=True, null=True)
+    player = models.ForeignKey(Player, models.DO_NOTHING)
+    time = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'qna'
 
 
 class Rules(models.Model):
@@ -236,9 +280,9 @@ class Rules(models.Model):
 
 
 class Scenario(models.Model):
-    subjects = models.CharField(max_length=5)
-    title = models.CharField(max_length=20, blank=True, null=True)
-    question_text = models.CharField(max_length=500, blank=True, null=True)
+    subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
+    title = models.CharField(max_length=100, blank=True, null=True)
+    question_text = models.CharField(max_length=1000, blank=True, null=True)
     start_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -248,7 +292,7 @@ class Scenario(models.Model):
 
 class Stage(models.Model):
     characters = models.ForeignKey(Characters, models.DO_NOTHING)
-    subject = models.CharField(max_length=5, blank=True, null=True)
+    subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
     chapter = models.IntegerField(blank=True, null=True)
     chapter_sub = models.IntegerField(blank=True, null=True)
 
@@ -280,25 +324,10 @@ class Tf(models.Model):
     characters = models.ForeignKey(Characters, models.DO_NOTHING)
     question_text = models.CharField(max_length=500, blank=True, null=True)
     correct_answer = models.CharField(max_length=1, blank=True, null=True)
-    subjects = models.CharField(max_length=10, blank=True, null=True)
+    subjects = models.ForeignKey(Subjects, models.DO_NOTHING)
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'tf'
-
-class VerificationCode(models.Model):
-    email = models.EmailField(unique=True)
-    code = models.CharField(max_length=6)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'{self.email}: {self.code}'
-
-    def is_expired(self):
-        # 현재 시간과 생성 시간을 비교하여 3분 이내면 False 반환, 그렇지 않으면 True 반환
-        expiration_time = self.created_at + datetime.timedelta(minutes=3)
-        now = timezone.now()
-        return now > expiration_time
-    

@@ -5,7 +5,7 @@ from . import views
 
 app_name = 'educations'
 urlpatterns = [
-    path('level_choice/<int:characters>/<str:subject>/<int:chapter>', views.level_choice, name='level_choice'),
+    path('level_choice/<int:characters>/<int:subject>/', views.level_choice, name='level_choice'),
     path('chapter_summary', views.chapter_summary, name='chapter_summary'),
     path('blank/<int:characters>/<str:subject>/<int:chapter>/<int:num>', views.blank, name='blank'),
     path('multiple/<int:characters>/<str:subject>/<int:chapter>/<int:num>', views.multiple, name='multiple'),
