@@ -89,6 +89,22 @@ def register(request):
         return JsonResponse({'success': '회원가입이 완료되었습니다.'})
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
+def signup(request):  # 함수 이름을 'signup'으로 변경
+    return render(request, 'signup.html')  # 템플릿 이름을 'signup.html'로 변경
+import json
+
+from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
+from economia.models import Characters
+from django.http import JsonResponse, HttpResponseBadRequest
+from .serializers import CreateCharacterSerializer
+from django.db import IntegrityError
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib import messages
+from economia.models import *
+import random
+
 @csrf_exempt
 def get_character_view(request, player_id):
     if request.method == 'GET':

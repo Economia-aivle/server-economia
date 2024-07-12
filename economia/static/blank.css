@@ -1,11 +1,5 @@
 
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 main{
 	background-color:rgba(224.000001847744, 244.0000006556511, 255, 1);
 	width:100%;
@@ -44,10 +38,7 @@ body{
     height: 246px;
     width: 245px;
     text-align: center;
-<<<<<<< HEAD
-=======
 	cursor: url('images/sword.png') , auto;
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 }
 .character img{
     height: 246px;
@@ -56,15 +47,10 @@ body{
 }
 .answer_form{
     margin-top: 30px;
-<<<<<<< HEAD
-}
-.answer{
-=======
 	text-align: center;
 }
 .answer{
 	text-align: center;
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
     width: 500px;
 	height: 60px;
     font-size: 20px;
@@ -73,16 +59,11 @@ body{
 	border-top-right-radius:20px;
 	border-bottom-left-radius:20px;
 	border-bottom-right-radius:20px;
-<<<<<<< HEAD
-=======
-
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 }
 input::placeholder {
     font-weight: bold;
     text-align: center;
 }
-<<<<<<< HEAD
 .video { 
 	width: 0;
 	height: 0;
@@ -95,8 +76,6 @@ input::placeholder {
 	top : 40%;
 	left: 50%;
 }
-=======
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 .btn {
 	margin-top: 30px;
 	float: right;
@@ -158,13 +137,9 @@ color: #E0E0E0;
 	background-color: #39A7FF;
 }
 
-<<<<<<< HEAD
 .progress-step:not(.active):hover {
 	background-color: #75BFFF;
 }
-=======
-
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 .top-num{
 	text-align: center;
 	width: 100%;
@@ -173,11 +148,8 @@ color: #E0E0E0;
 	border-bottom-width:1px; 
     border-bottom-style:solid;
     border-bottom-color:black;
-<<<<<<< HEAD
-=======
 }
 
 .progress-step.wrong {
     background-color: red;
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
 }
