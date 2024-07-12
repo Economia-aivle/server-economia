@@ -13,11 +13,11 @@ function loadQuestion() {
         document.getElementById('question-container').innerHTML = '<h1>퀴즈가 완료되었습니다!</h1>';
         return;
     }
-    const subjects = initialData.subjects;
+    const subjects_id = initialData.subjects_id;
     const chapter = initialData.chapter;
     const characters = initialData.characters;
 
-    fetch(`/educations/tf_quiz/?subjects=${subjects}&chapter=${chapter}&used_question_ids=${usedQuestionIds.join(',')}`)
+    fetch(`/educations/tf_quiz/?subjects_id=${subjects_id}&chapter=${chapter}&used_question_ids=${usedQuestionIds.join(',')}`)
         .then(response => response.json())
         .then(data => {
             if (!data.question_id) {
@@ -79,7 +79,7 @@ function submitAnswer(answer) {
                 },
                 body: new URLSearchParams({
                     characters: initialData.characters,
-                    subjects: initialData.subjects,
+                    subjects_id: initialData.subjects_id,
                     chapter: initialData.chapter
                 })
             })

@@ -59,7 +59,7 @@
     <script>
         // Django 템플릿 엔진으로부터 받은 값들을 JavaScript 변수에 할당
         const characters = "{{ characters }}";
-        const subject = "{{ subject }}";
+        const subjects_id = "{{ subjects_id }}";
         const chapter = "{{ chapter }}";
 
         // 정답 체크 함수
@@ -82,7 +82,7 @@
                 if (num >= 6) {
                     window.location.href = "{% url 'educations:summary_anime' %}";
                 } else {
-                    window.location.href = `/educations/blank/${characters}/${subject}/${chapter}/${num}`;
+                    window.location.href = `/educations/blank/${characters}/${subjects_id}/${chapter}/${num}`;
                 }
             }
         }
@@ -94,16 +94,16 @@
           
             // 6 이상이면 summary 페이지로 이동, 아니면 다음 문제 페이지로 이동
             if (num >= 6) {
-                window.location.href = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+                window.location.href = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
             } else {
-                window.location.href = `/educations/blank/${characters}/${subject}/${chapter}/${num}`;
+                window.location.href = `/educations/blank/${characters}/${subjects_id}/${chapter}/${num}`;
             }
         }
 
         window.onload = function() {
             // 특정 URL로 이동할 함수
             function redirectToLevelChoice() {
-                var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+                var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
                 window.location.href = levelChoiceUrl;
             }
 
@@ -111,7 +111,7 @@
             var currentUrl = window.location.href;
 
             // 특정 URL 패턴
-            var levelChoiceUrlPattern = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+            var levelChoiceUrlPattern = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
 
             // 현재 URL이 특정 URL 패턴과 다를 경우
             if (currentUrl !== levelChoiceUrlPattern) {

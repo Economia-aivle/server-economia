@@ -65,6 +65,9 @@ def previous_quiz(request, characters):
     }
     return render(request, 'previous_quiz.html', context)
 
+def success(request):
+    return render(request, 'success.html')
+
 
 def previous_quiz_answer(request, characters):
     response = requests.get(f'http://127.0.0.1:8000/educations/multipledatas/{characters}')
@@ -72,19 +75,19 @@ def previous_quiz_answer(request, characters):
     return render(request, 'previous_quiz_answer.html', {'multiple': data})
 
 # Create your views here.
-def level_choice(request, characters, subject, chapter):
+def level_choice(request, characters, subjects_id, chapter):
     characters = 1 
     try:
-        stage_data = Stage.objects.get(characters_id=characters, subject=subject, chapter=chapter)
+        stage_data = Stage.objects.get(characters_id=characters, subjects_id=subjects_id, chapter=chapter)
         chapter_sub = stage_data.chapter_sub
     except Stage.DoesNotExist:
         # Stage가 없을 경우 새로운 Stage 객체를 생성합니다.
-        stage_data = Stage.objects.create(characters_id=characters, subject=subject, chapter=chapter, chapter_sub=1)
+        stage_data = Stage.objects.create(characters_id=characters, chapter=chapter, chapter_sub=1, subjects_id=subjects_id)
         chapter_sub = stage_data.chapter_sub
     
     context = {
         'characters': characters,
-        'subject': subject,
+        'subjects_id': subjects_id,
         'chapter': chapter,
         'chapter_sub': chapter_sub,
     }
@@ -97,13 +100,13 @@ def tf_quiz_view(request):
     if request.method == 'GET':
         used_question_ids = request.GET.getlist('used_question_ids[]')
         chapter = request.GET.get('chapter')
-        subjects = request.GET.get('subjects')  # 수정된 부분
+        subjects_id = request.GET.get('subjects_id')  # 수정된 부분
         characters = request.GET.get('characters')
 
-        if not chapter or not subjects:
+        if not chapter or not subjects_id:
             return JsonResponse({"error": "Chapter and subjects are required."}, status=status.HTTP_400_BAD_REQUEST)
 
-        questions = Tf.objects.filter(chapter=chapter, subjects=subjects).exclude(id__in=used_question_ids)
+        questions = Tf.objects.filter(chapter=chapter, subjects_id=subjects_id).exclude(id__in=used_question_ids)
         if not questions:
             return JsonResponse({"error": "No questions available."}, status=status.HTTP_404_NOT_FOUND)
         question = random.choice(questions)
@@ -147,14 +150,14 @@ def tf_quiz_view(request):
 def update_stage(request):
     if request.method == 'POST':
         characters = request.POST.get('characters')
-        subjects = request.POST.get('subjects')
+        subjects_id = request.POST.get('subjects_id')
         chapter = request.POST.get('chapter')
 
-        if not characters or not subjects or not chapter:
+        if not characters or not subjects_id or not chapter:
             return JsonResponse({"error": "Characters, subjects, and chapter are required."}, status=400)
 
         try:
-            stage = Stage.objects.get(characters_id=characters, subject=subjects, chapter=chapter)
+            stage = Stage.objects.get(characters_id=characters, subjects_id=subjects_id, chapter=chapter)
             stage.chapter_sub = 2
             stage.save()
             return JsonResponse({'status': 'success', 'message': 'Stage updated successfully!'})
@@ -163,10 +166,10 @@ def update_stage(request):
     else:
         return JsonResponse({"error": "Invalid request method"}, status=400)
 
-def tf_quiz_page(request, characters, subject, chapter):
+def tf_quiz_page(request, characters, subjects_id, chapter):
     context = {
             'characters': characters,
-              'subject': subject,
+              'subjects_id': subjects_id,
               'chapter': chapter,
     } 
     return render(request, 'tfquiz.html', context)
@@ -197,12 +200,12 @@ def choose_tf_chapter_view(request):
 
 
 
-def multiple(request, characters, subject, chapter, num):
+def multiple(request, characters, subjects_id, chapter, num):
     # characters, subject, chapter에 해당하는 데이터를 필터링합니다.
     multiple_response = requests.get(f'http://127.0.0.1:8000/educations/multipledatas/{characters}')
     multiple_data = multiple_response.json()
     
-    multiple_list = [item for item in multiple_data if item['characters'] == characters and item['subjects'] == subject and item['chapter'] == chapter]
+    multiple_list = [item for item in multiple_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
     
     questions = []
     max_num = min(8, len(multiple_list))
@@ -211,9 +214,8 @@ def multiple(request, characters, subject, chapter, num):
         questions.append(multiple_list[i])
     
     question = questions[num - 1] if num <= max_num else None
-    
     if num == 9:
-        return redirect('educations:level_choice', characters=characters, subject=subject, chapter=chapter)
+        return redirect('educations:level_choice', characters=characters, subjects_id=subjects_id, chapter=chapter)
     # # POST 요청 처리
     if request.method == 'POST':
         user_answer = request.POST.get('answer')
@@ -227,7 +229,7 @@ def multiple(request, characters, subject, chapter, num):
             if correct_count == 5:
                 # 모든 문제를 맞춘 경우 Stage 모델의 chapter_sub를 3으로 업데이트
                 try:
-                    stage_data = Stage.objects.get(characters_id=characters, subject=subject, chapter=chapter)
+                    stage_data = Stage.objects.get(characters_id=characters, subjects_id=subjects_id, chapter=chapter)
                     stage_data.chapter_sub = 3
                     stage_data.save()
                 except Stage.DoesNotExist:
@@ -250,7 +252,7 @@ def multiple(request, characters, subject, chapter, num):
     context ={'question': question,
               'num': num,
               'characters': characters,
-              'subject': subject,
+              'subjects_id': subjects_id,
               'chapter': chapter,
               'correct_count': correct_count,
               'hp_percentage': hp_percentage,
@@ -262,12 +264,12 @@ def multiple(request, characters, subject, chapter, num):
 
 
 
-def blank(request, characters, subject, chapter, num):
+def blank(request, characters, subjects_id, chapter, num):
     blank_response = requests.get(f'http://127.0.0.1:8000/educations/blankdatas/{characters}')
     blank_data = blank_response.json()
     
     # characters, subject, chapter에 해당하는 데이터를 필터링합니다.
-    blank_list = [item for item in blank_data if item['characters'] == characters and item['subjects'] == subject and item['chapter'] == chapter]
+    blank_list = [item for item in blank_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
 
     # 최대 5개의 질문을 가져옵니다.
     questions = []
@@ -280,7 +282,7 @@ def blank(request, characters, subject, chapter, num):
     question = questions[num - 1] if num <= max_num else None
 
 
-    return render(request, 'blank.html', {'question': question, 'num': num, 'characters': characters, 'subject': subject, 'chapter': chapter})
+    return render(request, 'blank.html', {'question': question, 'num': num, 'characters': characters, 'subjects_id': subjects_id, 'chapter': chapter})
 
     
 def study(request):
@@ -299,8 +301,15 @@ def chapter(request, subjects):
     subjects='국어'
     response = requests.get(f'http://127.0.0.1:8000/educations/getSubjectDatas/{subjects}/')
     data = response.json()
+    for chapter in data:
+        chapter_content = chapter['chapters']
+        chapter['chapters_list'] = chapter_content.split(', ')
+    context = {
+        'chapter': data,
+        
+    }
     print(data)
-    return render(request,'chapter.html', {'chapter': data})
+    return render(request,'chapter.html', context)
 
 @csrf_exempt
 def study_view(request):

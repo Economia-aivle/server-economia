@@ -1,5 +1,9 @@
 
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+@font-face { /* 애플산돌고딕 폰트 적용 */
+    font-family: "Dovemayo_gothic";
+    src: url("static/Dovemayo_gothic.ttf") format("truetype");
+    font-weight: normal;
+  } 
 main{
 	background-color:rgba(224.000001847744, 244.0000006556511, 255, 1);
 	width:100%;
@@ -7,7 +11,7 @@ main{
 	position : relative;
     display: flex;
 	justify-content : center;
-	font-family: 'Noto Sans KR', sans-serif;
+	font-family: 'Dovemayo_gothic', sans-serif;
 	text-align: center;
 
 }
@@ -96,7 +100,7 @@ body{
   }
   
   .summary-bubble {
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Dovemayo_gothic', sans-serif;
     font-weight: bold;
     font-size: 20px;
     position: relative;

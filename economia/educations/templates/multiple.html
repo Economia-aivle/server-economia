@@ -67,7 +67,7 @@
     <script>
         let selectedOption = null;
         const characters = "{{ characters }}";
-        const subject = "{{ subject }}";
+        const subjects_id = "{{ subjects_id }}";
         const chapter = "{{ chapter }}";
         const num = {{ num }};
         
@@ -91,7 +91,7 @@
             const formData = new FormData();
             formData.append('answer', selectedAnswer);
 
-            fetch(`/educations/multiple/${characters}/${subject}/${chapter}/${num}`, {
+            fetch(`/educations/multiple/${characters}/${subjects_id}/${chapter}/${num}`, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -102,28 +102,24 @@
             .then(data => {
                 if (data.status === 'complete') {
                     alert(data.message);
-                    window.location.href = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+                    window.location.href = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
                 } else if (data.status === 'wrong') {
                     alert(data.message);
                     document.querySelector('.wrap-container').style.display = 'none';
                     document.getElementById('wrong-container').style.display = 'block';
                 } else {
                     alert(data.message);
-                    window.location.href = `/educations/multiple/${characters}/${subject}/${chapter}/${num + 1}`;
+                    window.location.href = `/educations/multiple/${characters}/${subjects_id}/${chapter}/${num + 1}`;
                 }
             })
             .catch(error => console.error('Error:', error));
         }
 
         function nextQuestion() {
-<<<<<<< HEAD
-            if (num >= 5) {
-=======
             if (num >= 8) {
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
-                window.location.href = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+                window.location.href = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
             } else {
-                window.location.href = `/educations/multiple/${characters}/${subject}/${chapter}/${num + 1}`;
+                window.location.href = `/educations/multiple/${characters}/${subjects_id}/${chapter}/${num + 1}`;
             }
         }
 
@@ -131,12 +127,12 @@
 
 
             function redirectToLevelChoice() {
-                var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+                var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
                 window.location.href = levelChoiceUrl;
             }
   
             var currentUrl = window.location.href;
-            var levelChoiceUrlPattern = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+            var levelChoiceUrlPattern = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
   
             if (currentUrl !== levelChoiceUrlPattern) {
                 history.pushState(null, null, levelChoiceUrlPattern);

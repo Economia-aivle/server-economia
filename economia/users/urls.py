@@ -1,7 +1,6 @@
 from django.urls import path, include
 from django.contrib import admin
 from . import views
-from django.urls import include
 
 app_name = 'users'
 
@@ -24,4 +23,6 @@ urlpatterns = [
     path('register', views.register, name='register'),  # 회원가입 페이지
     path('delete_account', views.delete_account, name='delete_account'),
     path('get_character/<int:player_id>/', views.get_character_view, name='get_character'),
+    path('success', views.success, name='success'),
+    path('notice', views.notice, name='notice'),
 ]

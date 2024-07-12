@@ -23,9 +23,13 @@
       </div>
       
       <div class="chapters">
-        {% for item in chapter %} 
-        <a class="chap{{item.id}}" href="{% url 'educations:level_choice' characters=1 subject=item.id  %}" > Chapter {{ item.chapters }}</a>
+        {% for item in chapter %}
+        {% for part in item.chapters_list %}
+            <a class="chap{{ item.id }}" href="{% url 'educations:level_choice' characters=1 subjects_id=item.id chapter=forloop.counter %}">
+                {{ part }}
+            </a><br>
         {% endfor %}
+      {% endfor %}
       </div>
       
     </div>

@@ -85,12 +85,17 @@ def register(request):
         if Player.objects.filter(nickname=nickname).exists():
             return JsonResponse({'error': '중복된 닉네임입니다'}, status=400)
 
-        Player.objects.create(player_id=user_id, password=password, email=email, player_name=name, school=school_name, nickname=nickname, admin_tf=True)
+        Player.objects.create(player_id=user_id, password=password, email=email, player_name=name, school=school_name, nickname=nickname)
         return JsonResponse({'success': '회원가입이 완료되었습니다.'})
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 def signup(request):  # 함수 이름을 'signup'으로 변경
     return render(request, 'signup.html')  # 템플릿 이름을 'signup.html'로 변경
+
+def find_account(request):  # 함수 이름을 'signup'으로 변경
+    return render(request, 'find_account.html')  # 템플릿 이름을 'signup.html'로 변경
+
+
 import json
 
 from django.shortcuts import render, redirect
@@ -212,6 +217,12 @@ def ranking(request):
 
     return render(request, 'ranking.html', {'subjects': subjects, 'ranked_scores': ranked_scores})
 
+def success(request):
+    return render(request, 'success.html')
+
+def notice(request):
+    return render(request, 'notice.html')
+
 def admin_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -223,6 +234,8 @@ def admin_login(request):
         else:
             return render(request, 'admin_login.html', {'error': 'Invalid credentials or not an admin'})
     return render(request, 'admin_login.html')
+
+
 
 def notice_list(request):
     search_query = request.GET.get('search', '')
