@@ -1,18 +1,36 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from django.utils import timezone
 import requests
 from economia.models import *
 from .serializers import *
 from datetime import datetime, timedelta
 import pytz
+import jwt
 from .forms import ScenarioForm
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
+from economia.serializers import ProductSerializer, CharacterSerializer
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.conf import settings
+from rest_framework_simplejwt.tokens import RefreshToken
 # Create your views here.
+
+class ProtectedView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        content = {'message': 'This is a protected view'}
+        return Response(content)
 
 
 @api_view(['GET'])
@@ -111,8 +129,10 @@ def create_scenario(request): #시나리오 생성
         form = ScenarioForm()
     return render(request, 'create_scenario.html', {'form': form})
 
+
+
+
 def previous_scenario(request, id):
-    # 임시로 사용자 ID 설정 (로그인 구현 후 변경 필요)
     player_id = 1
     characters_id =1
     # Scenario 데이터 가져오기

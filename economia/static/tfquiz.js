@@ -37,6 +37,14 @@ function loadQuestion() {
         .catch(error => console.error('Error:', error));
 }
 
+
+function updateHPBar() {
+    const hpBar = document.getElementById('hp-bar');
+    const widthDecrease = correctCount * 20;  // correctCount가 1 증가할 때마다 20%씩 감소
+    
+    hpBar.style.width = `calc(100% - ${widthDecrease}%)`;  // 너비 감소
+}
+
 function submitAnswer(answer) {
     const questionId = document.getElementById('question-id').value;
     if (!questionId) {
@@ -60,6 +68,7 @@ function submitAnswer(answer) {
         if (data.is_correct) {
             alert('정답입니다!');
             correctCount++;
+            updateHPBar()
         } else {
             alert('오답입니다. 설명: ' + data.explanation);
         }

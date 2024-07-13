@@ -158,9 +158,10 @@ def update_stage(request):
 
         try:
             stage = Stage.objects.get(characters_id=characters, subjects_id=subjects_id, chapter=chapter)
-            stage.chapter_sub = 2
-            stage.save()
-            return JsonResponse({'status': 'success', 'message': 'Stage updated successfully!'})
+            if stage.chapter_sub == 1:
+                stage.chapter_sub = 2
+                stage.save()
+                return JsonResponse({'status': 'success', 'message': 'Stage updated successfully!'})
         except Stage.DoesNotExist:
             return JsonResponse({"error": "Stage not found."}, status=404)
     else:

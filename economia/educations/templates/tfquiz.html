@@ -18,9 +18,15 @@
     </div>
     <div class="wrap-container">
       <button class="o-btn" onclick="submitAnswer('O')">O</button>
+      <div class="char">
       <img src="{% static 'images/char1.png' %}" alt="char" />
+      <div class="hp-bar-container">
+        <div id="hp-bar" class="hp-bar"></div>
+    </div>
+    </div>
       <button class="x-btn" onclick="submitAnswer('X')">X</button>
     </div>
+    
     <div class="wrong-container" id="wrong-container" style="display:none;">
       <div class="answer-bubble">
           <p class="ans">모든 문제를 맞췄습니다!</p>
