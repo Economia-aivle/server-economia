@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 import random
+import jwt
 
 
 @api_view(['GET'])
@@ -42,7 +43,28 @@ def getStageDatas(request, characters):
     return Response(serializer.data)
 
 def previous_quiz(request, characters):
-    characters=1
+    access_token = request.COOKIES.get('access_token')
+    refresh_token = request.COOKIES.get('refresh_token')
+
+    # 디버깅 로그 추가
+    print("Access Token:", access_token)
+    print("Refresh Token:", refresh_token)
+    
+    if not access_token:
+        return JsonResponse({"error": "토큰이 없습니다."}, status=400)
+    
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+    
+    decoded = jwt.decode(access_token, 'economia', algorithms=['HS256'])
+    decoded['access_token'] = access_token
+    player = Player.objects.get(player_id=decoded['player_id'])
+    player_id = player.id
+    character = get_object_or_404(Characters, player_id=player_id)
+    characters = character.id
+    print(characters)
+    print(player_id)
     
     # player = request.player
     # characters = Characters.objects.get(player=player) #로그인한 player의 characters 속성을 가져옵니다.

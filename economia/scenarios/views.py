@@ -131,12 +131,25 @@ def create_scenario(request): #시나리오 생성
 
 
 
-
 def previous_scenario(request, id):
-    player_id = 1
-    characters_id =1
+    access_token = request.COOKIES.get('access_token')
+    refresh_token = request.COOKIES.get('refresh_token')
+
+    # 디버깅 로그 추가
+    print("Access Token:", access_token)
+    print("Refresh Token:", refresh_token)
+    
+    if not access_token:
+        return JsonResponse({"error": "토큰이 없습니다."}, status=400)
+    
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+    
+    characters_id = get_player(request, 'player')
+    player_id = get_player(request, 'characters')
     # Scenario 데이터 가져오기
-    scenario_response = requests.get(f'http://127.0.0.1:8000/scenarios/scenario/{id}')
+    scenario_response = requests.get(f'http://127.0.0.1:8000/scenarios/scenario/{id}', headers=headers)
     scenario_data = scenario_response.json()
     
     # 각 항목의 start_time을 UTC로 변환하고 is_overdue 필드를 추가
@@ -247,9 +260,8 @@ def submit_answer(request): #시나리오 답 제출
     if request.method == 'POST':
         scenario_id = request.POST.get('scenario_id')
         scenario_answer = request.POST.get('scenario_answer')
-
+        characters_id = get_player(request, 'characters')
         # Assume characters_id is fixed as 1 for testing purposes
-        characters_id = 1
 
         # Create a new Comment object
         new_comment = Comments(
@@ -264,3 +276,33 @@ def submit_answer(request): #시나리오 답 제출
         return redirect('scenarios:previous_scenario', id=scenario_id)
 
     return redirect('scenarios:scenario_list')
+
+def get_player(request, id):
+    access_token = request.COOKIES.get('access_token')
+    refresh_token = request.COOKIES.get('refresh_token')
+
+    # 디버깅 로그 추가
+    print("Access Token:", access_token)
+    print("Refresh Token:", refresh_token)
+    
+    if not access_token:
+        return JsonResponse({"error": "토큰이 없습니다."}, status=400)
+    
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+    
+    decoded = jwt.decode(access_token, 'economia', algorithms=['HS256'])
+    decoded['access_token'] = access_token
+    player = Player.objects.get(player_id=decoded['player_id'])
+    player_id = player.id
+    character = get_object_or_404(Characters, player_id=player_id)
+    characters_id = character.id
+    print(characters_id)
+    print(player_id)
+    if id == 'player':
+        return player_id
+    elif id == 'characters':
+        return characters_id
+    else:
+        return player_id

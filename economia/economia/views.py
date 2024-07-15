@@ -19,6 +19,8 @@ from datetime import datetime, timedelta, timezone
 import jwt
 from django.db.models import F, Window
 from django.db.models.functions import Rank
+from rest_framework.response import Response
+from django.middleware.csrf import get_token
 
 def admin_login(request):
     if request.method == 'POST':
@@ -67,7 +69,11 @@ class LoginView(APIView):
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
             token = serializer.validated_data
-            return Response(token, status=status.HTTP_200_OK)
+            response = Response(token, status=status.HTTP_200_OK)
+            response.set_cookie('access_token', token['access'], httponly=True, samesite='Lax')
+            response.set_cookie('refresh_token', token['refresh'], httponly=True, samesite='Lax')
+            response.set_cookie('csrftoken', get_token(request), samesite='Lax')
+            return response
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LogoutView(APIView):
@@ -108,7 +114,7 @@ def refresh_access_token(refresh_token):
 def home(request, subject_id):
     access_token = request.GET.get('token_access')
     refresh_token = request.GET.get('token_refresh')
-
+    
     def level(exp):
         total = int(exp)
         present = 100
