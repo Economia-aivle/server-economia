@@ -90,8 +90,11 @@ class LogoutView(APIView):
 
             refresh_token_obj = RefreshToken(refresh_token)
             refresh_token_obj.set_exp(from_time=datetime.now())
+            response = Response({"detail": "Logged out successfully"}, status=status.HTTP_200_OK)
+            response.delete_cookie("access_token")
+            response.delete_cookie("refresh_token")
 
-            return Response({"detail": "Logged out successfully"}, status=status.HTTP_200_OK)
+            return response
 
         except TokenError as e:
             return Response({"detail": f"TokenError: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)

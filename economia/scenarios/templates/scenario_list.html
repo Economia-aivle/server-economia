@@ -15,7 +15,7 @@
                 <input type="text" class="search" name="search" placeholder="시나리오 제목 검색" id="search-input" value="{{ query }}">
                 <button type="submit" class="search_button" id="search-button"><img src="{% static 'images/search.png' %}" alt="search Image"></button>
             </form>
-            <a href="{% url 'scenarios:create_scenario' %}" class="create-scenario-button">Create Scenario</a>
+            {% if is_staff == 1 %} <a href="{% url 'scenarios:create_scenario' %}" class="create-scenario-button">Create Scenario</a>{% else %}{% endif %}
         </div>
         <table>
             <thead>

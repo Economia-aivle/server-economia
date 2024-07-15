@@ -62,9 +62,8 @@ def getChildCommentData(request, comments_id):
 def submit_childcomment(request):
     parent_id = request.POST.get('parent_id')
     text = request.POST.get('childcomment_text')
-
-    # 테스트 용이므로 player_id 1로 고정
-    child_comment = ChildComments(parent_id=parent_id, player_id=1, texts=text)
+    player_id = get_player(request, 'player')
+    child_comment = ChildComments(parent_id=parent_id, player_id=player_id, texts=text)
     child_comment.save()
     scenario_id = request.POST.get('scenario_id')
     return redirect('scenarios:previous_scenario', id=scenario_id)
@@ -82,6 +81,8 @@ def delete_childcomment(request, id):
     return redirect('scenarios:previous_scenario', id=request.POST.get('scenario_id'))
 
 def scenario_list(request):
+    staff = get_staff(request)
+    print(staff)
     scenario_response = requests.get('http://127.0.0.1:8000/scenarios/scenario_datas')
     scenario_data = scenario_response.json()
     
@@ -110,6 +111,7 @@ def scenario_list(request):
     context = {
         'page_obj': page_obj,
         'query': query,
+        'is_staff': staff,
     }
 
     return render(request, 'scenario_list.html', context)
@@ -288,10 +290,6 @@ def get_player(request, id):
     if not access_token:
         return JsonResponse({"error": "토큰이 없습니다."}, status=400)
     
-    headers = {
-        'Authorization': f'Bearer {access_token}'
-    }
-    
     decoded = jwt.decode(access_token, 'economia', algorithms=['HS256'])
     decoded['access_token'] = access_token
     player = Player.objects.get(player_id=decoded['player_id'])
@@ -306,3 +304,9 @@ def get_player(request, id):
         return characters_id
     else:
         return player_id
+    
+def get_staff(request):
+    id = get_player(request, 'player')
+    player = Player.objects.get(id=id)
+    staff = player.is_staff
+    return staff

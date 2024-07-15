@@ -43,31 +43,8 @@ def getStageDatas(request, characters):
     return Response(serializer.data)
 
 def previous_quiz(request, characters):
-    access_token = request.COOKIES.get('access_token')
-    refresh_token = request.COOKIES.get('refresh_token')
-
-    # 디버깅 로그 추가
-    print("Access Token:", access_token)
-    print("Refresh Token:", refresh_token)
     
-    if not access_token:
-        return JsonResponse({"error": "토큰이 없습니다."}, status=400)
-    
-    headers = {
-        'Authorization': f'Bearer {access_token}'
-    }
-    
-    decoded = jwt.decode(access_token, 'economia', algorithms=['HS256'])
-    decoded['access_token'] = access_token
-    player = Player.objects.get(player_id=decoded['player_id'])
-    player_id = player.id
-    character = get_object_or_404(Characters, player_id=player_id)
-    characters = character.id
-    print(characters)
-    print(player_id)
-    
-    # player = request.player
-    # characters = Characters.objects.get(player=player) #로그인한 player의 characters 속성을 가져옵니다.
+    characters = get_player(request, 'characters')
     
     blank_response = requests.get(f'http://127.0.0.1:8000/educations/blankdatas/{characters}')
     blank_data = blank_response.json()
@@ -98,7 +75,7 @@ def previous_quiz_answer(request, characters):
 
 # Create your views here.
 def level_choice(request, characters, subjects_id, chapter):
-    characters = 1 
+    characters = get_player(request, 'characters')
     try:
         stage_data = Stage.objects.get(characters_id=characters, subjects_id=subjects_id, chapter=chapter)
         chapter_sub = stage_data.chapter_sub
@@ -345,3 +322,29 @@ def study_view(request):
 
 def summary_anime(request):
     return render(request, 'summary_anime.html')
+
+def get_player(request, id):
+    access_token = request.COOKIES.get('access_token')
+    refresh_token = request.COOKIES.get('refresh_token')
+
+    # 디버깅 로그 추가
+    print("Access Token:", access_token)
+    print("Refresh Token:", refresh_token)
+    
+    if not access_token:
+        return JsonResponse({"error": "토큰이 없습니다."}, status=400)
+    
+    decoded = jwt.decode(access_token, 'economia', algorithms=['HS256'])
+    decoded['access_token'] = access_token
+    player = Player.objects.get(player_id=decoded['player_id'])
+    player_id = player.id
+    character = get_object_or_404(Characters, player_id=player_id)
+    characters_id = character.id
+    print(characters_id)
+    print(player_id)
+    if id == 'player':
+        return player_id
+    elif id == 'characters':
+        return characters_id
+    else:
+        return player_id
