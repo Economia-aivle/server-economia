@@ -12,3 +12,5 @@ class ResetCorrectCountMiddleware:
             request.session['correct_count'] = 0
 
         return response
+
+

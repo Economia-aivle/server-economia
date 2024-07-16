@@ -8,26 +8,6 @@ from django.conf.urls.static import static
 from django.contrib.auth.views import LogoutView
 from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView)
 
-
-
-
-urlpatterns = [
-    path("", views.index, name='home'),  # Combined and named "home"
-    path('educations/', include('educations.urls')),
-    path('scenarios/', include('scenarios.urls')),
-    path("chapter", views.chapter),
-    path("mypage", views.mypage),
-    path("onboarding", views.onboarding),
-    path("update_info", views.update_info),
-    path('admin/', admin.site.urls),
-    path('users/', include('users.urls')),
-    path('register', views.register, name='register'),
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-]
-
-
-
 def index(request):
     return render(request, 'index.html')
 
@@ -64,17 +44,21 @@ def service_term(request):
 def teen_term(request):
     return render(request,'terms/teen_term.html')
 
-# URL Patterns
+
+
 urlpatterns = [
-    path("", index),
+    path("", views.index, name='home'),  # Combined and named "home"
     path('users/', include('users.urls')),
     path('educations/', include('educations.urls')),
     path('scenarios/', include('scenarios.urls')),
-    path("chapter", chapter),
-    path("home", home, name='home'),
-    path("mypage", mypage, name='mypage'),
-    path("onboarding", onboarding),
-    path("update_info", update_info),
+    path("chapter", views.chapter),
+    path("home/<int:subject_id>", views.home, name='home'),
+    path("mypage", views.mypage),
+    path("onboarding", views.onboarding),
+    path("onboarding/re", views.LoginView.as_view(), name='login'),
+    path("onboarding/logout", views.LogoutView.as_view(), name='logout'),
+    path("update_info", views.update_info),
+    path('admin/', admin.site.urls),
     path("admin_dashboard", admin_dashboard),
     path("admin_login", admin_login),
     path('community_term/', community_term, name='community_term'),
@@ -83,8 +67,8 @@ urlpatterns = [
     path('teen_term/', teen_term, name='teen_term'),
     path('service_agree/', service_agree, name='service_agree'),
     path('ask', ask, name='ask'),
-
-
+    path('register', views.register, name='register'),
+    path('api/check-token/', views.CheckTokenView.as_view(), name='check-token'),
 ]
 
 if settings.DEBUG:

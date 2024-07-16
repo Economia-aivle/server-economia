@@ -23,6 +23,7 @@ import string
 from rest_framework.pagination import PageNumberPagination
 from economia.models import *
 from .serializers import *
+from datetime import datetime
 
 
 verification_codes = {}
@@ -68,6 +69,7 @@ def check_username(request):
 
 def register(request):
     if request.method == 'POST':
+        print(1)
         user_id = request.POST.get('user_id')
         confirm_password = request.POST.get('confirm_password')
         password = request.POST.get('password')
@@ -85,25 +87,12 @@ def register(request):
         if Player.objects.filter(nickname=nickname).exists():
             return JsonResponse({'error': '중복된 닉네임입니다'}, status=400)
 
-        Player.objects.create(player_id=user_id, password=password, email=email, player_name=name, school=school_name, nickname=nickname, admin_tf=True)
+        Player.objects.create(player_id=user_id, password=password, email=email, player_name=name, school=school_name, nickname=nickname, last_login = datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
         return JsonResponse({'success': '회원가입이 완료되었습니다.'})
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 def signup(request):  # 함수 이름을 'signup'으로 변경
     return render(request, 'signup.html')  # 템플릿 이름을 'signup.html'로 변경
-import json
-
-from django.shortcuts import render, redirect
-from django.views.decorators.csrf import csrf_exempt
-from economia.models import Characters
-from django.http import JsonResponse, HttpResponseBadRequest
-from .serializers import CreateCharacterSerializer
-from django.db import IntegrityError
-from django.core.mail import send_mail
-from django.conf import settings
-from django.contrib import messages
-from economia.models import *
-import random
 
 @csrf_exempt
 def get_character_view(request, player_id):
@@ -296,6 +285,12 @@ def find_account_id(request):
 
 def check_id(request, player_id):
     return render(request, 'check_id.html', {'player_id': player_id})
+
+def find_account(request):
+    return render(request, 'find_account.html')
+
+def success(request):
+    return render(request, 'success.html')
 
 
 def send_verification_email(email, code):

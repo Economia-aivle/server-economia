@@ -19,6 +19,8 @@ from datetime import datetime, timedelta, timezone
 import jwt
 from django.db.models import F, Window
 from django.db.models.functions import Rank
+from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
+from rest_framework_simplejwt.exceptions import TokenError
 
 def admin_login(request):
     if request.method == 'POST':
@@ -62,28 +64,32 @@ def onboarding(request):
 def update_info(request):
     return render(request, 'update_info.html')
 
+def is_token_blacklisted(token):
+    try:
+        return BlacklistedToken.objects.filter(token=token).exists()
+    except TokenError:
+        return True
+
 class LoginView(APIView):
     def post(self, request):
         serializer = UserLoginSerializer(data=request.data)
+        # print(serializer.validated_data)
         if serializer.is_valid():
             token = serializer.validated_data
+            print("KKKKKKKKK:",token)
             return Response(token, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LogoutView(APIView):
     def post(self, request):
         try:
-            access_token = request.data.get('access_token')
             refresh_token = request.data.get('refresh_token')
 
-            if not access_token or not refresh_token:
-                return Response({"detail": "Missing access_token or refresh_token in request body"}, status=status.HTTP_400_BAD_REQUEST)
+            if not refresh_token:
+                return Response({"detail": "Missing refresh_token in request body"}, status=status.HTTP_400_BAD_REQUEST)
 
-            access_token_obj = AccessToken(access_token)
-            access_token_obj.set_exp(from_time=datetime.now())
-
-            refresh_token_obj = RefreshToken(refresh_token)
-            refresh_token_obj.set_exp(from_time=datetime.now())
+            token = RefreshToken(refresh_token)
+            token.blacklist()
 
             return Response({"detail": "Logged out successfully"}, status=status.HTTP_200_OK)
 
@@ -136,7 +142,7 @@ def home(request, subject_id):
                 target_index = index
                 break
         
-        return target_index
+        return target_index+1
 
     if not access_token:
         return HttpResponse('Token is missing', status=400)
@@ -312,3 +318,13 @@ class RegisterAPIView(APIView):
 
             return res
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CheckTokenView(APIView):
+    def get(self, request):
+        print("JJJJJJJJJJJJ:",request.data)
+        token = request.headers.get('Authorization').split()[1]
+        
+        if BlacklistedToken.objects.filter(token=token).exists():
+            return Response({"blacklisted": True}, status=status.HTTP_200_OK)
+        
+        return Response({"blacklisted": False}, status=status.HTTP_200_OK)

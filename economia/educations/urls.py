@@ -23,7 +23,7 @@ urlpatterns = [
     path('multipledatas/<int:characters>', views.getMultipleDatas, name="MultipleDatas"),
     path('tfdatas/<int:characters>', views.getTfDatas, name="TfDatas"),
     path('getSubjectDatas/<str:subjects>/', views.getSubjectDatas, name='get_subject_datas'),
-    path('chapter/<str:subjects>/', views.chapter, name='chapter'),
+    path('chapter/<int:subjects_id>', views.chapter, name='chapter'),
     path('getStageDatas/<int:characters>/', views.getStageDatas, name='StageDatas'),
     path('update_stage/', views.update_stage, name='update_stage'),
 ]

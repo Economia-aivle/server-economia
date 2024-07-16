@@ -19,4 +19,6 @@ urlpatterns = [
     path('submit_childcomment/', views.submit_childcomment, name='submit_childcomment'),
     path('delete_comment/<int:id>/', views.delete_comment, name='delete_comment'),
     path('delete_childcomment/<int:id>/', views.delete_childcomment, name='delete_childcomment'),
+    path('chapter/<str:subjects>/', views.delete_childcomment, name='delete_childcomment'),
+    
 ]

@@ -278,8 +278,6 @@ def blank(request, characters, subject, chapter, num):
     
     # 현재 num에 해당하는 질문을 가져옵니다.
     question = questions[num - 1] if num <= max_num else None
-
-
     return render(request, 'blank.html', {'question': question, 'num': num, 'characters': characters, 'subject': subject, 'chapter': chapter})
 
     
@@ -295,10 +293,13 @@ def wrong_explanation(request):
 def chapter_summary(request):
     return render(request,'chapter_summary.html')
 
-def chapter(request, subjects):
-    subjects='금융'
+def chapter(request, subjects_id):
+    subjects_id+=1
+    subjects = Subjects.objects.filter.get(id=subjects_id)
+    print(subjects)
     response = requests.get(f'http://127.0.0.1:8000/educations/getSubjectDatas/{subjects}/')
     data = response.json()
+    data = data.split(',')
     
     return render(request,'chapter.html', {'chapter': data})
 @csrf_exempt

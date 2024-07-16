@@ -21,10 +21,7 @@ urlpatterns = [
     path('success', views.success, name='success'),
     path('check_username', views.check_username, name='check_username'),
     path('register', views.register, name='register'),  # 회원가입 페이지
-    path('send_code', views.send_code, name='send_code'),
-    path('show_id', views.show_id, name='show_id'),
-    path('verify_code', views.verify_code, name='verify_code'),
-    path('notice', views.notice, name='notice'),
     path('delete_account', views.delete_account, name='delete_account'),
     path('get_character/<int:player_id>/', views.get_character_view, name='get_character'),
+    path('notice', views.notice_list, name='notice'),
 ]
