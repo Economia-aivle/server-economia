@@ -11,6 +11,40 @@ from rest_framework import status
 import random
 import jwt
 
+from langchain.vectorstores import Chroma, FAISS
+from langchain.embeddings import HuggingFaceEmbeddings
+from langchain.chat_models import ChatOpenAI
+
+from langchain_core.prompts import PromptTemplate
+from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
+from langchain_core.pydantic_v1 import BaseModel, Field
+
+
+embeddings = HuggingFaceEmbeddings(
+    model_name='jhgan/ko-sroberta-nli', # 최신버전 : jhgan/ko-sroberta-multitask - https://github.com/jhgan00/ko-sentence-transformers?tab=readme-ov-file 참조
+    model_kwargs={'device':'cpu'},
+    encode_kwargs={'normalize_embeddings':True},
+)
+
+# faiss_db = FAISS.load_local('./DB_faiss', embeddings, allow_dangerous_deserialization=True)
+chroma_db = Chroma(persist_directory='./DB_chroma', embedding_function=embeddings)  # educations와 같은 폴더에 db 저장해야 함.
+chat = ChatOpenAI(model='gpt-4o', temperature=1.0)
+
+class selc_question_form(BaseModel):
+    question: list = Field(description="문제")
+    exam: list = Field(description="보기")
+    ans: list = Field(description="답")
+    
+class question_form(BaseModel):
+    question: list = Field(description="문제")
+    ans: list = Field(description="답")
+
+query_set = ['Documents마다 OX 문제와 답 한 개씩 총 5문제를 만들어줘.', 
+             'Documents마다 보기가 5개인 문제와 답 한 개씩 총 5문제를 한국어로 만들어줘. 보기와 답은 숫자로 표시해줘. 중복 답은 없도록 해줘.',
+             'Documents마다 빈칸 문제와 답 한 개씩 총 5문제를 만들어줘.', 
+             ]
+
+form_set = [question_form, selc_question_form, question_form]
 
 @api_view(['GET'])
 def getBlankDatas(request, characters):
@@ -94,6 +128,31 @@ def level_choice(request, characters, subjects_id, chapter):
     return render(request, 'level_choice.html', context)
 
 
+def make_questions(cate, q_type): # 숫자로 받을만 하지 않을까? 지금은 0: OX     1: 객관식   2: 빈칸 순서임
+    db = chroma_db.get(where={'category': cate})
+    
+    docs = random.sample(db['documents'], 5)
+
+    output_parser = JsonOutputParser(pydantic_object=form_set[q_type])
+    format_instructions = output_parser.get_format_instructions()
+
+    query = query_set[q_type]
+    template = '''
+    아래의 자료만을 사용하여 질문에 답하세요: 
+    {docs}
+    답변은 해당 형식에 맞게 모아서 만들어주세요:
+    {form}
+
+    질문: {query}
+    '''
+
+    prompt = PromptTemplate.from_template(template)
+
+    chain = prompt | chat | output_parser
+    res = chain.invoke({'docs': docs, 'form':format_instructions, 'query': query})
+    return res
+
+
 @csrf_exempt
 def tf_quiz_view(request):
     if request.method == 'GET':
@@ -105,6 +164,14 @@ def tf_quiz_view(request):
         if not chapter or not subjects_id:
             return JsonResponse({"error": "Chapter and subjects are required."}, status=status.HTTP_400_BAD_REQUEST)
 
+
+        result = make_questions('금융', 1)
+        m_question = result['question']
+        m_exam = result['exam']
+        m_ans = result['ans']
+        print(m_question)
+        print(m_exam)
+        print(m_ans)
         questions = Tf.objects.filter(chapter=chapter, subjects_id=subjects_id).exclude(id__in=used_question_ids)
         if not questions:
             return JsonResponse({"error": "No questions available."}, status=status.HTTP_404_NOT_FOUND)
