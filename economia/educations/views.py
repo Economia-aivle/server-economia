@@ -40,7 +40,7 @@ class question_form(BaseModel):
     ans: list = Field(description="답")
 
 query_set = ['Documents마다 OX 문제와 답 한 개씩 총 5문제를 만들어줘.', 
-             'Documents마다 보기가 5개인 문제와 답 한 개씩 총 5문제를 한국어로 만들어줘. 보기와 답은 숫자로 표시해줘. 중복 답은 없도록 해줘.',
+             'Documents마다 보기가 4개인 문제와 답 한 개씩 총 5문제를 한국어로 만들어줘. 보기는 숫자를 포함해서 표시해줘. 답은 int형으로 숫자만 알려줘. 중복 답은 없도록 해줘.',
              'Documents마다 빈칸 문제와 답 한 개씩 총 5문제를 만들어줘.', 
              ]
 
@@ -164,14 +164,6 @@ def tf_quiz_view(request):
         if not chapter or not subjects_id:
             return JsonResponse({"error": "Chapter and subjects are required."}, status=status.HTTP_400_BAD_REQUEST)
 
-
-        result = make_questions('금융', 1)
-        m_question = result['question']
-        m_exam = result['exam']
-        m_ans = result['ans']
-        print(m_question)
-        print(m_exam)
-        print(m_ans)
         questions = Tf.objects.filter(chapter=chapter, subjects_id=subjects_id).exclude(id__in=used_question_ids)
         if not questions:
             return JsonResponse({"error": "No questions available."}, status=status.HTTP_404_NOT_FOUND)
@@ -234,6 +226,15 @@ def update_stage(request):
         return JsonResponse({"error": "Invalid request method"}, status=400)
 
 def tf_quiz_page(request, characters, subjects_id, chapter):
+    result = make_questions('금융', 0)
+    m_question = result['question']
+    m_ans = result['ans']
+    print(m_question)
+    print(m_ans)
+    
+    for i in range(5):
+        Tf.objects.create(characters_id=characters, question_text=m_question[i], correct_answer=m_ans[i],
+                          subjects_id=subjects_id, chapter=chapter, explanation="123123123")
     context = {
             'characters': characters,
               'subjects_id': subjects_id,
@@ -313,6 +314,26 @@ def multiple(request, characters, subjects_id, chapter, num):
         else:
             # 오답인 경우
             return JsonResponse({'status': 'wrong', 'message': '오답입니다.'})
+        
+    else:
+        if num == 1:
+            result = make_questions('금융', 1)
+            m_question = result['question']
+            m_exam = result['exam']
+            m_ans = result['ans']
+            print(m_question)
+            print(m_exam)
+            print(m_ans)
+            
+            for i in range(5):
+                a = m_exam[i][0]
+                b = m_exam[i][1]
+                c = m_exam[i][2]
+                d = m_exam[i][3]
+                Multiple.objects.create(characters_id=characters, question_text=m_question[i],
+                                option_a = a, option_b = b, option_c = c, option_d = d,
+                                correct_answer=int(m_ans[i]), subjects_id=subjects_id, chapter=chapter, explanation="123123123")
+                
     correct_count = request.session.get('correct_count', 0)
     hp_percentage = max(0, 100 - (correct_count * 20))  # 체력 퍼센트 계산
     
@@ -332,6 +353,16 @@ def multiple(request, characters, subjects_id, chapter, num):
 
 
 def blank(request, characters, subjects_id, chapter, num):
+    if num == 1:
+        result = make_questions('금융', 2)
+        m_question = result['question']
+        m_ans = result['ans']
+        print(m_question)
+        print(m_ans)
+        
+        for i in range(5):
+            Blank.objects.create(characters_id=characters, question_text=m_question[i], correct_answer=m_ans[i],
+                            subjects_id=subjects_id, chapter=chapter, explanation="123123123")
     blank_response = requests.get(f'http://127.0.0.1:8000/educations/blankdatas/{characters}')
     blank_data = blank_response.json()
     
