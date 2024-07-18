@@ -43,6 +43,8 @@ def service_term(request):
     return render(request,'terms/service_term.html')
 def teen_term(request):
     return render(request,'terms/teen_term.html')
+def test(request):
+    return render(request,'test.html')
  
  
  
@@ -68,6 +70,7 @@ urlpatterns = [
     path('service_agree/', service_agree, name='service_agree'),
     path('ask', ask, name='ask'),
     path('register', views.register, name='register'),
+    path('test', test, name='test'),
 ]
  
 if settings.DEBUG:

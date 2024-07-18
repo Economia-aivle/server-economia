@@ -1,9 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
 main{
-	background-color:rgba(224.000001847744, 244.0000006556511, 255, 1);
 	width:100%;
-	height: 100%;
 	position : relative;
 	display: flex;
 	justify-content : center;
@@ -12,46 +10,47 @@ main{
 
 }
 body{
-	background-color: #E0F4FF;
-}
-.question-container{
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: -5%;
-    margin-bottom: 5%;
-	width: 80%;
+	height: 95vh;
+	background-image: url('images/blank_back.png');
+	background-repeat : no-repeat;
+	background-size: cover;
 }
 
+
 .wrap-container { 
-	width:1400px;
-	height:600px;
-	position:absolute;
+	width: 1500px;
+	height: 500px;
 	top : 10%;
+	position:absolute;
 	display: flex;
 	justify-content: center;
-	margin-right: 10%;
     flex-direction: column;
 	
 }
 .character {
-    margin: 0% auto 3% auto;
-    height: 246px;
-    width: 245px;
-    text-align: center;
-	cursor: url('images/sword.png') , auto;
+	margin-top: 15%;
+	display: flex;
+	flex-direction: column;
 }
-.character img{
+.character .mychar{
+	margin-left: 10%;
+	
     height: 246px;
-    width: 245px;
-    object-fit: cover;
+    width: 260px;
+	float: left;
 }
+.character .mychar.wrong{
+	filter: invert(100%);
+}
+
 .answer_form{
-    margin-top: 30px;
+	float: left;
+    margin-top: 5%;
 	text-align: center;
 }
 .answer{
 	text-align: center;
-    width: 500px;
+    width: 400px;
 	height: 60px;
     font-size: 20px;
     border: none;
@@ -59,27 +58,13 @@ body{
 	border-top-right-radius:20px;
 	border-bottom-left-radius:20px;
 	border-bottom-right-radius:20px;
+	float: left;
 }
 input::placeholder {
     font-weight: bold;
     text-align: center;
 }
-.video { 
-	width: 0;
-	height: 0;
-	border-bottom: 30px solid transparent;
-	border-top: 30px solid transparent;
-	border-left: 50px solid #39A7FF;
-	border-right: 50px solid transparent;
-	position:absolute;
-	border-radius:10px;
-	top : 40%;
-	left: 50%;
-}
-.btn {
-	margin-top: 30px;
-	float: right;
-}
+
 .next-btn{
 	background-color: #39A7FF;
 	font-size: 20px;
@@ -94,6 +79,8 @@ input::placeholder {
 	cursor: pointer;
 	transition: background-color 0.3s ease;
 	font-family: 'Noto Sans KR', sans-serif; 
+	float: left;
+	cursor: url('images/sword.png') , auto;
 }
 
 
@@ -103,53 +90,88 @@ background-color: #1A85D6;
 color: #E0E0E0; 
 }
 
-.sidebar {
-	width: 180px;
-	height: 100%;
-	position: fixed;
-	right: 0;
-	top: 0;
+.distance{
 	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	background-color: white;
-	box-shadow:0px 4px 8px rgba(0, 0, 0, 0.25);
-}
-
-.progress {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
-.progress-step {
-	width: 100px;
-	height: 100px;
-	background-color: white;
-	border-radius: 50%;
-	margin: 10px 0;
-	box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);
-	transition: background-color 0.3s;
-}
-
-.progress-step.active {
-	background-color: #39A7FF;
-}
-
-.progress-step:not(.active):hover {
-	background-color: #75BFFF;
-}
-.top-num{
-	text-align: center;
+	justify-content: space-between;
 	width: 100%;
-	margin-bottom: 30%;
-	font-size: 60px;
-	border-bottom-width:1px; 
-    border-bottom-style:solid;
-    border-bottom-color:black;
 }
 
-.progress-step.wrong {
-    background-color: red;
+.enemy img{
+	bottom: 10%;
+	position: absolute;
+	height: 246px;
+    width: 260px;
+	right: 5%;
+}
+.hp-bar-container {
+	bottom: 3%;
+	width: 200px;
+	position: absolute;
+	height: 20px;
+	border: 1px solid #000;
+	background-color: #f3f3f3;
+	margin-left: 30px;
+	right: 7%;
+  }
+  .hp-bar {
+	height: 100%;
+	background-color: #4caf50;
+	width: 100%; /* Start with full HP */
+  }
+  .question-container {
+	position: relative;
+	background: #ffffff;
+	border-radius: 1em;
+    width: 30vw;
+    height: 230px;
+	max-height: 230px;
+    padding: 20px;
+	right: 50%;
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+
+}
+.question{
+	height: auto;
+	max-height: 230px;
+	overflow: auto; /* 내용이 넘칠 경우 스크롤바 표시 */
+	font-size: 36px;
+	font-weight: bold;
+}
+
+
+
+.question-container:after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 95%;
+	width: 0;
+	height: 0;
+	border: 1.531em solid transparent;
+	border-top-color: #ffffff;
+	border-bottom: 0;
+	border-left: 0;
+	margin-left: -0.766em;
+	margin-bottom: -1.5em;
+	transform: rotate(90deg);
+}
+.life{
+	margin-left: 180px;
+}
+.magic{
+	margin-left: 10%;
+	position: absolute;
+	bottom: 25%;
+	left:-5%;
+	z-index: 1;
+}
+
+.enemy_magic{
+	position: absolute;
+	z-index: 1;
+}
+.enemy_char.wrong{
+	filter: invert(100%);
 }

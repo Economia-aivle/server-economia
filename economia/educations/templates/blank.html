@@ -11,25 +11,37 @@
 
 <body>
     {% include 'quiz_header2.html' %}
+    <div class="life">
+        <img id="lp1" src="{% static 'images/lp.png' %}" alt="lp">
+        <img id="lp2" src="{% static 'images/lp.png' %}" alt="lp">
+        <img id="lp3" src="{% static 'images/lp.png' %}" alt="lp">
+    </div>
     <main>
         <div class="wrap-container" id="wrap-container">
-            <div class="question-container">
-                <h1>
-                    Q{{ num }}. {{ question.question_text }}
-                </h1>
-            </div>
-            <div class="character" onclick="checkAnswer()">
-                <img src="{% static 'images/char1.png' %}" alt="char" />
-            </div>
-            <div class="answer_form">
-                <input type="text" class="answer" id="user-answer" placeholder="입력"/>
-                <button class="next-btn" onclick="checkAnswer()">Enter</button>
+            <div class="distance">
+            <form class="character" id="answer-form" method="post">
+                {% csrf_token %}
+                <img class="magic" src="{% static 'images/magic.gif' %}"  alt="" style="display:none;" >
+                <img class="mychar" src="{% static 'images/pig.png' %}" alt="char" />
+                <div class="answer_form">
+                    <input type="text" class="answer" id="answer" placeholder="입력"/>
+                    <button class="next-btn" type="button" onclick="checkAnswer()">Enter</button>
+                </div>
+            </form>
+            <div class="enemy">
+                <div class="question-container">
+                    <div class="question">
+                        Q{{ num }}. {{ question.question_text }}</div>
+                </div>
+                <img class="enemy_magic" src="{% static 'images/magic.gif' %}"  alt="" style="display:none;">
+            <img class="enemy_char" src="{% static 'images/enemy1.png' %}" alt="char" />
+                <div class="hp-bar-container">
+                    <div id="hp-bar" class="hp-bar" style="width: {{ hp_percentage }}%;"></div>
+                </div>
             </div>
         </div>
+        </div>
         <div class="wrong-container" id="wrong-container" style="display:none;">
-            <div class="question-container">
-                <h1>Q{{ num }}. {{ question.question_text }}</h1>
-            </div>
             <div class="answer-bubble">
                 <p class="ans">답: {{ question.correct_answer }}</p>
                 <p>
@@ -44,16 +56,6 @@
             </div>
         </div>
     </main>
-    <aside class="sidebar">
-        <div class="top-num"><p class="progress-num">{{ num }}/5</p></div>
-        <div class="progress">
-            <a href="#" class="progress-step  {% if num >= 1 %}active{% endif %}" id="step-1"></a>
-            <a href="#" class="progress-step  {% if num >= 2 %}active{% endif %}" id="step-2"></a>
-            <a href="#" class="progress-step  {% if num >= 3 %}active{% endif %}" id="step-3"></a>
-            <a href="#" class="progress-step  {% if num >= 4 %}active{% endif %}" id="step-4"></a>
-            <a href="#" class="progress-step  {% if num >= 5 %}active{% endif %}" id="step-5"></a>
-        </div>
-    </aside>
 
     <!-- JavaScript 코드 -->
     <script>
@@ -61,30 +63,69 @@
         const characters = "{{ characters }}";
         const subjects_id = "{{ subjects_id }}";
         const chapter = "{{ chapter }}";
-
+        const num = {{ num }} ;
+        
         // 정답 체크 함수
         function checkAnswer() {
-            const userAnswer = document.getElementById('user-answer').value.trim();
+            const userAnswer = document.getElementById('answer').value.trim();
+            console.log(userAnswer)
             if (userAnswer === '') {
                 alert('답을 입력해주세요.');
                 return; // 입력값이 빈칸이면 함수 종료
+
+            }
+            const formData = new FormData();
+            formData.append('answer', userAnswer);
+            fetch(`/educations/blank/${characters}/${subjects_id}/${chapter}/${num}`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'complete') {
+                    document.querySelector('.enemy_magic').style.display = 'block';
+                    document.querySelector('.enemy_char').classList.add('wrong');
+                    
+                    setTimeout(function () {
+                        alert(data.message);
+                        window.location.href = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
+                            }, 1000);
+                        
+                } else if (data.status === 'wrong') {
+                    alert(data.message);
+                    document.querySelector('.magic').style.display = 'block';
+                    document.querySelector('.mychar').classList.add('wrong');
+                    setTimeout(function () {
+                    document.querySelector('.wrap-container').style.display = 'none';
+                    document.querySelector('.question-container').style.display = 'none';
+                    document.getElementById('wrong-container').style.display = 'block';
+                        }, 1000);
+                    
+                } else {
+                    alert(data.message);
+                    document.querySelector('.enemy_magic').style.display = 'block';
+                    document.querySelector('.enemy_char').classList.add('wrong');
+                    setTimeout(function () {
+                        window.location.href = `/educations/blank/${characters}/${subjects_id}/${chapter}/${num + 1}`;
+                            }, 1000);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+            
+    
+            function nextQuestion() {
+                if (num >= 5) {
+                    window.location.href = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
+                } else {
+                    window.location.href = `/educations/multiple/${characters}/${subjects_id}/${chapter}/${num + 1}`;
+                }
+
+
             }
 
-            const correctAnswer = "{{ question.correct_answer }}"; // Django 템플릿에서 correct_answer를 받아옵니다.
-            var num = {{ num }};
-            if (userAnswer !== correctAnswer) {
-                document.getElementById('wrap-container').style.display = 'none';
-                document.getElementById('wrong-container').style.display = 'block';
-            } else {
-                num++;
-              
-                // 6 이상이면 summary 페이지로 이동, 아니면 다음 문제 페이지로 이동
-                if (num >= 6) {
-                    window.location.href = "{% url 'educations:summary_anime' %}";
-                } else {
-                    window.location.href = `/educations/blank/${characters}/${subjects_id}/${chapter}/${num}`;
-                }
-            }
         }
 
         // 다음 문제로 넘어가는 함수
@@ -132,7 +173,28 @@
             window.onbeforeunload = function() {
                 location.replace(levelChoiceUrlPattern);
             };
-        };
+        }; 
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const wrongcount = "{{wrong_count}}";
+        
+            if(wrongcount==1){
+                document.getElementById('lp1').style.display = 'none';
+            }
+            else if(wrongcount==2){
+                document.getElementById('lp1').style.display = 'none';
+                document.getElementById('lp2').style.display = 'none';
+            }
+            else if(wrongcount==3){
+                document.getElementById('lp3').style.display = 'none';
+                document.getElementById('lp1').style.display = 'none';
+                document.getElementById('lp2').style.display = 'none';
+                alert("클리어 실패!! 난이도 선택 화면으로 돌아갑니다")
+                var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
+
+                window.location.href = levelChoiceUrl;
+            }
+        });
     </script>
 </body>
 </html>

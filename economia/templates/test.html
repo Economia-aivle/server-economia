@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Claw Effect</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            margin: 0;
+        }
+
+        .magic-claw-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            rotate: -45deg;
+        }
+
+        .magic-claw {
+            position: absolute;
+            width: 6px;
+            height: 140px;
+            background: linear-gradient(180deg, #ff4d4d, #ff0000);
+            box-shadow: 0 0 10px #ff4d4d, 0 0 20px #ff4d4d, 0 0 30px #ff4d4d, 0 0 40px #ff4d4d;
+            transform-origin: top;
+            border-radius: 5px;
+            opacity: 0;
+        }
+
+        .claw1 {
+            top: 50%;
+            left: 30%;
+            animation: magic-claw-animation 1s ease-in-out infinite ; /* 방향 반복 설정 */
+        }
+
+        .claw2 {
+            top: 50%;
+            left: 40%;
+            animation: magic-claw-animation 1s ease-in-out infinite ; /* 방향 반복 설정 */
+        }
+
+        .claw3 {
+            top: 50%;
+            left: 50%;
+            animation: magic-claw-animation 1s ease-in-out infinite ; /* 방향 반복 설정 */
+        }
+
+        @keyframes magic-claw-animation {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(0);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="magic-claw-container">
+        <div class="magic-claw claw1"></div>
+        <div class="magic-claw claw2"></div>
+        <div class="magic-claw claw3"></div>
+    </div>
+</body>
+</html>

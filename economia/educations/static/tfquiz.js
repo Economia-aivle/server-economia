@@ -7,6 +7,7 @@ let questionCount = 0;
 const maxQuestions = 5;
 const usedQuestionIds = [];
 let correctCount = 0; // 클라이언트 측에서 맞춘 문제 개수
+let wrongCount = 0;
 
 function loadQuestion() {
     if (questionCount >= maxQuestions) {
@@ -71,9 +72,21 @@ function submitAnswer(answer) {
             updateHPBar()
         } else {
             alert('오답입니다. 설명: ' + data.explanation);
+            wrongCount++;
+            console.log(wrongCount)
+            if(wrongCount==1){
+                document.getElementById('lp1').style.display = 'none';
+            }
+            else if(wrongCount==2){
+                document.getElementById('lp2').style.display = 'none';
+            }
+            else if(wrongCount==3){
+                document.getElementById('lp3').style.display = 'none';
+                window.location.href = initialData.levelurl;
+            }
         }
         questionCount++;
-        updateProgressBar();
+       
         console.log(correctCount)
         if (correctCount === 5) {
             document.querySelector('.wrap-container').style.display = 'none';
@@ -108,17 +121,6 @@ function submitAnswer(answer) {
     .catch(error => console.error('Error:', error));
 }
 
-function updateProgressBar() {
-    document.querySelector('.progress-num').innerText = `${questionCount}/${maxQuestions}`;
-    const progressSteps = document.querySelectorAll('.progress-step');
-    for (let i = 0; i < progressSteps.length; i++) {
-        if (i < questionCount) {
-            progressSteps[i].classList.add('active');
-        } else {
-            progressSteps[i].classList.remove('active');
-        }
-    }
-}
 
 function getCookie(name) {
     let cookieValue = null;

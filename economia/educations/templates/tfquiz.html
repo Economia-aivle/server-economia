@@ -9,22 +9,30 @@
 </head>
 <body>
   {% include 'quiz_header2.html' %}
+  <div class="life">
+      <img id="lp1" src="{% static 'images/lp.png' %}" alt="lp">
+      <img id="lp2" src="{% static 'images/lp.png' %}" alt="lp">
+      <img id="lp3" src="{% static 'images/lp.png' %}" alt="lp"></div>
   <main>
-    <div id="question-container" class="question-container">
-      <h1 id="question-text">여기에 질문이 표시됩니다.</h1>
-      <input type="hidden" id="question-id" value="">
-      <input type="hidden" id="subjects_id" value="{{ subjects_id|default:'1' }}">
-      <input type="hidden" id="chapter" value="{{ chapter|default:'1' }}">
-    </div>
+    
     <div class="wrap-container">
-      <button class="o-btn" onclick="submitAnswer('O')">O</button>
+      <img class="mychar" src="{% static 'images/pig.png' %}" alt="char" />
+      <div id="question-container" class="question-container">
+        <h1 id="question-text">여기에 질문이 표시됩니다.</h1>
+        <button class="o-btn" onclick="submitAnswer('O')">O</button>
+        <button class="x-btn" onclick="submitAnswer('X')">X</button>
+        <input type="hidden" id="question-id" value="">
+        <input type="hidden" id="subjects_id" value="{{ subjects_id|default:'1' }}">
+        <input type="hidden" id="chapter" value="{{ chapter|default:'1' }}">
+      </div>
       <div class="char">
-      <img src="{% static 'images/char1.png' %}" alt="char" />
+        
+      <img class="enemy" src="{% static 'images/enemy1.png' %}" alt="">
       <div class="hp-bar-container">
         <div id="hp-bar" class="hp-bar"></div>
     </div>
     </div>
-      <button class="x-btn" onclick="submitAnswer('X')">X</button>
+      
     </div>
     
     <div class="wrong-container" id="wrong-container" style="display:none;">
@@ -39,7 +47,7 @@
       </div>
   </div>
   </main>
-  <aside class="sidebar">
+  <!-- <aside class="sidebar">
     <div class="top-num"><p class="progress-num">0/5</p></div>
     <div class="progress">
       <span class="progress-step"></span>
@@ -48,7 +56,7 @@
       <span class="progress-step"></span>
       <span class="progress-step"></span>
     </div>
-  </aside>
+  </aside> -->
   <script src="{% static 'tfquiz.js' %}"></script>
 </body>
 
@@ -56,7 +64,8 @@
   const initialData = {
     subjects_id: "{{ subjects_id }}", // Django 템플릿 변수를 사용하여 초기 데이터 설정
     chapter: "{{ chapter }}",
-    characters: "{{ characters }}"
+    characters: "{{ characters }}",
+    levelurl: "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}"
   };
 
   window.onload = function() {

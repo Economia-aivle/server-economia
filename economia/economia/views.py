@@ -115,8 +115,8 @@ def refresh_access_token(refresh_token):
         return {'error': 'invalid_refresh_token'}
 
 def home(request, subject_id):
-    access_token = request.GET.get('token_access')
-    refresh_token = request.GET.get('token_refresh')
+    access_token = request.COOKIES.get('access_token')
+    refresh_token = request.COOKIES.get('refresh_token')
     
     def level(exp):
         total = int(exp)

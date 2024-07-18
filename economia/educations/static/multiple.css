@@ -1,9 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
 main{
-	background-color:rgba(224.000001847744, 244.0000006556511, 255, 1);
 	width:100%;
-	height: 100%;
 	position : relative;
 	display: flex;
 	justify-content : center;
@@ -12,38 +10,42 @@ main{
 
 }
 body{
-	background-color: #E0F4FF;
+	height: 95vh;
+	background-image: url('images/multiple_back.png');
+	background-repeat : no-repeat;
+	background-size: cover;
 }
 .question-container{
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 3%;
-    margin-bottom: 5%;
-	width: 80%;
+	width: 600px;
+    height: auto;
+    border: none;
+    border-radius: 10px;
+    background-color: white;
+    color: black;
+    text-align: left;
+    font-size: 25px;
+    font-family: 'Noto Sans KR', sans-serif;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 20px;
 }
 
+
 .wrap-container { 
-	width:1400px;
-	height:600px;
 	position:absolute;
 	top : 10%;
 	display: flex;
 	justify-content: center;
-	margin-right: 10%;
-    flex-direction: column;
 	
 }
 .character {
-    margin: 0% auto 5% auto;
-    height: 246px;
-    width: 245px;
     text-align: center;
 	cursor: url('images/sword.png') , auto;
+	margin-top:20%
 }
 .character img{
     height: 246px;
-    width: 245px;
-    object-fit: cover;
+    width: 260px;
 }
 
   
@@ -58,10 +60,9 @@ body{
     text-align: left;
     padding: 0 20px;
     font-size: 25px;
-    margin-left: 10px;
-    margin-right: 5px;
     font-family: 'Noto Sans KR', sans-serif;
     cursor: pointer;
+	margin-left: 40px;
     transition: background-color 0.3s, color 0.3s;
   }
   
@@ -73,53 +74,6 @@ body{
     background-color: #4378FF;
     color: white;
   }
-
-.sidebar {
-	width: 180px;
-	height: 100%;
-	position: fixed;
-	right: 0;
-	top: 0;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	background-color: white;
-	box-shadow:0px 4px 8px rgba(0, 0, 0, 0.25);
-}
-
-.progress {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
-.progress-step {
-	width: 60px;
-	height: 60px;
-	background-color: white;
-	border-radius: 50%;
-	margin: 10px 0;
-	box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);
-	transition: background-color 0.3s;
-}
-
-.progress-step.active {
-	background-color: #39A7FF;
-}
-
-.progress-step:not(.active):hover {
-	background-color: #75BFFF;
-}
-.top-num{
-	text-align: center;
-	width: 100%;
-	margin-bottom: 30%;
-	font-size: 60px;
-	border-bottom-width:1px; 
-    border-bottom-style:solid;
-    border-bottom-color:black;
-}
 
 .next-btn{
 	background-color: #39A7FF;
@@ -168,3 +122,23 @@ body{
 	background-color: #4caf50;
 	width: 100%; /* Start with full HP */
   }
+  form{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+  }
+
+  .mychar{
+	height: 30vh;
+	width: 15vw;
+	margin-top:18%
+}
+.answer-container{
+	margin-right: 10%;
+	margin-left: 10%;	
+	margin-top: 150px;
+}
+
+.life{
+	margin-left: 180px;
+}

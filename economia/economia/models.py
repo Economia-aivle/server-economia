@@ -91,7 +91,7 @@ class AuthtokenToken(models.Model):
 
 
 class Blank(models.Model):
-    characters = models.ForeignKey('Characters', models.DO_NOTHING)
+    characters = models.ForeignKey('Characters', on_delete=models.CASCADE)
     question_text = models.CharField(max_length=500, blank=True, null=True)
     correct_answer = models.CharField(max_length=10, blank=True, null=True)
     subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
@@ -104,7 +104,7 @@ class Blank(models.Model):
 
 
 class Characters(models.Model):
-    player = models.ForeignKey('Player', models.DO_NOTHING)
+    player = models.ForeignKey('Player', on_delete=models.CASCADE)
     exp = models.IntegerField()
     last_quiz = models.IntegerField()
     kind = models.IntegerField(blank=True, null=True)
@@ -118,7 +118,7 @@ class Characters(models.Model):
 
 class ChildComments(models.Model):
     parent = models.ForeignKey('Comments', models.DO_NOTHING)
-    player = models.ForeignKey('Player', models.DO_NOTHING)
+    player = models.ForeignKey('Player', on_delete=models.CASCADE)
     texts = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
@@ -128,7 +128,7 @@ class ChildComments(models.Model):
 
 class Comments(models.Model):
     scenario = models.ForeignKey('Scenario', models.DO_NOTHING)
-    characters = models.ForeignKey(Characters, models.DO_NOTHING)
+    characters = models.ForeignKey(Characters, on_delete=models.CASCADE)
     percents = models.IntegerField()
     texts = models.CharField(max_length=500, blank=True, null=True)
     like_cnt = models.IntegerField(blank=True, null=True)
@@ -141,7 +141,7 @@ class Comments(models.Model):
 
 class CommentsLikes(models.Model):
     comment = models.ForeignKey(Comments, models.DO_NOTHING)
-    player = models.ForeignKey('Player', models.DO_NOTHING)
+    player = models.ForeignKey('Player', on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -214,7 +214,7 @@ class EconomiaVerificationcode(models.Model):
 
 
 class Multiple(models.Model):
-    characters = models.ForeignKey(Characters, models.DO_NOTHING)
+    characters = models.ForeignKey(Characters, on_delete=models.CASCADE)
     question_text = models.CharField(max_length=500, blank=True, null=True)
     option_a = models.CharField(max_length=255, blank=True, null=True)
     option_b = models.CharField(max_length=255, blank=True, null=True)
@@ -234,7 +234,7 @@ class NoticeBoard(models.Model):
     title = models.CharField(max_length=20, blank=True, null=True)
     texts = models.CharField(max_length=500, blank=True, null=True)
     write_time = models.DateTimeField()
-    admin = models.ForeignKey('Player', models.DO_NOTHING)
+    admin = models.ForeignKey('Player', on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -274,7 +274,7 @@ class Qna(models.Model):
     title = models.CharField(max_length=50, blank=True, null=True)
     question_text = models.CharField(max_length=500, blank=True, null=True)
     admin_answer = models.CharField(max_length=500, blank=True, null=True)
-    player = models.ForeignKey(Player, models.DO_NOTHING)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
     time = models.DateTimeField()
 
     class Meta:
@@ -304,7 +304,7 @@ class Scenario(models.Model):
 
 
 class Stage(models.Model):
-    characters = models.ForeignKey(Characters, models.DO_NOTHING)
+    characters = models.ForeignKey(Characters, on_delete=models.CASCADE)
     subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
     chapter = models.IntegerField(blank=True, null=True)
     chapter_sub = models.IntegerField(blank=True, null=True)
@@ -325,7 +325,7 @@ class Subjects(models.Model):
 
 class SubjectsScore(models.Model):
     subjects = models.ForeignKey(Subjects, models.DO_NOTHING)
-    characters = models.ForeignKey(Characters, models.DO_NOTHING)
+    characters = models.ForeignKey(Characters, on_delete=models.CASCADE)
     score = models.IntegerField()
 
     class Meta:
@@ -334,7 +334,7 @@ class SubjectsScore(models.Model):
 
 
 class Tf(models.Model):
-    characters = models.ForeignKey(Characters, models.DO_NOTHING)
+    characters = models.ForeignKey(Characters, on_delete=models.CASCADE)
     question_text = models.CharField(max_length=500, blank=True, null=True)
     correct_answer = models.CharField(max_length=1, blank=True, null=True)
     subjects = models.ForeignKey(Subjects, models.DO_NOTHING)

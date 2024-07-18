@@ -72,6 +72,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'educations.middleware.ResetCorrectCountMiddleware',
+    'educations.middleware.ResetWrongCountMiddleware',
+    'educations.middleware.ResetBlankWrongCountMiddleware',
+    'educations.middleware.ResetBlankCorrectCountMiddleware',
+    
 ]
 
 ROOT_URLCONF = "economia.urls"

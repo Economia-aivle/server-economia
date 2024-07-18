@@ -51,7 +51,7 @@
         if (response.ok) {
           const data = await response.json();
           // 토큰을 쿠키에 저장
-          window.location.href = 'home/1?token_access='+ data.access + "&token_refresh=" + data.refresh;
+          window.location.href = 'home/1';
         
           // 로그인 성공 후 처리
         } else {

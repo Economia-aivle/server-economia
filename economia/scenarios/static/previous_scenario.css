@@ -11,12 +11,14 @@ body {
 	align-items: center;
 	width: auto;
 	margin: auto;
+    justify-content: center;
 }
 
 .scenario_container { 
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 	background-color: rgba(255, 255, 255, 1);
-	width: 70%;
+	width: 50%;
+    height: 50vh;
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -24,8 +26,7 @@ body {
 	align-items: center;
 	border-radius: 15px;
 	margin-top: 3%;
-	padding-top: 20px;
-	padding-bottom: 20px;
+	padding: 20px;
 }
 
 .title { 
@@ -45,7 +46,7 @@ body {
 	overflow: auto; /* 내용이 넘칠 경우 스크롤바 표시 */
 	font-family: 'Noto Sans KR', sans-serif;
 	text-align: left;
-	font-size: 32px;
+    font-size: 20px;
 	letter-spacing: 0;
 }	
 .likebtn{
@@ -56,14 +57,6 @@ body {
 	border: none;
 }
 
-.scenario_container {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    background-color: rgba(255, 255, 255, 1);
-    width: 70%;
-    border-radius: 15px;
-    margin-top: 3%;
-    padding: 20px; /* 내부 여백 추가 */
-}
 
 .title {
     color: rgba(0, 0, 0, 1);
@@ -72,19 +65,10 @@ body {
     font-size: 36px;
 }
 
-.contents {
-    color: rgba(0, 0, 0, 1);
-    width: 100%;
-    max-width: 100%;
-    overflow: auto;
-    font-family: 'Noto Sans KR', sans-serif;
-    text-align: left;
-    font-size: 32px;
-}
 
 .ai_comment_box {
     background-color: #ffffff;
-    width: 70%;
+    width: 50%;
     margin-top: 20px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
@@ -99,7 +83,7 @@ body {
 }
 
 .comment_box_head {
-    width: 70%;
+    width: 50%;
     display: flex;
     margin-top: 20px;
     padding: 10px;
@@ -118,7 +102,7 @@ body {
 .comment_box1 {
     display: flex;
     flex-direction: column;
-    width: 70%;
+    width: 50%;
     background-color: #ffffff;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
@@ -207,7 +191,7 @@ body {
 
 .answer_box {
     background-color: #E0F4FF;
-    width: 70%;
+    width: 50%;
     height: 160px;
     display: flex;
     align-items: center;
@@ -220,16 +204,17 @@ body {
     display: flex;
     align-items: center;
     width: 100%;
+    justify-content:center ;
 }
 
 .scenario_answer {
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    width: 90%;
+    width: 100%;
     height: 140px;
     font-size: 25px;
     border: none;
     border-radius: 15px;
-    padding: 10px; /* Added padding for better appearance */
+    padding-left: 30px; /* Added padding for better appearance */
 }
 
 .button_box {
@@ -243,17 +228,17 @@ body {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
-.save_button, .submit_button {
+ .submit_button {
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
     border: none; /* 버튼의 기본 테두리 제거 */
     width: 100%;
-    height: 40%;
+    height: 140px;
     color: #fff;
     background-color: #39A7FF;
     cursor: pointer; /* 마우스 커서 모양 변경 */
     margin-bottom: 10px; /* Adjusted for spacing */
-    font-size: 20px;
+    font-size: 30px;
     font-family: 'Noto Sans KR', sans-serif;
 }
 

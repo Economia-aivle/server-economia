@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 import random
 import jwt
+from django.contrib.sessions.models import Session
 
 
 @api_view(['GET'])
@@ -204,23 +205,23 @@ def multiple(request, characters, subjects_id, chapter, num):
     # characters, subject, chapter에 해당하는 데이터를 필터링합니다.
     multiple_response = requests.get(f'http://127.0.0.1:8000/educations/multipledatas/{characters}')
     multiple_data = multiple_response.json()
-    
+
     multiple_list = [item for item in multiple_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
-    
+
     questions = []
-    max_num = min(8, len(multiple_list))
+    max_num = min(5, len(multiple_list))
     for i in range(max_num):
-        multiple_list[i]['num'] = i + 1
-        questions.append(multiple_list[i])
-    
+        item = multiple_list[-(i + 1)]
+        item['num'] = max_num - i
+        questions.append(item)
+
     question = questions[num - 1] if num <= max_num else None
-    if num == 9:
+    if num == 6:
         return redirect('educations:level_choice', characters=characters, subjects_id=subjects_id, chapter=chapter)
     # # POST 요청 처리
     if request.method == 'POST':
         user_answer = request.POST.get('answer')
         correct_answer = question['correct_answer']
-        
         if user_answer == correct_answer:
             # 정답인 경우
             correct_count = request.session.get('correct_count', 0) + 1
@@ -243,12 +244,15 @@ def multiple(request, characters, subjects_id, chapter, num):
             else:
                 # 아직 모든 문제를 맞추지 않은 경우
                 return JsonResponse({'status': 'correct', 'message': '정답입니다.'})
-        else:
+        elif user_answer != correct_answer:
+            wrong_count = request.session.get('wrong_count', 0) + 1
+            request.session['wrong_count'] = wrong_count
             # 오답인 경우
             return JsonResponse({'status': 'wrong', 'message': '오답입니다.'})
     correct_count = request.session.get('correct_count', 0)
+    wrong_count = request.session.get('wrong_count', 0)
     hp_percentage = max(0, 100 - (correct_count * 20))  # 체력 퍼센트 계산
-    
+    print(wrong_count)
     context ={'question': question,
               'num': num,
               'characters': characters,
@@ -256,6 +260,7 @@ def multiple(request, characters, subjects_id, chapter, num):
               'chapter': chapter,
               'correct_count': correct_count,
               'hp_percentage': hp_percentage,
+              'wrong_count' : wrong_count,
               }
     
     
@@ -280,9 +285,59 @@ def blank(request, characters, subjects_id, chapter, num):
     
     # 현재 num에 해당하는 질문을 가져옵니다.
     question = questions[num - 1] if num <= max_num else None
+    if num == 6:
+        return redirect('educations:level_choice', characters=characters, subjects_id=subjects_id, chapter=chapter)
+    
+    if request.method == 'POST':
+        user_answer = request.POST.get('answer')
+        correct_answer = question['correct_answer']
+        if user_answer == correct_answer:
+            # 정답인 경우
+            blank_correct_count = request.session.get('blank_correct_count', 0) + 1
+            request.session['blank_correct_count'] = blank_correct_count
+            request.session.modified = True  # 세션 데이터가 변경되었음을 명시
+            print(f"Correct count updated: {blank_correct_count}")
+            if blank_correct_count == 5:
+                # 모든 문제를 맞춘 경우 Stage 모델의 chapter_sub를 3으로 업데이트
+                try:
+                    stage_data = Stage.objects.get(characters_id=characters, subjects_id=subjects_id, chapter=chapter)
+                    stage_data.chapter_sub = 3
+                    stage_data.save()
+                except Stage.DoesNotExist:
+                    pass
+                
+                # 세션 초기화
+                request.session['blank_correct_count'] = 0
+                request.session.modified = True  # 세션 데이터가 변경되었음을 명시
 
+                # JSON 응답 전송
+                return JsonResponse({'status': 'complete', 'message': '모든 문제를 맞췄습니다!'})
+            else:
+                # 아직 모든 문제를 맞추지 않은 경우
+                return JsonResponse({'status': 'correct', 'message': '정답입니다.'})
+        elif user_answer != correct_answer:
+            blank_wrong_count = request.session.get('blank_wrong_count', 0) + 1
+            request.session['blank_wrong_count'] = blank_wrong_count
+            request.session.modified = True  # 세션 데이터가 변경되었음을 명시
+            print(f"Wrong count updated: {blank_wrong_count}")
+            # 오답인 경우
+            return JsonResponse({'status': 'wrong', 'message': '오답입니다.'})
+    
+    blank_correct_count = request.session.get('blank_correct_count', 0)
+    blank_wrong_count = request.session.get('blank_wrong_count', 0)
+    hp_percentage = max(0, 100 - (blank_correct_count * 20))  # 체력 퍼센트 계산
+    context = {
+        'question': question,
+        'num': num,
+        'characters': characters,
+        'subjects_id': subjects_id,
+        'chapter': chapter,
+        'correct_count': blank_correct_count,
+        'hp_percentage': hp_percentage,
+        'wrong_count': blank_wrong_count,
+    }
 
-    return render(request, 'blank.html', {'question': question, 'num': num, 'characters': characters, 'subjects_id': subjects_id, 'chapter': chapter})
+    return render(request, 'blank.html', context)
 
     
 def study(request):

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'delete_account.css' %}" />
     <title>회원탈퇴</title>
 </head>
 <body>
@@ -12,11 +13,12 @@
     <main>
         <h1>회원탈퇴</h1>
         <p>정말로 회원탈퇴를 하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
-        <form method="post" action="{% url 'delete_account' player_id=player_id %}">
+        <form method="post" action="{% url 'users:delete_account' %}">
             {% csrf_token %}
             <button type="submit">회원탈퇴</button>
+            <button type="button" onclick="location.href='/mypage' ">취소</button>
         </form>
-        <a href="{% url 'mypage' %}">취소</a>
+        
     </main>
 </body>
 </html>
