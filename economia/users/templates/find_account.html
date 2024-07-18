@@ -8,10 +8,11 @@
 </head>
 <body>
     <div class="container">
-        <div class="white_box"></div>
-        <button class="id_btn"><a href="{% url 'users:find_account_id' %}" class="id_str">아이디</span></button>
-        <button class="pwd_btn"><a href="{% url 'users:find_account_pwd' %}" class="pwd_str">비밀번호</span></button>
-        <span class="title1">무엇을 찾으시나요?</span>
+        <div class="white_box">
+        <div class="btn_box">
+        <button class="id_btn" onclick="location.href='{% url 'users:find_account_id' %}' ">아이디 찾기</button>
+        <button class="pwd_btn" onclick="location.href='{% url 'users:find_account_pwd' %}' ">비밀번호 찾기</button></div>
+       </div>
     </div>
 </body>
 </html>
