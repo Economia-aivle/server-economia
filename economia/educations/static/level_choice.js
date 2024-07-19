@@ -14,5 +14,4 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
        
     });
-    updateImage();
 });
