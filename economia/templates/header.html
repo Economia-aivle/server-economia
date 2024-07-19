@@ -1,3 +1,7 @@
+<!doctype html>
+<html lang="en">
+    {% load static %}
+<head>
 <style>
     @font-face {
         font-family: 'omyu_pretty';
@@ -114,11 +118,13 @@
         }
     }
 </style>
+<link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+</head>
 {% load static %}
 </head>
 <header class="navbar">
     <div class="head-container">
-        <a href="{% url 'home' %}"><img src="{% static 'images/header4.png' %}" alt="My Image"></a>
+        <a href="{% url 'home' %}"><img src="{% static 'images/header9999.png' %}" alt="My Image"></a>
         <nav>
             <ul>
                 <li><a href="{% url 'home' %}">학습하기</a></li>
@@ -129,3 +135,4 @@
         </nav>
     </div>
 </header>
+</html>

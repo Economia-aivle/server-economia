@@ -12,22 +12,19 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="{% static 'chapter.css' %}" />
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
   </head>
-
+  {% include 'study_header.html' %}
   <body>
     <div class="main-container">
-      <div class="header">
-         
-        <div class="category"># {{ subjects }}</div>
-        <button class="quit-btn" onclick="handleButtonClick()">나가기</button>
-      </div>
+
       
       <div class="chapters">
         {% for item in chapter %}
         {% for part in item.chapters_list %}
-            <a class="chap{{ item.id }}" href="{% url 'educations:level_choice' characters=1 subjects_id=item.id chapter=forloop.counter %}">
+            <button class="chap{{ item.id }}" onclick="location.href='{% url 'educations:level_choice' characters=1 subjects_id=item.id chapter=forloop.counter %}'">
                 {{ part }}
-            </a><br>
+            </button><br>
         {% endfor %}
       {% endfor %}
       </div>
