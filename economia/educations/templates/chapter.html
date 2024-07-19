@@ -23,7 +23,7 @@
         {% for item in chapter %}
         {% for part in item.chapters_list %}
             <button class="chap{{ item.id }}" onclick="location.href='{% url 'educations:level_choice' characters=1 subjects_id=item.id chapter=forloop.counter %}'">
-                {{ part }}
+                <p>{{ part }}</p>
             </button><br>
         {% endfor %}
       {% endfor %}
