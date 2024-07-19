@@ -270,24 +270,16 @@ def choose_tf_chapter_view(request):
 
 def multiple(request, characters, subjects_id, chapter, num):
     # characters, subject, chapter에 해당하는 데이터를 필터링합니다.
-    multiple_response = requests.get(f'http://127.0.0.1:8000/educations/multipledatas/{characters}')
-    multiple_data = multiple_response.json()
-    
-    multiple_list = [item for item in multiple_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
-    
-    questions = []
-    max_num = min(8, len(multiple_list))
-    for i in range(max_num):
-        multiple_list[i]['num'] = i + 1
-        questions.append(multiple_list[i])
-    
-    question = questions[num - 1] if num <= max_num else None
-    if num == 9:
+    if num == 6:
         return redirect('educations:level_choice', characters=characters, subjects_id=subjects_id, chapter=chapter)
     # # POST 요청 처리
     if request.method == 'POST':
+        multiple_response = requests.get(f'http://127.0.0.1:8000/educations/multipledatas/{characters}')
+        multiple_data = multiple_response.json()
+        multiple_list = [item for item in multiple_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
+        
         user_answer = request.POST.get('answer')
-        correct_answer = question['correct_answer']
+        correct_answer = multiple_list[-num]['correct_answer']
         
         if user_answer == correct_answer:
             # 정답인 경우
@@ -337,6 +329,11 @@ def multiple(request, characters, subjects_id, chapter, num):
     correct_count = request.session.get('correct_count', 0)
     hp_percentage = max(0, 100 - (correct_count * 20))  # 체력 퍼센트 계산
     
+    multiple_response = requests.get(f'http://127.0.0.1:8000/educations/multipledatas/{characters}')
+    multiple_data = multiple_response.json()
+    
+    multiple_list = [item for item in multiple_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
+    question = multiple_list[-num]
     context ={'question': question,
               'num': num,
               'characters': characters,
@@ -368,16 +365,7 @@ def blank(request, characters, subjects_id, chapter, num):
     
     # characters, subject, chapter에 해당하는 데이터를 필터링합니다.
     blank_list = [item for item in blank_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
-
-    # 최대 5개의 질문을 가져옵니다.
-    questions = []
-    max_num = min(5, len(blank_list))
-    for i in range(max_num):
-        blank_list[i]['num'] = i + 1
-        questions.append(blank_list[i])
-    
-    # 현재 num에 해당하는 질문을 가져옵니다.
-    question = questions[num - 1] if num <= max_num else None
+    question = blank_list[-num]
 
 
     return render(request, 'blank.html', {'question': question, 'num': num, 'characters': characters, 'subjects_id': subjects_id, 'chapter': chapter})
