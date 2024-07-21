@@ -63,7 +63,8 @@ def submit_childcomment(request):
     parent_id = request.POST.get('parent_id')
     text = request.POST.get('childcomment_text')
     player_id = get_player(request, 'player')
-    child_comment = ChildComments(parent_id=parent_id, player_id=player_id, texts=text)
+    image = request.FILES.get('image')
+    child_comment = ChildComments(parent_id=parent_id, player_id=player_id, texts=text, imgfile=image)
     child_comment.save()
     scenario_id = request.POST.get('scenario_id')
     return redirect('scenarios:previous_scenario', id=scenario_id)
@@ -213,6 +214,7 @@ def previous_scenario(request, id):
             'player_id': child.player_id,
             'texts': child.texts,
             'player_nickname': child.player.nickname,
+            'img' : child.imgfile
         })
     
     context = {

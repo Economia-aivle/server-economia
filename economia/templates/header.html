@@ -9,6 +9,7 @@
         font-weight: bold;
         font-style: bold;
     }
+
     body, h1, h2, p, ul, li, a {
         margin: 0;
         padding: 0;
@@ -124,7 +125,7 @@
 </head>
 <header class="navbar">
     <div class="head-container">
-        <a href="{% url 'home' %}"><img src="{% static 'images/header9999.png' %}" alt="My Image"></a>
+        <a href="{% url 'home' subject_id=1 %}"><img src="{% static 'images/header9999.png' %}" alt="My Image"></a>
         <nav>
             <ul>
                 <li><a href="{% url 'home' %}">학습하기</a></li>

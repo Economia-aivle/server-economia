@@ -74,6 +74,7 @@
         background-color: rgb(0,0,0); 
         background-color: rgba(0,0,0,0.4); 
         padding-top: 60px; 
+        text-align: center;
     }
     
     .modal-content {
@@ -135,7 +136,7 @@
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <p>지금 나가면 문제가 저장되지 않습니다<br>정말 나가시겠습니까?</p>
+            <p>정말 나가시겠습니까?</p>
             <img src="{% static 'images/warning.png' %}" alt="warning"><br>
             <button id="confirmExit">예</button>
             <button id="cancelExit">아니오</button>
@@ -168,7 +169,7 @@
         // 모달의 '확인' 버튼을 클릭했을 때 실행할 동작 (예: 페이지 이동)
         confirmExit.onclick = function() {
             modal.style.display = "none";
-            window.location.href = "{% url 'home' %}";
+            window.location.href = "{% url 'home' subject_id=1 %}";
  
             // 여기서 페이지 이동 등 다른 동작을 추가할 수 있습니다.
             // 예: window.location.href = "";

@@ -251,3 +251,30 @@ body {
     background: #004080; /* 버튼을 눌렀을 때의 배경색 */
     transform: scale(0.95); /* 버튼을 눌렀을 때 약간 작아지게 */
 }
+
+.child_comment_box img{
+    max-width: 50%;
+    max-height: 10%;
+}
+.child_comment_form form{
+    display: flex;
+    position: relative;
+}
+#fileInput {
+    display: none;
+}
+
+#customButton {
+    background-image: url('images/upload.png');
+	background-repeat : no-repeat;
+	background-size: cover;
+    width: 40px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    position: absolute;
+    left: 83%;
+    top: 25%;
+}
+

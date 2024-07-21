@@ -15,8 +15,8 @@
             <span class="title">시나리오</span><br>
             {% for item in scenario %}
              <span class="contents">   <!-- {{ item.question_text }} -->
-                    한 마을에 A와 B가 살고 있다. 이 마을에는 가로등이 없어 A와 B는 불편함을 겪고 있다. 답답했던 두 사람은 마을 회의에서 가로등 설치에 대해 투표하기로 했다. 가로등 설치비는 개당 300만 원이고, ‘설치’에 투표한 사람만 비용을 부담하게 된다.  일단 가로등이 설치되면 비용을 내지 않은 사람도 그로 인한 이익을 누릴 수 있다. <br> 
-                    만약 A와 B가 모두 ‘설치’에 투표한다면 가로등은 2개가 설치되고, 그로부터 A와 B가 얻는 이익을 화폐 단위로 환산하면  각각 500만 원이다. 만약 A만 ‘설치’에 투표한다면 가로등은 1개만 설치되므로, 2개인 경우에 비해 불빛이 줄어들어  그로부터 얻는 이익은 각각 250만 원으로 줄어든다. 이때 A는 50만 원의 손해(=250만 원-300만 원)를 입게 되고,  비용을 부담하지 않은 B는 250만 원의 이익만 얻게 된다. 만약 모두 ‘미설치’에 투표할 경우 가로등은 설치되지 않는다.
+                    한 마을에 A와 B가 살고 있다. 이 마을에는 가로등이 없어 A와 B는 불편함을 겪고 있다. 답답했던 두 사람은 마을 회의에서가로등 설치에 대해 투표하기로 했다. 가로등 설치비는 개당 300만 원이고, ‘설치’에 투표한 사람만 비용을 부담하게 된다. 일단 가로등이 설치되면 비용을 내지 않은 사람도 그로 인한 이익을 누릴 수 있다.<br> 
+                    만약 A와 B가 모두 ‘설치’에 투표한다면 가로등은 2개가 설치되고, 그로부터 A와 B가 얻는 이익을 화폐 단위로 환산하면 각각 500만 원이다. 만약 A만 ‘설치’에 투표한다면 가로등은 1개만 설치되므로, 2개인 경우에 비해 불빛이 줄어들어 그로부터 얻는 이익은 각각 250만 원으로 줄어든다. 이때 A는 50만 원의 손해(=250만 원-300만 원)를 입게 되고, 비용을 부담하지 않은 B는 250만 원의 이익만 얻게 된다. 만약 모두 ‘미설치’에 투표할 경우 가로등은 설치되지 않는다.
                    <br><br>
                    ① 마음: A가 ‘설치’에 투표한다면 B도 ‘설치’에 투표하는 것이 이득이라 생각해.<br>
                    ② 바다: A와 B가 합리적으로 행동한다면 모두 ‘설치’에 투표하는게 좋아.<br>
@@ -87,8 +87,12 @@
                                         </form>
                                     {% endif %}
                                     <span class="child_comment_nickname">{{ child.player_nickname }}</span>
-                                    <span class="child_comment_text"><p>{{ child.texts }}</p></span>
+                                    
                                     <hr>
+                                    {% if child.img %}
+                                            <img class="upload_img" src="{{ child.img.url }}">
+                                    {% endif %}
+                                    <span class="child_comment_text"><p>{{ child.texts }}</p></span>
                                 </div>
                             </div>
                         {% endif %}
@@ -96,14 +100,19 @@
                     <!-- 대댓글 작성 폼 -->
                     <div class="form_container">
                         <div class="child_comment_form">
-                            <form method="post" action="{% url 'scenarios:submit_childcomment' %}">
+                            <form method="post" action="{% url 'scenarios:submit_childcomment' %}" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <input type="hidden" name="parent_id" value="{{ item.id }}">
                                 <input type="hidden" name="scenario_id" value="{{ scenario.0.id }}">
                                 <input type="text" name="childcomment_text" class="childcomment_input" placeholder="의견 입력">
+                                <input type="file" id="fileInput" name="image" style="display: none;" onchange="updateFileName()">
+                                <!-- 커스텀 버튼 및 파일 이름 표시 -->
+                                <button type="button" id="customButton" onclick="document.getElementById('fileInput').click();"></button>
+                                
                                 <button type="submit" class="childcomment_submit_button"></button>
                             </form>
                         </div>
+                        <span id="fileName" style="margin-left: 10px;"></span>
                     </div>
                 </div>
             {% endfor %}
@@ -182,7 +191,13 @@
                 }
             }
             return cookieValue;
+       
         }
     });
+    function updateFileName() {
+        var input = document.getElementById('fileInput');
+        var fileName = document.getElementById('fileName');
+        fileName.textContent = input.files[0].name;
+    }
 </script>
 </html>
