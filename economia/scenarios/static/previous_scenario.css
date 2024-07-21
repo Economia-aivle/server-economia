@@ -154,6 +154,7 @@ body {
 	border: none;
 	background-color: #f9f9f9 ;
 	float: right;
+    cursor: pointer;
 }
 .child_comment_box {
     padding: 10px;
@@ -168,6 +169,7 @@ body {
     font-size: 25px;
 	border: solid gray 1px;
     border-radius: 10px;
+    margin-right: 5px;
 }
 .form_container{
 	height: 60px;
