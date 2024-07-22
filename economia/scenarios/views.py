@@ -62,9 +62,9 @@ def getChildCommentData(request, comments_id):
 def submit_childcomment(request):
     parent_id = request.POST.get('parent_id')
     text = request.POST.get('childcomment_text')
-    player_id = get_player(request, 'player')
+    characters_id = get_player(request, 'characters')
     image = request.FILES.get('image')
-    child_comment = ChildComments(parent_id=parent_id, player_id=player_id, texts=text, imgfile=image)
+    child_comment = ChildComments(parent_id=parent_id, characters_id=characters_id, texts=text, imgfile=image)
     child_comment.save()
     scenario_id = request.POST.get('scenario_id')
     return redirect('scenarios:previous_scenario', id=scenario_id)
@@ -149,8 +149,9 @@ def previous_scenario(request, id):
         'Authorization': f'Bearer {access_token}'
     }
     
-    characters_id = get_player(request, 'player')
-    player_id = get_player(request, 'characters')
+    characters_id = get_player(request, 'characters')
+    player_id = get_player(request, 'player')
+    
     # Scenario 데이터 가져오기
     scenario_response = requests.get(f'http://127.0.0.1:8000/scenarios/scenario/{id}', headers=headers)
     scenario_data = scenario_response.json()
@@ -177,7 +178,7 @@ def previous_scenario(request, id):
     
     comments = Comments.objects.filter(scenario_id=id).select_related('characters__player')
     
-     # 각 Comment에 대해 좋아요 여부 확인 및 Player 닉네임 가져오기
+    # 각 Comment에 대해 좋아요 여부 확인 및 Player 닉네임 가져오기
     comment_data_updated = []
     for comment in comments:
         is_liked_by_user = CommentsLikes.objects.filter(comment_id=comment.id, player_id=player_id).exists()
@@ -198,22 +199,16 @@ def previous_scenario(request, id):
     # 특정 캐릭터가 작성한 댓글이 있는지 확인
     has_character_comment = comments.filter(characters_id=characters_id).exists()
     
-    # 각 Comment에 대해 좋아요 여부 확인 및 Child Comment 데이터 가져오기
-    # for comment in comment_data:
-    #     # 좋아요 여부 확인
-    #     is_liked_by_user = CommentsLikes.objects.filter(comment_id=comment['id'], player_id=player_id).exists()
-    #     comment['is_liked_by_user'] = is_liked_by_user
-        
     # Child Comment 데이터 가져오기
-    child_comments = ChildComments.objects.select_related('player').filter(parent__in=[comment['id'] for comment in comment_data]).order_by('id')
+    child_comments = ChildComments.objects.select_related('characters__player').filter(parent__in=[comment.id for comment in comments]).order_by('id')
     
     for child in child_comments:
         childcomment_data.append({
             'id': child.id,
             'parent_id': child.parent_id,
-            'player_id': child.player_id,
+            'characters_id': child.characters_id,
             'texts': child.texts,
-            'player_nickname': child.player.nickname,
+            'player_nickname': child.characters.player.nickname,  # Player 닉네임 추가
             'img' : child.imgfile
         })
     
@@ -222,7 +217,6 @@ def previous_scenario(request, id):
         'comment': comment_data_updated,
         'childcomment': childcomment_data,
         'characters_id' : characters_id,
-        'player_id' : player_id,
         'has_character_comment': has_character_comment,
     }
     
@@ -232,7 +226,7 @@ def previous_scenario(request, id):
 @csrf_exempt
 def like_comment(request, comment_id):
     if request.method == 'POST':
-        player_id = 1 # 임시로 사용자 ID를 1로 설정
+        player_id = get_player(request, 'player')
         
         comment = get_object_or_404(Comments, id=comment_id)
         player = get_object_or_404(Player, id=player_id)

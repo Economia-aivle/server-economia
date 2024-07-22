@@ -266,7 +266,7 @@ body {
     display: none;
 }
 
-#customButton {
+.customButton {
     background-image: url('images/upload.png');
 	background-repeat : no-repeat;
 	background-size: cover;
