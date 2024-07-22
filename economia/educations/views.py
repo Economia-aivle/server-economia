@@ -231,7 +231,10 @@ def multiple(request, characters, subjects_id, chapter, num):
                 # 모든 문제를 맞춘 경우 Stage 모델의 chapter_sub를 3으로 업데이트
                 try:
                     stage_data = Stage.objects.get(characters_id=characters, subjects_id=subjects_id, chapter=chapter)
+                    character_score = Characters.objects.get(characters_id=characters)
                     stage_data.chapter_sub = 3
+                    character_score.score +=200
+                    character_score.save()
                     stage_data.save()
                 except Stage.DoesNotExist:
                     pass
@@ -301,7 +304,10 @@ def blank(request, characters, subjects_id, chapter, num):
                 # 모든 문제를 맞춘 경우 Stage 모델의 chapter_sub를 3으로 업데이트
                 try:
                     stage_data = Stage.objects.get(characters_id=characters, subjects_id=subjects_id, chapter=chapter)
+                    character_score = Characters.objects.get(characters_id=characters)
+                    character_score.score +=300
                     stage_data.chapter_sub = 3
+                    character_score.save()
                     stage_data.save()
                 except Stage.DoesNotExist:
                     pass

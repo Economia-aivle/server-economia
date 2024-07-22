@@ -22,7 +22,10 @@ body{
 .wrap-container { 
 	position: absolute;
 	height: 30vh;
+	width: 100%;
     display: flex;
+	justify-content: center;
+	top: 80%;
 }
 
 
@@ -82,10 +85,14 @@ body{
 }
 .chapter_title p {
 	margin-left: 7%;
-	font-size: 100%;
+	font-size: 60px;
 }
 
 .jung, .go, .cho {
 	height: 50vh;
-	position: absolute;
+}
+
+.btn-cho, .btn-jung, .btn-go{
+	margin-left: 3%;
+	margin-right: 3%;
 }
