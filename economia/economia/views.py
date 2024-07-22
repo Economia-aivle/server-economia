@@ -57,7 +57,10 @@ def chapter(request):
     return render(request, 'chapter.html')
 
 def mypage(request):
-    return render(request, 'mypage.html')
+    access_token = request.COOKIES.get('access_token')
+    refresh_token = request.COOKIES.get('refresh_token')
+    decoded = jwt.decode(access_token, 'economia', algorithms=['HS256'])
+    return render(request, 'mypage.html', {"user":decoded})
 
 def onboarding(request):
     return render(request, 'onboarding.html')

@@ -10,10 +10,6 @@
 <body>
     {% include 'header.html' %}
     <div class="search_container">
-        <form method="GET" action="{% url 'users:notice_list' %}">
-            <input type="text" class="search_input" name="search" placeholder="검색" value="{{ search_query }}">
-            <button type="submit" class="search_btn">찾기</button>
-        </form>
     </div>
     <div class="white_box">
         <table>

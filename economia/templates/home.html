@@ -109,7 +109,7 @@
                     {% for notice in user.notice_list %}
                         <a class="announcement-text" href="#" target="_self">{{notice.title}}</a>
                     {% endfor %}
-                    <button class="announcement-view" href="/users/notice">더보기</button>
+                    <button class="announcement-view" onclick="boardButtonClick()">더보기</button>
                 </div>
             </div>
             <div class="row">
@@ -126,6 +126,7 @@
     var percent = "{{ user.percent }}";
     var access_token = "{{user.access_token}}";
     var refresh_token = "{{user.refresh_token}}";
+    var characters = "{{user.character_id}}"
 
     document.addEventListener('DOMContentLoaded', function() {
         var dropdown = document.getElementById('subject_dropdown');
@@ -205,6 +206,14 @@
             }
         });
     });
+
+    function handleButtonClick() {
+        window.location.href = '/educations/previous_quiz/' + characters;
+    }
+
+    function boardButtonClick() {
+        window.location.href = '/users/notice/';
+    }
 </script>
 
 </body>
