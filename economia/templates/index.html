@@ -10,25 +10,30 @@
 </head>
 <body>
   user <br>
-<a href="{% url 'users:signup' %}">signup</a><br>
 <a href="{% url 'users:find_account_pwd' %}">find_account_pwd</a><br>
 <a href="{% url 'users:find_account_id' %}">find_account_id</a><br>
 
 <a href="{% url 'users:find_account' %}">find_account</a><br>
-<a href="{% url 'users:ranking' %}">ranking</a><br>
-<a href="{% url 'users:char_create' %}">char_create</a><br>
-<a href="{% url 'users:char_delete' %}">char_delete</a><br>
-<a href="{% url 'users:notice' %}">notice</a><br>
+<<<<<<< HEAD
+<a href="{% url 'users:char_update' %}">char_delete</a><br>
 <hr>
 educations<br>
 <!--  -->
+=======
+
+<a href="{% url 'users:ranking' %}">ranking</a><br>
+<a href="{% url 'users:char_create' %}">char_create</a><br>
+<a href="{% url 'users:char_update' %}">char_update</a><br>
+<a href="{% url 'users:notice' %}">notice</a><br>
+<hr>
+educations <br>
+>>>>>>> main
 <a href="{% url 'educations:previous_quiz_answer' %}">previous_quiz_answer</a><br>
 <a href="{% url 'educations:previous_quiz' characters=1 %}">previous_quiz</a><br>
 <a href="{% url 'educations:study' %}">study</a><br>
 <a href="{% url 'educations:summary_anime' %}">summary_anime</a><br>
 <a href="{% url 'educations:wrong_explanation' %}">wrong_explanation</a><br>
 <a href="{% url 'educations:chapter_summary' %}">chapter_summary</a><br>
-<a href="{% url 'educations:chapter' subjects='금융' %}">chapter</a><br>
 <hr>
 scenarios<br>
 <a href="{% url 'scenarios:previous_scenario' id=1 %}">previous_scenario</a><br>

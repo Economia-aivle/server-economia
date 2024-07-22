@@ -19,6 +19,9 @@ from datetime import datetime, timedelta, timezone
 import jwt
 from django.db.models import F, Window
 from django.db.models.functions import Rank
+from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
+from rest_framework_simplejwt.exceptions import TokenError
+from django.middleware.csrf import get_token
 
 def admin_login(request):
     if request.method == 'POST':
@@ -62,30 +65,34 @@ def onboarding(request):
 def update_info(request):
     return render(request, 'update_info.html')
 
+def is_token_blacklisted(token):
+    try:
+        return BlacklistedToken.objects.filter(token=token).exists()
+    except TokenError:
+        return True
+
 class LoginView(APIView):
     def post(self, request):
         serializer = UserLoginSerializer(data=request.data)
+        # print(serializer.validated_data)
         if serializer.is_valid():
             token = serializer.validated_data
-            return Response(token, status=status.HTTP_200_OK)
+            response = Response(token, status=status.HTTP_200_OK)
+            response.set_cookie('access_token', token['access'], httponly=True, samesite='Lax')
+            response.set_cookie('refresh_token', token['refresh'], httponly=True, samesite='Lax')
+            response.set_cookie('csrftoken', get_token(request), samesite='Lax')
+            return response
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class LogoutView(APIView):
     def post(self, request):
         try:
-            access_token = request.data.get('access_token')
-            refresh_token = request.data.get('refresh_token')
+            response = JsonResponse({'message': 'Logout successful'})
+            response.delete_cookie('access_token')
+            response.delete_cookie('refresh_token')
 
-            if not access_token or not refresh_token:
-                return Response({"detail": "Missing access_token or refresh_token in request body"}, status=status.HTTP_400_BAD_REQUEST)
-
-            access_token_obj = AccessToken(access_token)
-            access_token_obj.set_exp(from_time=datetime.now())
-
-            refresh_token_obj = RefreshToken(refresh_token)
-            refresh_token_obj.set_exp(from_time=datetime.now())
-
-            return Response({"detail": "Logged out successfully"}, status=status.HTTP_200_OK)
+            return response
 
         except TokenError as e:
             return Response({"detail": f"TokenError: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
@@ -106,8 +113,8 @@ def refresh_access_token(refresh_token):
         return {'error': 'invalid_refresh_token'}
 
 def home(request, subject_id):
-    access_token = request.GET.get('token_access')
-    refresh_token = request.GET.get('token_refresh')
+    access_token = request.COOKIES.get('access_token')
+    refresh_token = request.COOKIES.get('refresh_token')
 
     def level(exp):
         total = int(exp)
@@ -136,25 +143,47 @@ def home(request, subject_id):
                 target_index = index
                 break
         
-        return target_index
-
+        return target_index+1
+    
+    def create_subject_scores(character_id):
+        subjects = Subjects.objects.all()  # 모든 Subjects 인스턴스 가져오기
+        
+        for subject in subjects:
+            SubjectsScore.objects.create(
+                subjects_id=subject.id,  # ForeignKey의 ID를 직접 할당
+                characters_id=character_id,  # ForeignKey의 ID를 직접 할당
+                score=0  # 기본 점수 또는 원하는 점수 설정
+            )
+        
     if not access_token:
         return HttpResponse('Token is missing', status=400)
     retry_count = 0
     while retry_count < 2:
         try:
             decoded = jwt.decode(access_token, 'economia', algorithms=['HS256'])
-            decoded['subjects_id'] = subject_id - 1
+            
+            
+            decoded['subjects_id'] = subject_id
             decoded['access_token'] = access_token
             decoded['refresh_token'] = refresh_token
             data = Player.objects.get(player_id=decoded['player_id'])
             serializer = ProductSerializer(data)
+            if not Characters.objects.filter(player_id = decoded['user_id']).exists():
+                data1 = Player.objects.get(id = decoded['user_id'])
+                Characters.objects.create(player_id = data1.id ,exp = 0,last_quiz=0, kind = 0, kind_url ="", score =0)
+                data2 = Characters.objects.get(player_id = decoded['user_id'])
+                decoded['character_id'] = data2.id
+                create_subject_scores(data2.id)
+                return redirect('/users/char_create/'+str(decoded['user_id']),{"user":decoded})
             data_character = Characters.objects.get(player_id=serializer.data['id'])
+            decoded['character_id'] = data_character.id
             serializer_character = CharacterSerializer(data_character)
             character_id = serializer_character.data['id']
             decoded['exp'] = serializer_character.data['exp']
+            decoded['char_url'] = data_character.kind_url
             data_subject = Subjects.objects.all().values_list('subjects', flat=True)
             decoded['subjects'] = data_subject
+            print("exp:",serializer_character.data['exp'])
             decoded['total'], decoded['present'], decoded['level'] = level(serializer_character.data['exp'])
             decoded['percent'] = int(100 * decoded['total'] / decoded['present'])
 
@@ -172,45 +201,72 @@ def home(request, subject_id):
                 )
             )[:3]
 
-            decoded['multiple_list'] = Multiple.objects.filter(characters=character_id, subjects=subject_id)
-            decoded['tf_list'] = Tf.objects.filter(characters=character_id, subjects=subject_id)
-            decoded['blank_list'] = Blank.objects.filter(characters=character_id, subjects=subject_id)
-            mul = Multiple.objects.filter(characters=character_id, subjects=subject_id).annotate(
-                rank=Window(
-                    expression=Rank(),
-                    order_by=F('chapter').desc()
-                )
-            ).first()
-            tf = Tf.objects.filter(characters=character_id, subjects=subject_id).annotate(
-                rank=Window(
-                    expression=Rank(),
-                    order_by=F('chapter').desc()
-                )
-            ).first()
-            blank = Blank.objects.filter(characters=character_id, subjects=subject_id).annotate(
-                rank=Window(
-                    expression=Rank(),
-                    order_by=F('chapter').desc()
-                )
-            ).first()
-            decoded['chapter_tf'] = tf.chapter
-            decoded['chapter_blank'] = blank.chapter
-            decoded['chapter_mul'] = mul.chapter
-
-            if tf.chapter != blank.chapter:
-                decoded['chapter'] = tf.chapter
-                decoded['kind'] = "빈칸 채우기"
+            mul = Multiple.objects.filter(characters=character_id, subjects=subject_id).last()
+            tf = Tf.objects.filter(characters=character_id, subjects=subject_id).last()
+            blank = Blank.objects.filter(characters=character_id, subjects=subject_id).last()
+            if tf:
+                decoded['chapter_tf'] = tf.chapter
             else:
-                if blank.chapter != mul.chapter:
+                decoded['chapter_tf'] = 0
+            
+            if blank:
+                decoded['chapter_blank'] = tf.chapter
+            else:
+                decoded['chapter_blank'] = 0
+                
+            if mul:
+                decoded['chapter_mul'] = tf.chapter
+            else:
+                decoded['chapter_mul'] = 0
+                
+            if tf and blank and mul:
+                if tf.time > blank.time and tf.time > mul.time:
+                    decoded['chapter'] = tf.chapter
+                    decoded['kind'] = "문제 유형 : OX"
+                elif blank.time > tf.time and blank.time > mul.time:
                     decoded['chapter'] = blank.chapter
-                    decoded['kind'] = "객관식"
+                    decoded['kind'] = "문제 유형 : 빈칸 채우기"
                 else:
-                    decoded['chapter'] = blank.chapter + 1
-                    decoded['kind'] = "OX"
+                    decoded['chapter'] = mul.chapter
+                    decoded['kind'] = "문제 유형 : 객관식"
+            elif tf and blank:
+                if tf.time > blank.time:
+                    decoded['chapter'] = tf.chapter
+                    decoded['kind'] = "문제 유형 : OX"
+                else:
+                    decoded['chapter'] = blank.chapter
+                    decoded['kind'] = "문제 유형 : 빈칸 채우기"
+            elif mul and blank:
+                if mul.time > blank.time:
+                    decoded['chapter'] = mul.chapter
+                    decoded['kind'] = "문제 유형 : 객관식"
+                else:
+                    decoded['chapter'] = blank.chapter
+                    decoded['kind'] = "문제 유형 : 빈칸 채우기"
+            elif tf and mul:
+                if tf.time > mul.time:
+                    decoded['chapter'] = tf.chapter
+                    decoded['kind'] = "문제 유형 : OX"
+                else:
+                    decoded['chapter'] = mul.chapter
+                    decoded['kind'] = "문제 유형 : 객관식"
+            elif tf:
+                decoded['chapter'] = tf.chapter
+                decoded['kind'] = "문제 유형 : OX"
+            elif blank:
+                decoded['chapter'] = blank.chapter
+                decoded['kind'] = "문제 유형 : 빈칸 채우기"
+            elif mul:
+                decoded['chapter'] = mul.chapter
+                decoded['kind'] = "문제 유형 : 객관식"
+            else:
+                decoded['chapter'] = "현재 진행중인 문제가 없습니다."
+                decoded['kind'] = ""
 
-            decoded['score'] = SubjectsScore.objects.filter(characters=character_id, subjects=subject_id).first().score
+            decoded['score'] = SubjectsScore.objects.get(characters=character_id, subjects=subject_id).score
             decoded['rank'] = get_ranking(subject_id, character_id)
             decoded['notice_list'] = NoticeBoard.objects.all()[:3]
+            print("dec:",decoded)
 
             return render(request, 'home.html', {'user': decoded})
         except jwt.ExpiredSignatureError:

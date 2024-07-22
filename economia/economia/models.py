@@ -11,9 +11,11 @@ import datetime
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 class Player(AbstractBaseUser):
+    id = models.BigAutoField(primary_key=True)
     player_id = models.CharField(max_length=20, unique=True)
     player_name = models.CharField(max_length=5, blank=True, null=True)
     nickname = models.CharField(unique=True, max_length=255)
+    last_login = models.DateTimeField()
     email = models.CharField(unique=True, max_length=255)
     school = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
@@ -36,6 +38,46 @@ class Player(AbstractBaseUser):
     class Meta:
         managed = False
         db_table = 'player'
+        
+class AuthGroup(models.Model):
+    name = models.CharField(unique=True, max_length=150)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_group'
+
+
+class AuthGroupPermissions(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
+    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_group_permissions'
+        unique_together = (('group', 'permission'),)
+
+
+class AuthPermission(models.Model):
+    name = models.CharField(max_length=255)
+    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
+    codename = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_permission'
+        unique_together = (('content_type', 'codename'),)
+
+
+class AuthtokenToken(models.Model):
+    key = models.CharField(primary_key=True, max_length=40)
+    created = models.DateTimeField()
+    user = models.OneToOneField('Player', models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'authtoken_token'
+
 
 class Blank(models.Model):
     characters = models.ForeignKey('Characters', models.DO_NOTHING)
@@ -44,6 +86,7 @@ class Blank(models.Model):
     subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
+    time = models.DateTimeField()
 
     class Meta:
         managed = False
@@ -64,7 +107,7 @@ class Characters(models.Model):
 
 
 class ChildComments(models.Model):
-    parent = models.ForeignKey('Comments', on_delete=models.CASCADE)
+    parent = models.ForeignKey('Comments', models.DO_NOTHING)
     player = models.ForeignKey('Player', models.DO_NOTHING)
     texts = models.CharField(max_length=500, blank=True, null=True)
 
@@ -77,42 +120,72 @@ class Comments(models.Model):
     scenario = models.ForeignKey('Scenario', models.DO_NOTHING)
     characters = models.ForeignKey(Characters, models.DO_NOTHING)
     percents = models.IntegerField()
-    scenario = models.ForeignKey('Scenario', models.DO_NOTHING)
-    characters = models.ForeignKey(Characters, models.DO_NOTHING)
-    percents = models.IntegerField()
     texts = models.CharField(max_length=500, blank=True, null=True)
     like_cnt = models.IntegerField(blank=True, null=True)
-    time = models.DateTimeField(blank=True, null=True)
-    time = models.DateTimeField(blank=True, null=True)
+    time = models.DateTimeField()
 
     class Meta:
         managed = False
         db_table = 'comments'
-    
 
 
-class CommentsLikes(models.Model):
-    comment = models.ForeignKey(Comments, on_delete=models.CASCADE)
-    player = models.ForeignKey('Player', models.DO_NOTHING)
+class DjangoAdminLog(models.Model):
+    action_time = models.DateTimeField()
+    object_id = models.TextField(blank=True, null=True)
+    object_repr = models.CharField(max_length=200)
+    action_flag = models.PositiveSmallIntegerField()
+    change_message = models.TextField()
+    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey('Player', models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'comments_likes'
-        unique_together = (('comment', 'player'),)
+        db_table = 'django_admin_log'
+
+
+class DjangoContentType(models.Model):
+    app_label = models.CharField(max_length=100)
+    model = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'django_content_type'
+        unique_together = (('app_label', 'model'),)
+
+
+class DjangoMigrations(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    app = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    applied = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'django_migrations'
+
+
+class DjangoSession(models.Model):
+    session_key = models.CharField(primary_key=True, max_length=40)
+    session_data = models.TextField()
+    expire_date = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'django_session'
 
 
 class Multiple(models.Model):
     characters = models.ForeignKey(Characters, models.DO_NOTHING)
-    stage = models.IntegerField()
     question_text = models.CharField(max_length=500, blank=True, null=True)
     option_a = models.CharField(max_length=255, blank=True, null=True)
     option_b = models.CharField(max_length=255, blank=True, null=True)
     option_c = models.CharField(max_length=255, blank=True, null=True)
     option_d = models.CharField(max_length=255, blank=True, null=True)
-    correct_answer = models.CharField(max_length=5, blank=True, null=True)
+    correct_answer = models.CharField(max_length=1, blank=True, null=True)
     subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
+    time = models.DateTimeField()
 
     class Meta:
         managed = False
@@ -130,12 +203,13 @@ class NoticeBoard(models.Model):
         db_table = 'notice_board'
 
 
-class QnA(models.Model):
+
+class Qna(models.Model):
     title = models.CharField(max_length=50, blank=True, null=True)
     question_text = models.CharField(max_length=500, blank=True, null=True)
     admin_answer = models.CharField(max_length=500, blank=True, null=True)
-    time = models.DateTimeField(max_length=500, blank=True, null=True)
-    player = models.ForeignKey('Player', models.DO_NOTHING)
+    player = models.ForeignKey(Player, models.DO_NOTHING)
+    time = models.DateTimeField()
 
     class Meta:
         managed = False
@@ -190,22 +264,31 @@ class Tf(models.Model):
     subjects = models.ForeignKey(Subjects, models.DO_NOTHING)
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
+    time = models.DateTimeField()
 
     class Meta:
         managed = False
         db_table = 'tf'
 
-class VerificationCode(models.Model):
-    email = models.EmailField(unique=True)
-    code = models.CharField(max_length=6)
-    created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f'{self.email}: {self.code}'
+class TokenBlacklistBlacklistedtoken(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    blacklisted_at = models.DateTimeField()
+    token = models.OneToOneField('TokenBlacklistOutstandingtoken', models.DO_NOTHING)
 
-    def is_expired(self):
-        # 현재 시간과 생성 시간을 비교하여 3분 이내면 False 반환, 그렇지 않으면 True 반환
-        expiration_time = self.created_at + datetime.timedelta(minutes=3)
-        now = timezone.now()
-        return now > expiration_time
-    
+    class Meta:
+        managed = False
+        db_table = 'token_blacklist_blacklistedtoken'
+
+
+class TokenBlacklistOutstandingtoken(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    token = models.TextField()
+    created_at = models.DateTimeField(blank=True, null=True)
+    expires_at = models.DateTimeField()
+    user = models.ForeignKey(Player, models.DO_NOTHING, blank=True, null=True)
+    jti = models.CharField(unique=True, max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'token_blacklist_outstandingtoken'

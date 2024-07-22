@@ -16,11 +16,11 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('-date_joined',)
 
 # 기존 UserAdmin을 커스텀 버전으로 교체
-admin.site.unregister(User)
-admin.site.register(User, CustomUserAdmin)
+# admin.site.unregister(User)
+# admin.site.register(User, CustomUserAdmin)
 
 # 다른 모델들에 대한 관리자 설정
 # 예: from .models import YourModel
 # admin.site.register(YourModel)
 
-admin.site.register(Notice)
+# admin.site.register(Notice)

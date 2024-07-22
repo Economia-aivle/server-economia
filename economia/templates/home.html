@@ -16,16 +16,17 @@
             <a class="logout-btn">로그아웃</a>
         </div>
         <div class="user-setting">
-            <a class="my-page-btn" href="/mypage">마이페이지</a>
-            <a class="edit-character-btn" href="/users/char_create">캐릭터 수정</a>
+            <a class="edit-character-btn" href="/users/char_create/{{user.character_id}}">캐릭터 수정</a>
         </div>
         <div class="user-info">
-            <span class="character"></span>
+            <img id="main_img" src="{{user.char_url}}">
             <span id="nickname">{{user.nickname}}</span>
+            <hr class="line" id="line1"></hr>
             <span id="username" class="username">{{user.player_name}}</span>
-            <span class="info-divider1"></span>
+            <hr class="line" id="line2"></hr>
             <span id="school" class="school">{{user.school}}</span>
-            <span class="info-divider2"></span>
+            <hr class="line" id="line3"></hr>
+            <a class="my-page-btn" href="/mypage">마이페이지</a>
         </div>
         <div class="level-info">
             <div id="level" class="level">LV. {{ user.level }}</div>
@@ -46,20 +47,19 @@
         <div class="content-header">
             <select class="dropdown" id="subject_dropdown">
                 {% for subject in user.subjects %}
-                    <option {% if forloop.counter0 == user.subjects_id %}selected{% endif %}>{{subject}}</option>
+                    <option value="{{ forloop.counter }}" {% if forloop.counter == user.subjects_id %}selected{% endif %}>{{ subject }}</option>
                 {% endfor %}
             </select>
 
-            <a class="learning-btn" href="/chapter">학습하기</a>
+            <a class="learning-btn" href="/educations/chapter/{{user.subjects_id}}">학습하기</a>
             <a class="scenario-btn" href="/scenarios/scenario_list">시나리오</a>
         </div>
         <div class="content-body">
             <div class="row">
                 <div class="current-problem">
                     <h1 class="status">진행중인 문제</h1>
-                    <h3 class="chapter">Chapter {{user.chapter}}. 은행</h3>
-                    <h3 class="difficulty">문제 유형 : {{user.kind}}</h3>
-                    <button class="move-problem-btn" onclick="handleButtonClick()">이동</button>
+                    <h3 class="chapter">Chapter {{user.chapter}}</h3>
+                    <h3 class="difficulty">{{user.kind}}</h3>
                 </div>
                 <div class="current-scenario">
                     <h1 class="current-scenario-text">진행중인 시나리오</h1>
@@ -67,26 +67,37 @@
                         <a class="scenario-title" href="/scenarios/scenario_list">{{scenario.title}}</a>
                     {% endfor %}
                 </div>
-                <div class="points">
-                    <h1 class="points-text">점수</h1>
-                    <h3 class="my-pts">{{user.score}} pts</h3>
-                </div>
-                <div class="ranking">
-                    <h1 class="ranking-text">랭킹</h1>
-                    <h3 class="rank">{{user.rank}}등<span class="crown"></span></h3>
-                    <a class="ranking-view" href="/users/ranking">더보기</a>
+                <div id='point-ranking'>
+                    <div class="points">
+                        <h1 class="points-text">점수&nbsp;&nbsp;&nbsp;{{user.score}} pts</h1>
+                    </div>
+                    <div class="ranking">
+                        <h1 class="ranking-text">랭킹&nbsp;&nbsp;&nbsp;{{user.rank}}등
+                            <a href="/users/ranking">
+                                <img class="search">
+                            </a>
+                        </h1>
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="view-solved">
-                    <h1 class="view-solved-text">내가 푼 문제 보기</h1>
+                    <h1 class="view-solved-text">내가 푼 문제 보기
+                        <a href="/educationts/previous_quiz/{{ user.character_id }}">
+                            <img class="search">
+                        </a>
+                    </h1>
                     <a class="chapter-1" href="#" target="_self">OX : Chapter {{user.chapter_tf}}</a>
                     <a class="chapter-2" href="#" target="_self">빈칸 채우기 : Chapter {{user.chapter_blank}}</a>
                     <a class="chapter-3" href="#" target="_self">객관식 : Chapter {{user.chapter_mul}}</a>
                     <button class="chapter-icon" onclick="handleButtonClick()">더보기</button>
                 </div>
                 <div class="created-scenarios">
-                    <h1 class="created-scenario-text">작성한 시나리오</h1>
+                    <h1 class="created-scenario-text">작성한 시나리오
+                        <a href="/scenarios/scenario_list">
+                            <img class="search">
+                        </a>
+                    </h1>
                     {% for comment in user.comment_list %}
                         <a class="created-scenario" href="#" target="_self">{{comment.texts}}</a>
                     <div></div>
@@ -112,9 +123,25 @@
     </div>
 
 <script>
-    const percent = "{{ user.percent }}";
-    const access_token = "{{user.access_token}}"
-    const refresh_token = "{{user.refresh_token}}"
+    var percent = "{{ user.percent }}";
+    var access_token = "{{user.access_token}}";
+    var refresh_token = "{{user.refresh_token}}";
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var dropdown = document.getElementById('subject_dropdown');
+
+        function fetchScores() {
+            var selectedIndex = dropdown.selectedIndex;
+            var subjectId = dropdown.options[selectedIndex].value;
+            var url = `/home/` + subjectId;
+            console.log(`Redirecting to: ${url}`); // 디버깅을 위한 로그
+            window.location.href = url;
+        }
+
+        dropdown.addEventListener('change', function() {
+            fetchScores();
+        });
+    });
 
     function setProgress(percent) {
         const leftHalf = document.getElementById('left-half');
@@ -127,9 +154,9 @@
         if (percent <= 50) {
             rightHalf.style.transform = `rotate(${angle}deg)`;
             leftHalf.style.transform = `rotate(0deg)`;
-            leftHalf.style.backgroundColor = '#fff';
-            rightHalf.style.zIndex = 1;
-            leftHalf.style.zIndex = 2;
+            leftHalf.style.backgroundColor = '#ffffff';
+            rightHalf.style.zIndex = 2;
+            leftHalf.style.zIndex = 3;
 
         } else {
             rightHalf.style.transform = `rotate(180deg)`;
@@ -139,36 +166,23 @@
         progressText.textContent = `${percent}%`;
     }
 
-    // 예시로 40% 진행 상태 설정
     setProgress(parseInt(percent));
 
-    document.addEventListener('DOMContentLoaded', function() {
-      const dropdown = document.getElementById('subject_dropdown');
-      
-      function fetchScores() {
-          const selectedIndex = dropdown.selectedIndex;
-          const subjectId = selectedIndex + 1; // 인덱스는 0부터 시작하므로 +1 해줍니다.
-          const url = `/home/${subjectId}?token_access=` + access_token + "&token_refresh=" + refresh_token;
-          window.location.href = url;
-      }
-  
-      dropdown.addEventListener('change', function() {
-          fetchScores();
-      });
     
-    });
+    
     document.addEventListener("DOMContentLoaded", function() {
-    var commentTextElements = document.querySelectorAll('.created-scenario');
-    var maxLength = 15;  // 원하는 최대 길이
+        var commentTextElements = document.querySelectorAll('.created-scenario');
+        var maxLength = 15;  // 원하는 최대 길이
 
-    commentTextElements.forEach(function(element) {
-        var originalText = element.textContent;
-        if (originalText.length > maxLength) {
-            var truncatedText = originalText.substring(0, maxLength) + '...';
-            element.textContent = truncatedText;
-        }
+        commentTextElements.forEach(function(element) {
+            var originalText = element.textContent;
+            if (originalText.length > maxLength) {
+                var truncatedText = originalText.substring(0, maxLength) + '...';
+                element.textContent = truncatedText;
+            }
         });
     });
+
     document.querySelector('.logout-btn').addEventListener('click', function() {
         fetch('/onboarding/logout', {
             method: 'POST',
@@ -184,6 +198,8 @@
         .then(response => {
             if (response.ok) {
                 window.location.href = '/onboarding';
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
             } else {
                 console.error('Logout failed');
             }

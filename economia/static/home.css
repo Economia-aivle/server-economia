@@ -1,14 +1,49 @@
+@font-face {
+    font-family: 'omyu_pretty';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
+    font-weight: bold;
+    font-style: bold;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Noto Sans', sans-serif;
-    overflow: auto;
+    font-family: 'omyu_pretty';
 }
 
 body, html {
     height: 100%;
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'omyu_pretty';
+}
+
+.search {
+    width: 20px;
+    height: 20px;
+    background-image: url("/static/images/search.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+.line {
+    border: solid 1px #888787;
+    width: 80%;
+    position: absolute;
+}
+
+#line1 {
+    top:335px;
+
+}
+
+#line2 {
+    top:370px;
+}
+
+#line3 {
+    top:405px;
 }
 
 .container {
@@ -18,15 +53,26 @@ body, html {
 }
 
 .sidebar {
-    width: 30%;
+    width: 27%;
     max-width: 527px;
+    height: 100%;
     background-color: rgba(255, 255, 255, 1);
     /* padding: 20px; */
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     border-radius: 10px;
+    position: absolute;
+    z-index: 1;
+}
+
+#main_img {
     position: relative;
+    background-size: cover;
+    background-position: center;
+    top:-24px;
+    width: 200px;
+    height: 200px;
 }
 
 
@@ -45,12 +91,10 @@ body, html {
 }
 
 .logout-btn {
-    color: rgb(255, 255, 255);
     position: absolute;
     top: 20px; /* ì‚¬ì´ë“œë°” ìƒë‹¨ìœ¼ë¡œë¶€í„°ì˜ ê±°ë¦¬ */
     right: 20px; /* ì‚¬ì´ë“œë°” ì˜¤ë¥¸ìª½ìœ¼ë¡œë¶€í„°ì˜ ê±°ë¦¬ */
     border: none;
-    background-color: rgba(57, 167, 255, 1);
     border-radius: 10px;
     text-align: center;
     font-size: 16px;    
@@ -80,19 +124,21 @@ body, html {
 }
 
 #nickname {
+    width: 70%;
     font-size: 25px;
-    text-align: center;
+    text-align: left;
     display: block;
-    top: 350px;
+    top: 293px;
     position: absolute;
     margin-top: 10px;
     font-weight: bold;
 }
 
 .username {
-    top: 385px;
-    font-size: 20px;
-    text-align: center;
+    width: 70%;
+    top: 318px;
+    font-size: 25px;
+    text-align: left;
     display: block;
     position: absolute;
     margin-top: 20px;
@@ -100,9 +146,10 @@ body, html {
 }
 
 .school {
-    top: 420px;
-    font-size: 20px;
-    text-align: center;
+    width: 70%;
+    top: 350px;
+    font-size: 25px;
+    text-align: left;
     display: block;
     position: absolute;
     margin-top: 25px;
@@ -117,27 +164,25 @@ body, html {
 }
 
 .edit-character-btn {
-    color: rgb(255, 255, 255);
+    color: #888787;
     font-size: 10px;
     text-decoration: none;
     position: absolute;
-    top: 105px; /* ìºë¦­í„° ì´ë¯¸ì§€ ìœ„ìª½ ëŒ€ê°ì„  ìœ„ì¹˜ */
-    right: 100px; /* ìºë¦­í„° ì´ë¯¸ì§€ ì˜¤ë¥¸ìª½ ëŒ€ê°ì„  ìœ„ì¹˜ */
+    top: 88px; /* ìºë¦­í„° ì´ë¯¸ì§€ ìœ„ìª½ ëŒ€ê°ì„  ìœ„ì¹˜ */
+    right: 23px; /* ìºë¦­í„° ì´ë¯¸ì§€ ì˜¤ë¥¸ìª½ ëŒ€ê°ì„  ìœ„ì¹˜ */
     border: none;
-    background-color: rgba(57, 167, 255, 1);
     border-radius: 10px;
     padding: 5px 10px;
 }
 
 .my-page-btn {
-    color: rgb(255, 255, 255);
+    color: #888787;
     font-size: 10px;
     text-decoration: none;
     position: absolute;
-    top: 105px;
-    left: 100px;
+    top: 405px;
+    right: 23px;
     border: none;
-    background-color: rgba(57, 167, 255, 1);
     border-radius: 10px;
     padding: 5px 10px;
 }
@@ -153,7 +198,6 @@ body, html {
 
 .level {
     position: absolute;
-    top: -40px; /* progress-circleì˜ ì¢Œìƒë‹¨ìœ¼ë¡œ ì´ë™ */
     left: 5%; /* ì¤‘ì•™ ì •ë ¬ */
     transform: translateX(-50%); /* ì¤‘ì•™ ì •ë ¬ ë³´ì • */
     font-size: 30px;
@@ -166,7 +210,6 @@ body, html {
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    background-color: rgba(57, 167, 255, 1); /* í° íŒŒëž€ìƒ‰ ì› */
     position: relative; /* ìžì‹ ìš”ì†Œë“¤ì˜ ìœ„ì¹˜ë¥¼ ì ˆëŒ€ì ìœ¼ë¡œ ì§€ì •í•˜ê¸° ìœ„í•´ í•„ìš” */
     display: flex;
     justify-content: center;
@@ -196,22 +239,31 @@ body, html {
 }
 
 .progress-pts {
+    color:white;
     font-size: 20px;
     font-weight: bold;
     text-align: center;
-    margin-top: 10px; /* progress-circle ì•„ëž˜ì— ìœ„ì¹˜í•˜ë„ë¡ ì¡°ì • */
+    bottom: -50px;
     display: block;
+    position: relative;
+    border-radius: 15px;
+    background-color: rgba(57, 167, 255, 1);
 }
 
 .main-content {
-    width: 70%;
+    width: 73%;
+    height: 100%;
     flex: 1;
     padding: 20px;
     gap: 60px;
-    /* justify-content: space-between; */
+    position: absolute;
+    right: 0px;
     display: flex;
     flex-direction: column;
-    position: relative; /* ë¶€ëª¨ ìš”ì†Œë¥¼ relativeë¡œ ì„¤ì • */
+    background-image: url("/static/images/background1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     /* flex-wrap: wrap; */
 }
 
@@ -270,11 +322,17 @@ body, html {
 }
 
 .content-body > .row > div {
-    background-color: white;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     flex: 1;
+}
+
+.row {
+    position: relative;
+    top:-33px;
 }
 
 .content-body {
@@ -307,15 +365,20 @@ body, html {
     background-size: cover;
     border-radius: 10px;
     padding: 20px;
-    height: 155px;
-    margin-top: 20px;
+    height: 80px;
 }
 
-.status, .current-scenario-text, .points-text, .ranking-text,
+.status, .current-scenario-text,
 .view-solved-text, .created-scenario-text, .announcement-title {
     font-size: 24px;
     text-align: center;
     margin-bottom: 20px; /* 제목과 본문 사이의 간격 */
+    margin-top: 10px;
+}
+
+.points-text, .ranking-text{
+    font-size: 20px;
+    align-items: center;
 }
 
 .content-body a {
@@ -328,9 +391,6 @@ body, html {
     align-items: center;
 }
 
-.announcement {
-    background-color: rgb(253, 246, 223) !important;
-}
 
 .move-problem-btn, .scenario-move-btn{
     text-decoration: none;
@@ -373,9 +433,16 @@ body, html {
     display: flex;
 }
 
+.chapter {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
 .my-pts {
-    font-size: 30px;
-    color: rgba(57, 167, 255, 1);;
+    width: 1px;
+    font-size: 24px;
+    color: rgba(57, 167, 255, 1);
+    align-items: flex-end;
 }
 
 .rank {
@@ -446,6 +513,8 @@ body, html {
     position: relative;
     width: 200px;
     height: 200px;
+    right: 22px;
+    bottom: -34px;
     overflow: hidden;
 }
 
@@ -481,8 +550,9 @@ body, html {
     transform-origin: center;
     transition: transform 0.5s;
     overflow: hidden;
+    background-color: inherit;
     border: 1px solid #39A7FF;
-    z-index: 5;
+    z-index: 7;
 }
 
 
@@ -496,7 +566,8 @@ body, html {
     left: 50%;
     transform: translate(-50%, -50%);
     border: 1px solid #39A7FF;
-    z-Index : 3;
+    box-shadow: 2px 2px 5px;
+    z-Index : 4;
 }
 
 .progress-text {
@@ -508,6 +579,51 @@ body, html {
     font-weight: bold;
     color: #333;
     z-Index : 4;
+}
+
+.current-problem, .current-scenario, .announcement
+.view-solved, .created-scenarios {
+    background-color: inherit;
+    position: relative;
+}
+
+.current-problem, .current-scenario,
+.view-solved, .created-scenarios, .announcement {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("/static/images/textbox.png");
+    width: 250px;
+    height: 200px;
+}
+
+.points, .ranking {
+    background-color: white;
+    height: 67px;
+    width: 200px;
+    align-items: center;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+}
+
+.ranking {
+    background-color: white;
+    height: 67px;
+    align-items: center;
+    text-align: center;
+    width: 200px;
+}
+
+#point-ranking {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 
 
