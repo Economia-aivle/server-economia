@@ -13,7 +13,7 @@
     <div class="notice-container">
         <h1 class="notice-title">{{ notice.title }}</h1>
         <div class="notice-meta">
-            <p>작성자: {{ notice.admin_id }}</p>
+            <p>작성자: {{ admin_nickname }}</p>
             <p>작성일: {{ notice.write_time|date:"Y-m-d H:i" }}</p>
         </div>
         <div class="notice-content">

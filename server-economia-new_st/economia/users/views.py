@@ -230,10 +230,15 @@ def notice(request):
     
     return render(request, 'notice.html', {'notices': notices, 'search_query': search_query})
 
+
 def notice_detail(request, notice_id):
     notice = get_object_or_404(NoticeBoard, id=notice_id)
-    return render(request, 'notice_detail.html', {'notice': notice})
-
+    admin_nickname = notice.admin.nickname
+    context = {
+        'notice': notice,
+        'admin_nickname': admin_nickname,
+    }
+    return render(request, 'notice_detail.html', context)
 @login_required
 def admin_dashboard(request):
     return render(request, 'admin_dashboard.html')
