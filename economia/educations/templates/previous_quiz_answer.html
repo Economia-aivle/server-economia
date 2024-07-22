@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'previous_quiz_answer.css' %}" />
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <title>이전 문제 해설</title>
+</head>
+<body>
+    <div class="container">
+        <div class="white_box">
+            <span class="title_answer">답</span><br><br>
+            <span class="list1">{{ item.option_a }}</span><br>
+            <div class="line1"></div>
+            <span class="list2">{{ item.option_b }}</span><br>
+            <div class="line2"></div>
+            <span class="list3">{{ item.option_c }}</span><br>
+            <div class="line3"></div>
+            <span class="list4">{{ item.option_d }}</span><br>
+            <div class="line4"></div><br><br>
+            <span class="title_exp">해설</span><br><br>
+            <span class="exp_str">
+                {{ item.explanations}}
+            </span>
+        </div>
+    </div>
+</body>
+</html>

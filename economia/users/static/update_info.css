@@ -1,0 +1,45 @@
+body {
+    overflow-x: hidden;
+}
+
+.user-form {
+    width: 100%;
+    max-width: 400px; /* 폼의 최대 너비 지정 */
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 100px auto; /* 수직 및 수평 중앙 정렬 */
+}
+
+form {
+    display: block;
+    flex-direction: column;
+  }
+
+
+form input[type="text"],
+form input[type="password"],
+form input[type="email"] {
+    width: calc(100% - 20px);
+    height: 15px;
+    margin-bottom: 15px;
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Noto-Sans-KR';
+  }
+
+#edit-btn {
+    font-size: 10px;
+    font-family: 'Noto-Sans-KR';
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: rgba(57, 167, 255, 1);
+    padding: 5px 10px;
+    margin: 0px 40%;
+  }

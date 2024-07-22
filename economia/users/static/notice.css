@@ -1,0 +1,105 @@
+body {
+    background-color: #E0F4FF;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 150px; /* 헤더의 높이보다 큰 값으로 설정 */
+}
+
+.search_container {
+    display: flex;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.search_input {
+    width: 550px;
+    height: 35px;
+    margin-top: 20px;
+    padding: 20px;
+    font-size: 24px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+}
+
+.search_btn {
+    background-color: #87CEEB; /* 하늘색 배경 */
+    color: white; /* 텍스트 색상 */
+    border: none;
+    padding: 10px 20px; /* 상하 10px, 좌우 20px 패딩 추가 */
+    font-size: 24px; /* 글자 크기 조절 */
+    width: 150px; /* 버튼 너비 조절 */
+    height: 50px; /* 버튼 높이 조절 */
+    margin-top: 40px; /* 위쪽에 40픽셀의 마진 추가 */
+    margin-right: 30px; /* 오른쪽에 30픽셀의 마진 추가 */
+    margin-bottom: 20px; /* 아래쪽에 20픽셀의 마진 추가 */
+    margin-left: 40px; /* 왼쪽에 40픽셀의 마진 추가 */
+    border-radius: 25px; /* 버튼 모서리를 둥글게 */
+}
+
+.search_btn:hover {
+    background-color: #FFFFFF; /* 흰색 배경 */
+    color: #87CEEB; /* 하늘색 텍스트 */
+}
+
+
+.white_box {
+    width: 80%;
+    max-height: 700px;
+    max-width: 1000px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 70px;
+    padding: 20px;
+    border-radius: 10px;
+    overflow: auto; /* 테이블이 넘칠 경우 스크롤 바 표시 */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; /* 테이블과 검색 입력창 간격 */
+    background-color: #fff;
+    font-size: 24px;
+}
+
+table th {
+    background-color: #fff;
+    border-bottom: 3px solid #87C4FF;
+    border-top: none; /* 테이블 헤더의 상단 테두리 없앰 */
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: center; /* 셀 내부의 텍스트 가운데 정렬 */
+    border-right: 3px solid #87C4FF; /* 우측 세로 테두리 */
+    border-left: 3px solid #87C4FF; /* 좌측 세로 테두리 */
+
+}
+
+table td:first-child,
+table th:first-child {
+    border-left: none; /* 첫 번째 열의 좌측 테두리 없앰 */
+}
+
+table td:last-child,
+table th:last-child {
+    border-right: none; /* 마지막 열의 우측 테두리 없앰 */
+}
+
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+table tr:nth-child(even) {
+    background-color: #fff;
+}
+
+table tr:nth-child(odd) {
+    background-color: #fff;
+}

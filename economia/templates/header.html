@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+    {% load static %}
+<head>
+<style>
+    @font-face {
+        font-family: 'omyu_pretty';
+        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
+        font-weight: bold;
+        font-style: bold;
+    }
+
+    body, h1, h2, p, ul, li, a {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        text-decoration: none;
+        font-family: 'omyu_pretty' ;
+    }
+    .head-container {
+        margin: 0px 60px 0px 60px ;
+    }
+    
+    .navbar {
+        margin-top: 0%;
+        background-color: white;
+        color: white;
+        padding: 10px 0;
+        width: 100%;
+        min-height:60px;
+
+    }
+
+    .navbar .logo {
+        float: left;
+    }
+
+    .navbar nav {
+        float: right;
+    }
+
+    .navbar ul {
+        display: flex;
+        padding-top: 15px;
+        margin-top: 15px;
+    }
+    .navbar ul li {
+
+        margin-left: 100px;
+    }
+    .navbar ul li a, .navbar ul li p {
+        color: black;
+        font-size: 25px;
+
+    }
+    .navbar:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* Media Queries for Responsiveness */
+    @media (max-width: 1200px) {
+        .navbar ul li {
+            margin-left: 50px;
+        }
+        .navbar ul li a, .navbar ul li p {
+            font-size: 25px;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .head-container {
+            width: 90%;
+        }
+
+        .navbar ul li {
+            margin-left: 30px;
+        }
+
+        .navbar ul li a, .navbar ul li p {
+            font-size: 20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .navbar {
+            padding: 10px;
+        }
+
+        .navbar .logo {
+            float: none;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .navbar nav {
+            float: none;
+            text-align: center;
+        }
+
+        .navbar ul {
+            flex-direction: column;
+            padding-top: 0;
+        }
+
+        .navbar ul li {
+            margin: 10px 0;
+        }
+
+        .navbar ul li a, .navbar ul li p {
+            font-size: 18px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .navbar ul li a, .navbar ul li p {
+            font-size: 16px;
+        }
+    }
+</style>
+<link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+</head>
+{% load static %}
+</head>
+<header class="navbar">
+    <div class="head-container">
+        <a href="{% url 'home' subject_id=1 %}"><img src="{% static 'images/header9999.png' %}" alt="My Image"></a>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">학습하기</a></li>
+                <li><a href="{% url 'scenarios:scenario_list' %}">시나리오</a></li>
+                <li><a href="{% url 'mypage' %}">마이페이지</a></li>
+                <li><a href="">로그아웃</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+</html>

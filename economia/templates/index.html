@@ -1,0 +1,51 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>페이지 인덱스</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+
+</head>
+<body>
+  user <br>
+<a href="{% url 'users:find_account_pwd' %}">find_account_pwd</a><br>
+<a href="{% url 'users:find_account_id' %}">find_account_id</a><br>
+
+<a href="{% url 'users:find_account' %}">find_account</a><br>
+<a href="{% url 'users:char_update' %}">char_delete</a><br>
+<hr>
+educations<br>
+<!--  -->
+<a href="{% url 'educations:previous_quiz_answer' %}">previous_quiz_answer</a><br>
+<a href="{% url 'educations:previous_quiz' characters=1 %}">previous_quiz</a><br>
+<a href="{% url 'educations:study' %}">study</a><br>
+<a href="{% url 'educations:summary_anime' %}">summary_anime</a><br>
+<a href="{% url 'educations:wrong_explanation' %}">wrong_explanation</a><br>
+<a href="{% url 'educations:chapter_summary' %}">chapter_summary</a><br>
+<hr>
+scenarios<br>
+<a href="{% url 'scenarios:previous_scenario' id=1 %}">previous_scenario</a><br>
+<a href="{% url 'scenarios:scenario_list' %}">scenario_list</a><br>
+<a href="{% url 'scenarios:scenario_num' id=1 %}">scenario</a><br>
+<a href="{% url 'scenarios:create_scenario'  %}">create_scenario</a><br>
+<hr>
+home<br>
+<a href="home">home</a><br>
+<a href="onboarding">onboarding</a><br>
+<a href="mypage">mypage</a><br>
+<a href="update_info">update_info</a><br>
+<a href="ask">ask</a><br>
+<hr>
+admin <br>
+<a href="admin_dashboard">admin_dashboard</a><br>
+<a href="admin_login">admin_login</a><br>
+<hr>
+terms <br>
+<a href="{% url 'community_term' %}">community_term</a><br>
+<a href="{% url 'service_term' %}">account_term</a><br>
+<a href="{% url 'account_term' %}">service_term</a><br>
+<a href="{% url 'teen_term' %}">teen_term</a><br>
+<a href="{% url 'service_agree' %}">service_agree</a><br>
+</body>

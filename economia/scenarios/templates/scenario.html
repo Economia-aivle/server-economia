@@ -1,0 +1,31 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시나리오</title>
+    <link rel="stylesheet" href="{% static 'scenario.css' %}" />
+</head>
+<body>
+  {% include "header.html" %}
+  <div class="container">
+    <div class="scenario_container">
+      <span class="title">시나리오</span><br>
+      {% for item in scenario %}
+      <span class="contents">{{ item.question_text }}</span>
+      {% endfor %}
+    </div>
+    <div class="answer_box">
+      <form method="post" action="{% url 'scenarios:submit_answer' %}">
+        {% csrf_token %}
+        <input type="hidden" name="scenario_id" value="{{ scenario.0.id }}">
+        <input type="text" name="scenario_answer" class="scenario_answer" placeholder="답 입력">
+        <div class="button_box">
+          <button type="submit" class="submit_button">제출</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
