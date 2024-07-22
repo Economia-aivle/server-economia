@@ -6,21 +6,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>문제풀이 - OX</title>
   <link rel="stylesheet" href="{% static 'tfquiz.css' %}" />
+  <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
 </head>
 <body>
   {% include 'quiz_header2.html' %}
+  <div class="life">
+      <img id="lp1" src="{% static 'images/lp.png' %}" alt="lp">
+      <img id="lp2" src="{% static 'images/lp.png' %}" alt="lp">
+      <img id="lp3" src="{% static 'images/lp.png' %}" alt="lp"></div>
   <main>
-    <div id="question-container" class="question-container">
-      <h1 id="question-text">여기에 질문이 표시됩니다.</h1>
-      <input type="hidden" id="question-id" value="">
-      <input type="hidden" id="subjects" value="{{ subjects|default:'1' }}">
-      <input type="hidden" id="chapter" value="{{ chapter|default:'1' }}">
-    </div>
+    
     <div class="wrap-container">
-      <button class="o-btn" onclick="submitAnswer('O')">O</button>
-      <img src="{% static 'images/char1.png' %}" alt="char" />
-      <button class="x-btn" onclick="submitAnswer('X')">X</button>
+      <img class="mychar" src="{% static 'images/pig.png' %}" alt="char" />
+      <div id="question-container" class="question-container">
+        <h1 id="question-text">여기에 질문이 표시됩니다.</h1>
+        <button class="o-btn" onclick="submitAnswer('O')">O</button>
+        <button class="x-btn" onclick="submitAnswer('X')">X</button>
+        <input type="hidden" id="question-id" value="">
+        <input type="hidden" id="subjects_id" value="{{ subjects_id|default:'1' }}">
+        <input type="hidden" id="chapter" value="{{ chapter|default:'1' }}">
+      </div>
+      <div class="char">
+        
+      <img class="enemy" src="{% static 'images/enemy1.png' %}" alt="">
+      <div class="hp-bar-container">
+        <div id="hp-bar" class="hp-bar"></div>
     </div>
+    </div>
+      
+    </div>
+    
     <div class="wrong-container" id="wrong-container" style="display:none;">
       <div class="answer-bubble">
           <p class="ans">모든 문제를 맞췄습니다!</p>
@@ -33,7 +48,7 @@
       </div>
   </div>
   </main>
-  <aside class="sidebar">
+  <!-- <aside class="sidebar">
     <div class="top-num"><p class="progress-num">0/5</p></div>
     <div class="progress">
       <span class="progress-step"></span>
@@ -42,27 +57,28 @@
       <span class="progress-step"></span>
       <span class="progress-step"></span>
     </div>
-  </aside>
+  </aside> -->
   <script src="{% static 'tfquiz.js' %}"></script>
 </body>
 
 <script>
   const initialData = {
-    subjects: "{{ subject }}", // Django 템플릿 변수를 사용하여 초기 데이터 설정
+    subjects_id: "{{ subjects_id }}", // Django 템플릿 변수를 사용하여 초기 데이터 설정
     chapter: "{{ chapter }}",
-    characters: "{{ characters }}"
+    characters: "{{ characters }}",
+    levelurl: "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}"
   };
 
   window.onload = function() {
 
 
     function redirectToLevelChoice() {
-        var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+        var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
         window.location.href = levelChoiceUrl;
     }
 
     var currentUrl = window.location.href;
-    var levelChoiceUrlPattern = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+    var levelChoiceUrlPattern = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
 
     if (currentUrl !== levelChoiceUrlPattern) {
         history.pushState(null, null, levelChoiceUrlPattern);
@@ -77,7 +93,7 @@
 
 function nextQuestion() {
 
-      window.location.href = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+      window.location.href = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
 
 }
 </script>

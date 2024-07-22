@@ -19,6 +19,7 @@ from datetime import datetime, timedelta, timezone
 import jwt
 from django.db.models import F, Window
 from django.db.models.functions import Rank
+from rest_framework.response import Response
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
 from rest_framework_simplejwt.exceptions import TokenError
 from django.middleware.csrf import get_token
@@ -115,6 +116,7 @@ def refresh_access_token(refresh_token):
 def home(request, subject_id):
     access_token = request.COOKIES.get('access_token')
     refresh_token = request.COOKIES.get('refresh_token')
+    
 
     def level(exp):
         total = int(exp)

@@ -1,19 +1,24 @@
+<!doctype html>
+<html lang="en">
+    {% load static %}
+<head>
 <style>
-    
-    @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+    @font-face {
+        font-family: 'omyu_pretty';
+        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
+        font-weight: bold;
+        font-style: bold;
+    }
+
     body, h1, h2, p, ul, li, a {
         margin: 0;
         padding: 0;
         list-style: none;
         text-decoration: none;
-        font-family: 'Noto Sans KR', sans-serif;
-    }
-    .logo a {
-        font-family: 'Noto Sans KR', sans-serif;
+        font-family: 'omyu_pretty' ;
     }
     .head-container {
-        width: 80%;
-        margin: 0 auto;
+        margin: 0px 60px 0px 60px ;
     }
     
     .navbar {
@@ -23,9 +28,6 @@
         padding: 10px 0;
         width: 100%;
         min-height:60px;
-        border-bottom-width:1px;
-        border-bottom-style:solid;
-        border-bottom-color:black;
 
     }
 
@@ -40,6 +42,7 @@
     .navbar ul {
         display: flex;
         padding-top: 15px;
+        margin-top: 15px;
     }
     .navbar ul li {
 
@@ -47,8 +50,7 @@
     }
     .navbar ul li a, .navbar ul li p {
         color: black;
-        font-size: 30px;
-        font-family: 'Noto Sans KR', sans-serif;
+        font-size: 25px;
 
     }
     .navbar:after {
@@ -117,11 +119,13 @@
         }
     }
 </style>
+<link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+</head>
 {% load static %}
 </head>
 <header class="navbar">
     <div class="head-container">
-        <a href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt="My Image"></a>
+        <a href="{% url 'home' subject_id=1 %}"><img src="{% static 'images/header9999.png' %}" alt="My Image"></a>
         <nav>
             <ul>
                 <li><a href="{% url 'home' %}">학습하기</a></li>
@@ -132,3 +136,4 @@
         </nav>
     </div>
 </header>
+</html>

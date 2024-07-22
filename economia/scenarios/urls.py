@@ -2,6 +2,10 @@
 from django.urls import path
 from django.contrib import admin
 from . import views
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 app_name = 'scenarios'
 urlpatterns = [
@@ -19,6 +23,8 @@ urlpatterns = [
     path('submit_childcomment/', views.submit_childcomment, name='submit_childcomment'),
     path('delete_comment/<int:id>/', views.delete_comment, name='delete_comment'),
     path('delete_childcomment/<int:id>/', views.delete_childcomment, name='delete_childcomment'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('chapter/<str:subjects>/', views.delete_childcomment, name='delete_childcomment'),
     
 ]

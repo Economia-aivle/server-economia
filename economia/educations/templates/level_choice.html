@@ -6,54 +6,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>학습 하기</title>
     <link rel="stylesheet" href="{% static 'level_choice.css' %}" />
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
   </head>
-  {% include 'header.html' %}
+  {% include 'study_header.html' %}
   <body>
     
     <main>
-      <h1>학습 난이도를 선택 해주세요!</h1>
+        <div class="chapter_title"><p>Chapter 1. 스스로 선택해라: 금융과 의사결정</p></div>
       <div class="wrap-container">
         <span class="btn-cho">
-            <button class="next-btn {% if chapter_sub is None or chapter_sub == 1 or chapter_sub == 2 or chapter_sub == 3 %}active{% endif %}"onclick = "location.href = '{% url 'educations:tf_quiz_page' characters=1 subject=subject chapter=chapter %}'">
-                <p>초급</p>
-                <div><img src="{% static 'images/unlock.png' %}" alt="초급"></div>
-                
+            <button class="next-btn {% if chapter_sub is None or chapter_sub == 1 or chapter_sub == 2 or chapter_sub == 3 %}active{% endif %}" onclick="location.href = '{% url 'educations:tf_quiz_page' characters=1 subjects_id=subjects_id chapter=chapter %}'">
+                <img class="cho" src="{% static 'images/choga.png' %}" alt="초급">
             </button>
         </span>
         <span class="btn-jung">
-            <button class="next-btn {% if chapter_sub is 2 or chapter_sub == 3 %}active{% endif %}" onclick = "location.href = '{% url 'educations:multiple' characters=1 subject=subject chapter=chapter num=1 %}'">
-                <p>중급</p>
-                <div><img src="{% static 'images/unlock.png' %}" alt="중급"></div>
+            <button class="next-btn {% if chapter_sub is 2 or chapter_sub == 3 %}active{% endif %}" onclick="location.href = '{% url 'educations:multiple' characters=1 subjects_id=subjects_id chapter=chapter num=1 %}'">
+              <img class="jung" src="{% static 'images/tree.png' %}" alt="중급">
             </button>
         </span>
         <span class="btn-go">
-            <button class="next-btn {% if chapter_sub is 3 %}active{% endif %}"  onclick = "location.href = '{% url 'educations:blank' characters=1 subject=subject chapter=chapter num=1 %}'">
-                <p>고급</p>
-                <div><img src="{% static 'images/unlock.png' %}" alt="고급"></div>
-                
+            <button class="next-btn {% if chapter_sub is 3 %}active{% endif %}" onclick="location.href = '{% url 'educations:blank' characters=1 subjects_id=subjects_id chapter=chapter num=1 %}'">
+              <img class="go" src="{% static 'images/block.png' %}" alt="고급">
             </button>
         </span>
       </div>
     </main>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var jungBtn = document.querySelector('.btn-jung .next-btn');
+        var goBtn = document.querySelector('.btn-go .next-btn');
+        var jungImg = jungBtn.querySelector('.jung');
+        var goImg = goBtn.querySelector('.go');
+
+        if (!jungBtn.classList.contains('active')) {
+          jungBtn.disabled = true;
+          jungImg.src = '{% static 'images/lock_tree.png' %}';
+        }
+
+        if (!goBtn.classList.contains('active')) {
+          goBtn.disabled = true;
+          goImg.src = '{% static 'images/lock_block.png' %}';
+        }
+      });
+    </script>
   </body>
 </html>
-<script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const buttons = document.querySelectorAll('.next-btn');
-    
-        buttons.forEach(button => {
-            const img = button.querySelector('img');
-    
-            if (button.classList.contains('active')) {
-                button.disabled = false;
-                img.src = "{% static 'images/unlock.png' %}";
-            } else {
-                button.disabled = true;
-                img.src = "{% static 'images/lock.png' %}";
-            }
-           
-        });
-        updateImage();
-    });
-    
-</script>

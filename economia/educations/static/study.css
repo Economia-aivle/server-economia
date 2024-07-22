@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+
+main {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+	height: 95vh;
+	background-image: url('images/study_back.png');
+	background-repeat : no-repeat;
+	background-size: cover;
+}
+
+.wrap-container {
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+    width: 1400px;
+    height: 620px;
+    position: absolute;
+    margin-top: 100px;
+}
+
+.video-container {
+    background-color: rgba(255, 255, 255, 1);
+    width: 100%; /* 수정 */
+    height: 100%; /* 수정 */
+    border-radius: 15px;
+    display: flex; /* 수정 */
+    justify-content: center; /* 수정 */
+    align-items: center; /* 수정 */
+}
+
+.video-thumbnail-container {
+    width: 100%; /* 썸네일 이미지가 꽉 차도록 */
+    height: 100%; /* 썸네일 이미지가 꽉 차도록 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-thumbnail {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.btn {
+	margin-top: 30px;
+	float: right;
+}
+.next-btn{
+	background-color: #39A7FF;
+	font-size: 20px;
+	color: white;
+	width: 150px;
+	height: 60px;
+	border: none;
+	border-top-left-radius:20px;
+	border-top-right-radius:20px;
+	border-bottom-left-radius:20px;
+	border-bottom-right-radius:20px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+
+
+.next-btn:hover {
+background-color: #1A85D6;
+color: #E0E0E0;
+}
+

@@ -1,18 +1,37 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from django.utils import timezone
 import requests
 from economia.models import *
 from .serializers import *
 from datetime import datetime, timedelta
 import pytz
+import jwt
 from .forms import ScenarioForm
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
+from economia.serializers import ProductSerializer, CharacterSerializer
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.conf import settings
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.core.exceptions import ValidationError
 # Create your views here.
+
+class ProtectedView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        content = {'message': 'This is a protected view'}
+        return Response(content)
 
 
 @api_view(['GET'])
@@ -44,9 +63,15 @@ def getChildCommentData(request, comments_id):
 def submit_childcomment(request):
     parent_id = request.POST.get('parent_id')
     text = request.POST.get('childcomment_text')
-
-    # 테스트 용이므로 player_id 1로 고정
-    child_comment = ChildComments(parent_id=parent_id, player_id=1, texts=text)
+    player_id = get_player(request, 'player')
+    image = request.FILES.get('image')
+    
+    if image:
+        valid_extensions = ['jpg', 'jpeg', 'gif', 'png', 'webp']
+        extension = image.name.split('.')[-1].lower()
+        if extension not in valid_extensions:
+            return JsonResponse({'error': '지원되지 않는 파일 형식입니다.'}, status=405)
+    child_comment = ChildComments(parent_id=parent_id, player_id=player_id, texts=text, imgfile=image)
     child_comment.save()
     scenario_id = request.POST.get('scenario_id')
     return redirect('scenarios:previous_scenario', id=scenario_id)
@@ -64,6 +89,8 @@ def delete_childcomment(request, id):
     return redirect('scenarios:previous_scenario', id=request.POST.get('scenario_id'))
 
 def scenario_list(request):
+    staff = get_staff(request)
+    print(staff)
     scenario_response = requests.get('http://127.0.0.1:8000/scenarios/scenario_datas')
     scenario_data = scenario_response.json()
     
@@ -92,6 +119,7 @@ def scenario_list(request):
     context = {
         'page_obj': page_obj,
         'query': query,
+        'is_staff': staff,
     }
 
     return render(request, 'scenario_list.html', context)
@@ -111,12 +139,27 @@ def create_scenario(request): #시나리오 생성
         form = ScenarioForm()
     return render(request, 'create_scenario.html', {'form': form})
 
+
+
 def previous_scenario(request, id):
-    # 임시로 사용자 ID 설정 (로그인 구현 후 변경 필요)
-    player_id = 1
-    characters_id =1
+    access_token = request.COOKIES.get('access_token')
+    refresh_token = request.COOKIES.get('refresh_token')
+
+    # 디버깅 로그 추가
+    print("Access Token:", access_token)
+    print("Refresh Token:", refresh_token)
+    
+    if not access_token:
+        return JsonResponse({"error": "토큰이 없습니다."}, status=400)
+    
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+    
+    characters_id = get_player(request, 'characters')
+    player_id = get_player(request, 'player')
     # Scenario 데이터 가져오기
-    scenario_response = requests.get(f'http://127.0.0.1:8000/scenarios/scenario/{id}')
+    scenario_response = requests.get(f'http://127.0.0.1:8000/scenarios/scenario/{id}', headers=headers)
     scenario_data = scenario_response.json()
     
     # 각 항목의 start_time을 UTC로 변환하고 is_overdue 필드를 추가
@@ -178,6 +221,7 @@ def previous_scenario(request, id):
             'player_id': child.player_id,
             'texts': child.texts,
             'player_nickname': child.player.nickname,
+            'img' : child.imgfile
         })
     
     context = {
@@ -195,7 +239,7 @@ def previous_scenario(request, id):
 @csrf_exempt
 def like_comment(request, comment_id):
     if request.method == 'POST':
-        player_id = 1 # 임시로 사용자 ID를 1로 설정
+        player_id = get_player(request, 'player') # 임시로 사용자 ID를 1로 설정
         
         comment = get_object_or_404(Comments, id=comment_id)
         player = get_object_or_404(Player, id=player_id)
@@ -227,9 +271,8 @@ def submit_answer(request): #시나리오 답 제출
     if request.method == 'POST':
         scenario_id = request.POST.get('scenario_id')
         scenario_answer = request.POST.get('scenario_answer')
-
+        characters_id = get_player(request, 'characters')
         # Assume characters_id is fixed as 1 for testing purposes
-        characters_id = 1
 
         # Create a new Comment object
         new_comment = Comments(
@@ -244,3 +287,35 @@ def submit_answer(request): #시나리오 답 제출
         return redirect('scenarios:previous_scenario', id=scenario_id)
 
     return redirect('scenarios:scenario_list')
+
+def get_player(request, id):
+    access_token = request.COOKIES.get('access_token')
+    refresh_token = request.COOKIES.get('refresh_token')
+
+    # 디버깅 로그 추가
+    print("Access Token:", access_token)
+    print("Refresh Token:", refresh_token)
+    
+    if not access_token:
+        return JsonResponse({"error": "토큰이 없습니다."}, status=400)
+    
+    decoded = jwt.decode(access_token, 'economia', algorithms=['HS256'])
+    decoded['access_token'] = access_token
+    player = Player.objects.get(player_id=decoded['player_id'])
+    player_id = player.id
+    character = get_object_or_404(Characters, player_id=player_id)
+    characters_id = character.id
+    print(characters_id)
+    print(player_id)
+    if id == 'player':
+        return player_id
+    elif id == 'characters':
+        return characters_id
+    else:
+        return player_id
+    
+def get_staff(request):
+    id = get_player(request, 'player')
+    player = Player.objects.get(id=id)
+    staff = player.is_staff
+    return staff

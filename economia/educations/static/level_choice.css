@@ -1,0 +1,92 @@
+
+@font-face {
+	font-family: 'omyu_pretty';
+	src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
+	font-weight: bold;
+	font-style: bold;
+}
+main{
+	position : relative;
+	display: flex;
+	justify-content : center;
+	font-family: 'omyu_pretty' ;
+
+}
+body{
+	height: 85vh;
+	background-image: url('images/chapter_back.png');
+	background-repeat : no-repeat;
+	background-size: cover;
+}
+
+.wrap-container { 
+	position:absolute;
+    display: flex;
+	height: 800px;
+}
+
+
+.next-btn{
+    font-size: 36px;
+	color: white;
+	border: none;
+    background-color: transparent;
+	border-top-left-radius:20px;
+	border-top-right-radius:20px;
+	border-bottom-left-radius:20px;
+	border-bottom-right-radius:20px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	font-family: 'Noto Sans KR', sans-serif; 
+	height: 600px;
+}
+
+
+.btn-cho .next-btn.active{
+	margin-top: 33%;
+
+
+}
+.btn-cho .next-btn.active:hover{
+
+}
+
+.btn-jung .next-btn.active, .btn-jung .next-btn:disabled{
+	margin-top: 35%;
+
+}
+.btn-jung .next-btn.active:hover{
+
+}
+
+.btn-go .next-btn.active, .btn-go .next-btn:disabled{
+	margin-top: 35%;
+}
+.btn-go .next-btn.active:hover{
+
+}
+
+.next-btn:disabled {
+	cursor: not-allowed;
+  }
+  
+.chapter_title{
+    background-image: url('images/chapter_title.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+	width: 1000px;
+	height: 160px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-right: 5%;
+}
+.chapter_title p {
+	margin-left: 7%;
+	font-size: 40px;
+}
+
+.jung, .go, .cho {
+	height: 90%;
+	position: relative;
+}

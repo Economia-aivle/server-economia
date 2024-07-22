@@ -7,21 +7,24 @@
     <title>문제풀이 - OX</title>
     <link rel="stylesheet" href="{% static 'multiple.css' %}" />
     <link rel="stylesheet" href="{% static 'wrong_explanation.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
 </head>
 
 <body>      
     {% include 'quiz_header2.html' %}
+    <div class="life">
+        <img id="lp1" src="{% static 'images/lp.png' %}" alt="lp">
+        <img id="lp2" src="{% static 'images/lp.png' %}" alt="lp">
+        <img id="lp3" src="{% static 'images/lp.png' %}" alt="lp">
+    </div>
+    <div class="question-container">
+        Q{{ num }}. {{ question.question_text }}
+     </div>
     <main>
         <div class="wrap-container">
-            <div class="question-container">
-                <h1>Q{{ num }}. {{ question.question_text }}</h1>
-            </div>
-            <div class="character" onclick="submitAnswer()">
-                <img src="{% static 'images/char1.png' %}" alt="char" />
-                <div class="hp-bar-container">
-                    <div id="hp-bar" class="hp-bar" style="width: {{ hp_percentage }}%;"></div>
-                </div>
-            </div>
+            <img class="mychar" src="{% static 'images/pig.png' %}" alt="char" />
+            
+            
             
             <div class="answer-container">
                 <form id="answer-form" method="post">
@@ -33,12 +36,16 @@
                     <button class="option-btn" type="button" id="option4" onclick="selectOption(this)" name="answer" value="4">4. {{ question.option_d }}</button>
                 </form>
             </div>
+            <div class="character" onclick="submitAnswer()">
+                <img src="{% static 'images/enemy1.png' %}" alt="char" />
+                <div class="hp-bar-container">
+                    <div id="hp-bar" class="hp-bar" style="width: {{ hp_percentage }}%;"></div>
+                </div>
+            </div>
         </div>
         <div class="wrong-container" id="wrong-container" style="display:none;">
-            <div class="question-container">
-                <h1>Q{{ num }}. {{ question.question_text }}</h1>
-            </div>
             <div class="answer-bubble">
+                <h1>Q{{ num }}. {{ question.question_text }}</h1>
                 <p class="ans">답: {{ question.correct_answer }}</p>
                 <p>{{ question.explanation }}</p>
             </div>
@@ -50,26 +57,14 @@
             </div>
         </div>
     </main>
-    <aside class="sidebar">
-        <div class="top-num"><p class="progress-num">{{ num }}/8</p></div>
-        <div class="progress">
-            <a href="#" class="progress-step {% if num >= 1 %}active{% endif %}" id="step-1"></a>
-            <a href="#" class="progress-step {% if num >= 2 %}active{% endif %}" id="step-2"></a>
-            <a href="#" class="progress-step {% if num >= 3 %}active{% endif %}" id="step-3"></a>
-            <a href="#" class="progress-step {% if num >= 4 %}active{% endif %}" id="step-4"></a>
-            <a href="#" class="progress-step {% if num >= 5 %}active{% endif %}" id="step-5"></a>
-            <a href="#" class="progress-step {% if num >= 6 %}active{% endif %}" id="step-6"></a>
-            <a href="#" class="progress-step {% if num >= 7 %}active{% endif %}" id="step-7"></a>
-            <a href="#" class="progress-step {% if num >= 8 %}active{% endif %}" id="step-8"></a>
-        </div>
-    </aside>
 
     <script>
         let selectedOption = null;
         const characters = "{{ characters }}";
-        const subject = "{{ subject }}";
+        const subjects_id = "{{ subjects_id }}";
         const chapter = "{{ chapter }}";
         const num = {{ num }};
+        
         
         function selectOption(selectedBtn) {
             const buttons = document.querySelectorAll('.option-btn');
@@ -91,7 +86,7 @@
             const formData = new FormData();
             formData.append('answer', selectedAnswer);
 
-            fetch(`/educations/multiple/${characters}/${subject}/${chapter}/${num}`, {
+            fetch(`/educations/multiple/${characters}/${subjects_id}/${chapter}/${num}`, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -102,28 +97,26 @@
             .then(data => {
                 if (data.status === 'complete') {
                     alert(data.message);
-                    window.location.href = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+                    window.location.href = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
                 } else if (data.status === 'wrong') {
                     alert(data.message);
                     document.querySelector('.wrap-container').style.display = 'none';
+                    document.querySelector('.question-container').style.display = 'none';
                     document.getElementById('wrong-container').style.display = 'block';
+                        
                 } else {
                     alert(data.message);
-                    window.location.href = `/educations/multiple/${characters}/${subject}/${chapter}/${num + 1}`;
+                    window.location.href = `/educations/multiple/${characters}/${subjects_id}/${chapter}/${num + 1}`;
                 }
             })
             .catch(error => console.error('Error:', error));
         }
 
         function nextQuestion() {
-<<<<<<< HEAD
-            if (num >= 5) {
-=======
             if (num >= 8) {
->>>>>>> 048c7a2c8d063af5982f3b266822b6199249e3b3
-                window.location.href = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+                window.location.href = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
             } else {
-                window.location.href = `/educations/multiple/${characters}/${subject}/${chapter}/${num + 1}`;
+                window.location.href = `/educations/multiple/${characters}/${subjects_id}/${chapter}/${num + 1}`;
             }
         }
 
@@ -131,12 +124,12 @@
 
 
             function redirectToLevelChoice() {
-                var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+                var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
                 window.location.href = levelChoiceUrl;
             }
   
             var currentUrl = window.location.href;
-            var levelChoiceUrlPattern = "{% url 'educations:level_choice' characters=characters subject=subject chapter=chapter %}";
+            var levelChoiceUrlPattern = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
   
             if (currentUrl !== levelChoiceUrlPattern) {
                 history.pushState(null, null, levelChoiceUrlPattern);
@@ -148,6 +141,27 @@
                 }
             });
         };
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const wrongcount = "{{wrong_count}}";
+        
+            if(wrongcount==1){
+                document.getElementById('lp1').style.display = 'none';
+            }
+            else if(wrongcount==2){
+                document.getElementById('lp1').style.display = 'none';
+                document.getElementById('lp2').style.display = 'none';
+            }
+            else if(wrongcount==3){
+                document.getElementById('lp3').style.display = 'none';
+                document.getElementById('lp1').style.display = 'none';
+                document.getElementById('lp2').style.display = 'none';
+                alert("클리어 실패!! 난이도 선택 화면으로 돌아갑니다")
+                var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
+
+                window.location.href = levelChoiceUrl;
+            }
+        });
+
     </script>
 </body>
 </html>

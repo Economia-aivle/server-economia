@@ -11,8 +11,9 @@
     }
     .logo{
         display: flex;
-        margin-top: 3%;
-        margin-left: 10%;
+        margin-top: 2%;
+        margin-left: 5%;
+        color: white;
     }
     .head-container {
         width: 1887px;
@@ -23,10 +24,8 @@
     
     .navbar {
         position : relative;
-        background-color: #E0F4FF;
         color: white;
         width: 100%;
-        padding: 10px;
     }
     
     .navbar .logo {
@@ -44,7 +43,7 @@
     
     
     .navbar ul li a, .navbar ul li {
-        color: black;
+        color: white;
         font-size: 30px;
         font-family: 'Noto Sans KR', sans-serif;
 
@@ -169,7 +168,7 @@
         // 모달의 '확인' 버튼을 클릭했을 때 실행할 동작 (예: 페이지 이동)
         confirmExit.onclick = function() {
             modal.style.display = "none";
-            window.location.href = "{% url 'educations:level_choice' characters=1 subject=subject chapter=chapter %}";
+            window.location.href = "{% url 'educations:level_choice' characters=1 subjects_id=subjects_id chapter=chapter %}";
  
             // 여기서 페이지 이동 등 다른 동작을 추가할 수 있습니다.
             // 예: window.location.href = "";

@@ -5,29 +5,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>페이지 인덱스</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+  <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
 
 </head>
 <body>
   user <br>
-<a href="{% url 'users:find_account_pwd' %}">find_account_pwd</a><br>
-<a href="{% url 'users:find_account_id' %}">find_account_id</a><br>
-
-<a href="{% url 'users:find_account' %}">find_account</a><br>
-<<<<<<< HEAD
-<a href="{% url 'users:char_update' %}">char_delete</a><br>
 <hr>
-educations<br>
-<!--  -->
-=======
-
+educations<br>  
 <a href="{% url 'users:ranking' %}">ranking</a><br>
 <a href="{% url 'users:char_create' %}">char_create</a><br>
 <a href="{% url 'users:char_update' %}">char_update</a><br>
 <a href="{% url 'users:notice' %}">notice</a><br>
 <hr>
 educations <br>
->>>>>>> main
 <a href="{% url 'educations:previous_quiz_answer' %}">previous_quiz_answer</a><br>
 <a href="{% url 'educations:previous_quiz' characters=1 %}">previous_quiz</a><br>
 <a href="{% url 'educations:study' %}">study</a><br>
@@ -58,4 +48,5 @@ terms <br>
 <a href="{% url 'account_term' %}">service_term</a><br>
 <a href="{% url 'teen_term' %}">teen_term</a><br>
 <a href="{% url 'service_agree' %}">service_agree</a><br>
+<a href="{% url 'test' %}">test</a><br>
 </body>

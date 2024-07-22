@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'check_id.css' %}" />
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <title>아이디 찾기</title>
+</head>
+<body>
+    <div class="container">
+        <div class="white_box"></div>
+        <span class="title_check_id">찾으시는 비밀번호는<br> <span class="user_id">{{ password }}</span> 입니다.</span>
+        <button class="return_btn" onclick="window.location.href='/'"><span class="return_str">돌아가기</span></button>
+    </div>
+</body>
+</html>

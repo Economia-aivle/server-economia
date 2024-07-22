@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from datetime import datetime, timedelta
+import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -54,14 +55,15 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+
 }
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    ),
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework.authentication.TokenAuthentication',
+#     ),
+# }
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -72,6 +74,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'educations.middleware.ResetCorrectCountMiddleware',
+    'educations.middleware.ResetWrongCountMiddleware',
+    'educations.middleware.ResetBlankWrongCountMiddleware',
+    'educations.middleware.ResetBlankCorrectCountMiddleware',
+    
 ]
 
 ROOT_URLCONF = "economia.urls"
@@ -205,3 +211,6 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db' # 데이터베이스 세션 백엔드 사용
 SESSION_SAVE_EVERY_REQUEST = True
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

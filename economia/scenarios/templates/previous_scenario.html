@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>시나리오</title>
     <link rel="stylesheet" href="{% static 'previous_scenario.css' %}" />
-    <link rel="stylesheet" href="{% static 'scenario.css' %}" />
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <script src="{% static 'previous_scenario.js' %}"></script>
 </head>
 <body>
     {% include "header.html" %}
@@ -14,7 +15,19 @@
         <div class="scenario_container">
             <span class="title">시나리오</span><br>
             {% for item in scenario %}
-                <span class="contents">{{ item.question_text }}</span>
+             <span class="contents">   <!-- {{ item.question_text }} -->
+                    한 마을에 A와 B가 살고 있다. 이 마을에는 가로등이 없어 A와 B는 불편함을 겪고 있다. 답답했던 두 사람은 마을 회의에서가로등 설치에 대해 투표하기로 했다. 가로등 설치비는 개당 300만 원이고, ‘설치’에 투표한 사람만 비용을 부담하게 된다. 일단 가로등이 설치되면 비용을 내지 않은 사람도 그로 인한 이익을 누릴 수 있다.<br> 
+                    만약 A와 B가 모두 ‘설치’에 투표한다면 가로등은 2개가 설치되고, 그로부터 A와 B가 얻는 이익을 화폐 단위로 환산하면 각각 500만 원이다. 만약 A만 ‘설치’에 투표한다면 가로등은 1개만 설치되므로, 2개인 경우에 비해 불빛이 줄어들어 그로부터 얻는 이익은 각각 250만 원으로 줄어든다. 이때 A는 50만 원의 손해(=250만 원-300만 원)를 입게 되고, 비용을 부담하지 않은 B는 250만 원의 이익만 얻게 된다. 만약 모두 ‘미설치’에 투표할 경우 가로등은 설치되지 않는다.
+                   <br><br>
+                   ① 마음: A가 ‘설치’에 투표한다면 B도 ‘설치’에 투표하는 것이 이득이라 생각해.<br>
+                   ② 바다: A와 B가 합리적으로 행동한다면 모두 ‘설치’에 투표하는게 좋아.<br>
+                   ③ 사랑: B가 ‘미설치’에 투표하고 A가 ‘설치’에 투표하면 A는 0을 얻게 돼.<br>
+                   ④ 아름: B가 무슨 선택을 하든지 A는 ‘미설치’에 투표하는 게 항상 이득이야.<br>
+                   <br>
+                    네 명의 사람이 서로 다른 전략을 생각하고 있다. 단, 틀린 전략도 있을 수 있다.
+                   위의 전략을 참고해서 당신만의 전략을 답변으로 적어보자.
+                    당신은 어떤 전략을 펼칠 것인가?
+                </span>
             {% endfor %}
         </div>
         
@@ -75,8 +88,12 @@
                                         </form>
                                     {% endif %}
                                     <span class="child_comment_nickname">{{ child.player_nickname }}</span>
-                                    <span class="child_comment_text"><p>{{ child.texts }}</p></span>
+                                    
                                     <hr>
+                                    {% if child.img %}
+                                            <img class="upload_img" src="{{ child.img.url }}">
+                                    {% endif %}
+                                    <span class="child_comment_text"><p>{{ child.texts }}</p></span>
                                 </div>
                             </div>
                         {% endif %}
@@ -84,19 +101,105 @@
                     <!-- 대댓글 작성 폼 -->
                     <div class="form_container">
                         <div class="child_comment_form">
-                            <form method="post" action="{% url 'scenarios:submit_childcomment' %}">
+                            <form method="post" action="{% url 'scenarios:submit_childcomment' %}" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <input type="hidden" name="parent_id" value="{{ item.id }}">
                                 <input type="hidden" name="scenario_id" value="{{ scenario.0.id }}">
                                 <input type="text" name="childcomment_text" class="childcomment_input" placeholder="의견 입력">
+                                <input type="file" id="fileInput" name="image" style="display: none;" onchange="updateFileName()" accept=".jpg,.jpeg,.gif,.png,.webp">
+                                <!-- 커스텀 버튼 및 파일 이름 표시 -->
+                                <button type="button" id="customButton" onclick="document.getElementById('fileInput').click();"></button>
+                                
                                 <button type="submit" class="childcomment_submit_button"></button>
                             </form>
                         </div>
+                        <span id="fileName" style="margin-left: 10px;"></span>
                     </div>
                 </div>
             {% endfor %}
         {% endif %}
     </div>
-</body>
-<script src="{% static 'previous_scenario.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteForms = document.querySelectorAll('.deleteForm');
+    
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+    
+                const confirmation = confirm('정말 댓글을 삭제하시겠습니까?');
+    
+                if (confirmation) {
+                    form.submit(); // 확인을 클릭하면 폼을 서브밋하여 삭제 요청을 보냄
+                }
+            });
+        });
+    });
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const likeButtons = document.querySelectorAll('.like-btn');
+        
+        likeButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                const commentId = this.getAttribute('data-comment-id');
+                let action = this.getAttribute('data-action');
+                
+                fetch(`/scenarios/like/comment/${commentId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const likeCountElement = document.getElementById(`like-count-${commentId}`);
+                        likeCountElement.textContent = data.like_cnt;
+                        
+                        // 좋아요/좋아요 취소 상태에 따라 버튼의 data-action 값 변경
+                        action = data.action; // 서버에서 받은 action 값으로 업데이트
+                        
+                        // 이미지도 변경할 경우
+                        const likeButton = document.getElementById(`like-btn-${commentId}`);
+                        if (data.action === 'liked') {
+                            likeButton.innerHTML = '<img src="{% static "images/like.png" %}" alt="좋아요" height="40px" width="40px">';
+                        } else if (data.action === 'unliked') {
+                            likeButton.innerHTML = '<img src="{% static "images/unlike.png" %}" alt="좋아요 취소" height="40px" width="40px">';
+                        }
+                    } else {
+                        console.error('Failed to like/unlike comment:', data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+        
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+       
+        }
+    });
+    function updateFileName() {
+        var input = document.getElementById('fileInput');
+        var fileName = document.getElementById('fileName');
+        fileName.textContent = input.files[0].name;
+    }
+
+</script>
 </html>

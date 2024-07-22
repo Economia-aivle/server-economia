@@ -1,0 +1,108 @@
+@font-face {
+    font-family: 'omyu_pretty';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
+    font-weight: bold;
+    font-style: bold;
+}
+
+body{
+	height: 95vh;
+	background-image: url('images/chapter_back.png');
+	background-repeat : no-repeat;
+	background-size: cover;
+    font-family: 'omyu_pretty';
+}
+.main-container {
+    width: 100%;
+}
+
+
+
+.chapters {
+    display: flex;
+    align-items: center;
+    margin-top: 100px;
+    margin-bottom: 30px;
+    margin-left: 5%;
+    height: 50vh;
+    align-content: stretch;
+    flex-wrap: wrap;
+}
+
+/* .chapters button {
+    background-image: url('images/chapter_box.png');
+	background-repeat : no-repeat;
+	background-size: cover;
+    padding: 0;
+    width: 266px;
+    height: 246px;
+    border: none;
+    background-color:transparent;
+    margin-right: 5%;
+    margin-bottom: 3%;
+    position: relative;
+} */
+
+button p {
+    position: absolute;
+    left: 35%;
+    top: 35%;
+    font-weight: bold;
+    font-size: 30px;
+    font-family: 'omyu_pretty';
+}
+
+.chapters button {
+    background-image: url('images/chapter_box.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 0;
+    width: 266px;
+    height: 246px;
+    border: none;
+    background-color: transparent;
+    margin-right: 5%;
+    margin-bottom: 3%;
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    position: relative;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+}
+
+.chapters button:before {
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
+    content: '';
+    top: 100%;
+    left: 5%;
+    height: 10px;
+    width: 90%;
+    opacity: 0;
+    background: -webkit-radial-gradient(center, ellipse, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 80%);
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 80%);
+    /* W3C */
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform, opacity;
+    transition-property: transform, opacity;
+}
+
+.chapters button:hover, .chapters button:focus, .chapters button:active {
+    opacity: 1;
+    -webkit-transform: translateY(-20px);
+    transform: translateY(-20px);
+}
+
+.chapters button:hover:before, .chapters button:focus:before, .chapters button:active:before {
+    opacity: 1;
+    -webkit-transform: translateY(20px);
+    transform: translateY(20px);
+}
+

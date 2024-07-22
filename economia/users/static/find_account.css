@@ -1,0 +1,51 @@
+body {
+    background-color: rgba(224, 244, 255, 1);
+    justify-content: center;
+	display: flex;
+    align-items: center;
+
+}
+.container{
+    margin-top: 5%;
+    width: 60vw;
+    height: 75vh;
+}
+
+.white_box{
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+}
+button.id_btn, button.pwd_btn {
+    box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.25);
+    background-color: rgba(57, 167, 255, 1);
+    width: 300px;
+    height: 300px;
+    color: white;
+    font-size: 35px;
+    border-radius: 30px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-weight: bold;
+    margin: auto;
+}
+.btn_box{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+button:active {
+    animation: blink 0.2s;
+}
+
+@keyframes blink {
+    0%, 100% { background-color: rgba(57, 167, 255, 1); }
+    50% { background-color: rgba(30, 144, 255, 1); }
+}
