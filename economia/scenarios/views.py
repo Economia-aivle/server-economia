@@ -22,6 +22,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.core.exceptions import ValidationError
 # Create your views here.
 
 class ProtectedView(APIView):
@@ -64,6 +65,12 @@ def submit_childcomment(request):
     text = request.POST.get('childcomment_text')
     player_id = get_player(request, 'player')
     image = request.FILES.get('image')
+    
+    if image:
+        valid_extensions = ['jpg', 'jpeg', 'gif', 'png', 'webp']
+        extension = image.name.split('.')[-1].lower()
+        if extension not in valid_extensions:
+            return JsonResponse({'error': '지원되지 않는 파일 형식입니다.'}, status=405)
     child_comment = ChildComments(parent_id=parent_id, player_id=player_id, texts=text, imgfile=image)
     child_comment.save()
     scenario_id = request.POST.get('scenario_id')
@@ -149,8 +156,8 @@ def previous_scenario(request, id):
         'Authorization': f'Bearer {access_token}'
     }
     
-    characters_id = get_player(request, 'player')
-    player_id = get_player(request, 'characters')
+    characters_id = get_player(request, 'characters')
+    player_id = get_player(request, 'player')
     # Scenario 데이터 가져오기
     scenario_response = requests.get(f'http://127.0.0.1:8000/scenarios/scenario/{id}', headers=headers)
     scenario_data = scenario_response.json()
@@ -232,7 +239,7 @@ def previous_scenario(request, id):
 @csrf_exempt
 def like_comment(request, comment_id):
     if request.method == 'POST':
-        player_id = 1 # 임시로 사용자 ID를 1로 설정
+        player_id = get_player(request, 'player') # 임시로 사용자 ID를 1로 설정
         
         comment = get_object_or_404(Comments, id=comment_id)
         player = get_object_or_404(Player, id=player_id)

@@ -7,6 +7,7 @@
     <title>시나리오</title>
     <link rel="stylesheet" href="{% static 'previous_scenario.css' %}" />
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <script src="{% static 'previous_scenario.js' %}"></script>
 </head>
 <body>
     {% include "header.html" %}
@@ -105,7 +106,7 @@
                                 <input type="hidden" name="parent_id" value="{{ item.id }}">
                                 <input type="hidden" name="scenario_id" value="{{ scenario.0.id }}">
                                 <input type="text" name="childcomment_text" class="childcomment_input" placeholder="의견 입력">
-                                <input type="file" id="fileInput" name="image" style="display: none;" onchange="updateFileName()">
+                                <input type="file" id="fileInput" name="image" style="display: none;" onchange="updateFileName()" accept=".jpg,.jpeg,.gif,.png,.webp">
                                 <!-- 커스텀 버튼 및 파일 이름 표시 -->
                                 <button type="button" id="customButton" onclick="document.getElementById('fileInput').click();"></button>
                                 
@@ -199,5 +200,6 @@
         var fileName = document.getElementById('fileName');
         fileName.textContent = input.files[0].name;
     }
+
 </script>
 </html>

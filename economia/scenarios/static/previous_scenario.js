@@ -1,3 +1,4 @@
+{% load static %}
 document.addEventListener('DOMContentLoaded', function() {
     const deleteForms = document.querySelectorAll('.deleteForm');
 
@@ -70,5 +71,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         return cookieValue;
+   
     }
 });
+function updateFileName() {
+    var input = document.getElementById('fileInput');
+    var fileName = document.getElementById('fileName');
+    fileName.textContent = input.files[0].name;
+}
