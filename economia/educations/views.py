@@ -76,7 +76,23 @@ def previous_quiz_answer(request, characters):
 
 # Create your views here.
 def level_choice(request, characters, subjects_id, chapter):
+    chapter = int(chapter)
+    response = requests.get(f'http://127.0.0.1:8000/educations/getSubjectDatas/{subjects_id}/')
+    data = response.json()
+    
+    # characters 정보 가져오기
     characters = get_player(request, 'characters')
+    
+    # subjects_id와 일치하는 chapter 찾기
+    chapter_item = next((item for item in data if item['id'] == subjects_id), None)
+    
+    if chapter_item:
+        chapter_content = chapter_item['chapters']
+        chapter_list = chapter_content.split(', ')
+        # chapter 값은 1-based index이므로 -1 해줌
+        part = chapter_list[chapter - 1] if chapter - 1 < len(chapter_list) else None
+    else:
+        part = None
     try:
         stage_data = Stage.objects.get(characters_id=characters, subjects_id=subjects_id, chapter=chapter)
         chapter_sub = stage_data.chapter_sub
@@ -90,6 +106,7 @@ def level_choice(request, characters, subjects_id, chapter):
         'subjects_id': subjects_id,
         'chapter': chapter,
         'chapter_sub': chapter_sub,
+        'part': part,
     }
     
     return render(request, 'level_choice.html', context)
@@ -101,8 +118,8 @@ def tf_quiz_view(request):
         used_question_ids = request.GET.getlist('used_question_ids[]')
         chapter = request.GET.get('chapter')
         subjects_id = request.GET.get('subjects_id')  # 수정된 부분
-        characters = request.GET.get('characters')
-
+        # characters = request.GET.get('characters')
+        
         if not chapter or not subjects_id:
             return JsonResponse({"error": "Chapter and subjects are required."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -115,7 +132,7 @@ def tf_quiz_view(request):
             "question_id": question.id,
             "question_text": question.question_text,
             "correct_answer": question.correct_answer,
-            "explanation": question.explanation
+            "explanation": question.explanation,
         }
         return JsonResponse(context, status=status.HTTP_200_OK)
 
@@ -167,11 +184,16 @@ def update_stage(request):
     else:
         return JsonResponse({"error": "Invalid request method"}, status=400)
 
-def tf_quiz_page(request, characters, subjects_id, chapter):
+def tf_quiz_page(request, subjects_id, chapter):
+    characters = get_player(request, 'characters')
+    character = Characters.objects.get(id=characters)
+    character_img = character.kind_url
+    print(character_img)
     context = {
             'characters': characters,
               'subjects_id': subjects_id,
               'chapter': chapter,
+              'character_img':character_img,
     } 
     return render(request, 'tfquiz.html', context)
 
@@ -203,6 +225,10 @@ def choose_tf_chapter_view(request):
 
 def multiple(request, characters, subjects_id, chapter, num):
     # characters, subject, chapter에 해당하는 데이터를 필터링합니다.
+    characters = get_player(request, 'characters')
+    character = Characters.objects.get(id=characters)
+    character_img = character.kind_url
+    print(character_img)
     multiple_response = requests.get(f'http://127.0.0.1:8000/educations/multipledatas/{characters}')
     multiple_data = multiple_response.json()
 
@@ -264,6 +290,7 @@ def multiple(request, characters, subjects_id, chapter, num):
               'correct_count': correct_count,
               'hp_percentage': hp_percentage,
               'wrong_count' : wrong_count,
+              'character_img' : character_img,
               }
     
     
@@ -275,7 +302,10 @@ def multiple(request, characters, subjects_id, chapter, num):
 def blank(request, characters, subjects_id, chapter, num):
     blank_response = requests.get(f'http://127.0.0.1:8000/educations/blankdatas/{characters}')
     blank_data = blank_response.json()
-    
+    characters = get_player(request, 'characters')
+    character = Characters.objects.get(id=characters)
+    character_img = character.kind_url
+    print(character_img)
     # characters, subject, chapter에 해당하는 데이터를 필터링합니다.
     blank_list = [item for item in blank_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
 
@@ -341,6 +371,7 @@ def blank(request, characters, subjects_id, chapter, num):
         'correct_count': blank_correct_count,
         'hp_percentage': hp_percentage,
         'wrong_count': blank_wrong_count,
+        'character_img': character_img,
     }
 
     return render(request, 'blank.html', context)
@@ -361,11 +392,13 @@ def chapter_summary(request):
 def chapter(request, subjects):
     response = requests.get(f'http://127.0.0.1:8000/educations/getSubjectDatas/{subjects}/')
     data = response.json()
+    characters = get_player(request, 'characters')
     for chapter in data:
         chapter_content = chapter['chapters']
         chapter['chapters_list'] = chapter_content.split(', ')
     context = {
         'chapter': data,
+        'characters':characters,
         
     }
     print(data)

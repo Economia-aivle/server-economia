@@ -23,7 +23,7 @@
             <form class="character" id="answer-form" method="post">
                 {% csrf_token %}
                 <img class="magic" src="{% static 'images/magic.gif' %}"  alt="" style="display:none;" >
-                <img class="mychar" src="{% static 'images/pig.png' %}" alt="char" />
+                <img class="mychar" src="{{ character_img }}" alt="char" />
                 <div class="answer_form">
                     <input type="text" class="answer" id="answer" placeholder="입력"/>
                     <button class="next-btn" type="button" onclick="checkAnswer()">Enter</button>
@@ -50,7 +50,7 @@
                 </p>
             </div>
             <div class="character">
-                <img src="{% static 'images/char1.png' %}" alt="char" />
+                <img src="{{ character_img }}" alt="char" />
             </div>
             <div class="next-button-container">
                 <button class="next" id="next-btn" onclick="nextQuestion()">{% if num == 5 %}Finish{% else %}다음문제{% endif %}</button>

@@ -17,7 +17,7 @@
   <main>
     
     <div class="wrap-container">
-      <img class="mychar" src="{% static 'images/pig.png' %}" alt="char" />
+      <img class="mychar" src="{{ character_img }}" alt="char" />
       <div id="question-container" class="question-container">
         <h1 id="question-text">여기에 질문이 표시됩니다.</h1>
         <button class="o-btn" onclick="submitAnswer('O')">O</button>
@@ -41,7 +41,7 @@
           <p class="ans">모든 문제를 맞췄습니다!</p>
       </div>
       <div class="character">
-          <img src="{% static 'images/char1.png' %}" alt="char" />
+          <img src="{{ character_img }}" alt="char" />
       </div>
       <div class="next-button-container">
           <button class="next" id="next-btn" onclick="nextQuestion()">Finish</button>

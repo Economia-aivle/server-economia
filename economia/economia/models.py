@@ -98,7 +98,7 @@ class Characters(models.Model):
 
 
 class ChildComments(models.Model):
-    parent = models.ForeignKey('Comments', models.DO_NOTHING)
+    parent = models.ForeignKey('Comments', on_delete=models.CASCADE)
     characters = models.ForeignKey(Characters, on_delete=models.CASCADE)
     texts = models.CharField(max_length=500, blank=True, null=True)
     imgfile = models.ImageField(null=True, upload_to="", blank=True, default="")
