@@ -29,33 +29,28 @@ import jwt
 
 verification_codes = {}
 
-def delete_account(request, player_id):
+def delete_account(request):
     if request.method == "POST":
         try:
+            access_token = request.COOKIES.get('access_token')
+            if not access_token:
+                return JsonResponse({"error": "토큰이 없습니다."}, status=400)
+            decoded = jwt.decode(access_token, 'economia', algorithms=['HS256'])
+            decoded['access_token'] = access_token
+            player = Player.objects.get(player_id=decoded['player_id'])
+            player_id = player.id
             # player_id에 해당하는 플레이어 가져오기
-            player = Player.objects.get(player_id=player_id)
-
+            player = Player.objects.get(id=player_id)
             # 관련된 데이터 삭제
-            Characters.objects.filter(player=player).delete()
-            ChildComments.objects.filter(player=player).delete()
-            Comments.objects.filter(characters__player=player).delete()
-            Tf.objects.filter(characters__player=player).delete()
-            Blank.objects.filter(characters__player=player).delete()
-            Multiple.objects.filter(characters__player=player).delete()
-            Stage.objects.filter(characters__player=player).delete()
-            SubjectsScore.objects.filter(characters__player=player).delete()
-            Blank.objects.filter(characters__player=player).delete()
-
-            # 플레이어 삭제
             player.delete()
 
             messages.success(request, "회원 탈퇴가 완료되었습니다.")
-            return redirect('onboarding')  # 회원 탈퇴 후 리디렉션할 페이지
+            return redirect('/onboarding')  # 회원 탈퇴 후 리디렉션할 페이지
         except Player.DoesNotExist:
             messages.error(request, "사용자를 찾을 수 없습니다.")
-            return redirect('mypage')  # 에러 발생 시 리디렉션할 페이지
+            return redirect('/users/mypage')  # 에러 발생 시 리디렉션할 페이지
 
-    return render(request, 'delete_account.html', {'player_id': player_id})
+    return render(request, 'delete_account.html')
 
 
 

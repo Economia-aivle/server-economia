@@ -45,10 +45,10 @@ body{
 
 button p {
     position: absolute;
-    left: 35%;
-    top: 35%;
+    left: 15%;
+    top: 30%;
     font-weight: bold;
-    font-size: 30px;
+    font-size: 40px;
     font-family: 'omyu_pretty';
 }
 

@@ -280,20 +280,7 @@ def home(request, subject_id):
             retry_count += 1
             return HttpResponse('Invalid token', status=401)
 
-def delete_account(request):
-    try:
-        player = Player.objects.get(email=request.user.email)
-        Characters.objects.filter(player=player).delete()
-        ChildComments.objects.filter(player=player).delete()
-        Comments.objects.filter(characters__player=player).delete()
-        NoticeBoard.objects.filter(admin=player).delete()
-        player.delete()
 
-        messages.success(request, "회원 탈퇴가 완료되었습니다.")
-        return redirect('onboarding')
-    except Player.DoesNotExist:
-        messages.error(request, "사용자를 찾을 수 없습니다.")
-        return redirect('mypage')
 
 def char_create(request):
     return render(request, 'char_create.html')
