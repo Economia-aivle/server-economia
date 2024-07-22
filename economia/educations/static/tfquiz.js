@@ -1,13 +1,29 @@
-
-document.addEventListener("DOMContentLoaded", function() {
-    loadQuestion();
-});
-
 let questionCount = 0;
 const maxQuestions = 5;
 const usedQuestionIds = [];
 let correctCount = 0; // 클라이언트 측에서 맞춘 문제 개수
 let wrongCount = 0;
+let isPlaying = false;
+document.addEventListener("DOMContentLoaded", function() {
+    loadQuestion();
+    const playSoundButton = document.getElementById('playSoundButton');
+            const audio = document.getElementById('myAudio');
+            audio.volume = 0.3;
+            audio.loop = true;
+
+            playSoundButton.addEventListener('click', () => {
+                if (isPlaying) {
+                    audio.pause();
+                    playSoundButton.textContent = 'Play Sound';
+                } else {
+                    audio.play();
+                    playSoundButton.textContent = 'Pause Sound';
+                }
+                isPlaying = !isPlaying;
+            });
+});
+
+
 
 function loadQuestion() {
     if (questionCount >= maxQuestions) {
@@ -136,5 +152,4 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-
 

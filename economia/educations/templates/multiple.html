@@ -9,9 +9,13 @@
     <link rel="stylesheet" href="{% static 'wrong_explanation.css' %}">
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
 </head>
-
-<body>      
+<body>
     {% include 'quiz_header2.html' %}
+    <audio id="myAudio" src="{% static  random_sound %}" preload="auto"></audio>
+
+    <!-- 버튼을 클릭하여 소리를 재생/일시정지 -->
+    <button id="playSoundButton">Play Sound</button>
+
     <div class="life">
         <img id="lp1" src="{% static 'images/lp.png' %}" alt="lp">
         <img id="lp2" src="{% static 'images/lp.png' %}" alt="lp">
@@ -19,13 +23,10 @@
     </div>
     <div class="question-container">
         Q{{ num }}. {{ question.question_text }}
-     </div>
+    </div>
     <main>
         <div class="wrap-container">
             <img class="mychar" src="{{ character_img }}" alt="char" />
-            
-            
-            
             <div class="answer-container">
                 <form id="answer-form" method="post">
                     {% csrf_token %}
@@ -53,19 +54,21 @@
                 <img src="{{ character_img }}" alt="char" />
             </div>
             <div class="next-button-container">
-                <button class="next" id="next-btn" onclick="nextQuestion()">{% if num == 5 %}Finish{% else %}다음문제{% endif %}</button>
+                <button class="next" id="next-btn" onclick="nextQuestion()">
+                    {% if num == 5 %}Finish{% else %}다음문제{% endif %}
+                </button>
             </div>
         </div>
     </main>
 
     <script>
         let selectedOption = null;
+        let isPlaying = false;
         const characters = "{{ characters }}";
         const subjects_id = "{{ subjects_id }}";
         const chapter = "{{ chapter }}";
         const num = {{ num }};
-        
-        
+
         function selectOption(selectedBtn) {
             const buttons = document.querySelectorAll('.option-btn');
             buttons.forEach(btn => {
@@ -103,7 +106,6 @@
                     document.querySelector('.wrap-container').style.display = 'none';
                     document.querySelector('.question-container').style.display = 'none';
                     document.getElementById('wrong-container').style.display = 'block';
-                        
                 } else {
                     alert(data.message);
                     window.location.href = `/educations/multiple/${characters}/${subjects_id}/${chapter}/${num + 1}`;
@@ -113,55 +115,46 @@
         }
 
         function nextQuestion() {
-            if (num >= 8) {
-                window.location.href = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
-            } else {
-                window.location.href = `/educations/multiple/${characters}/${subjects_id}/${chapter}/${num + 1}`;
-            }
+            const nextUrl = num >= 8 
+                ? "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}" 
+                : `/educations/multiple/${characters}/${subjects_id}/${chapter}/${num + 1}`;
+            window.location.href = nextUrl;
         }
 
-        window.onload = function() {
-
-
-            function redirectToLevelChoice() {
-                var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
-                window.location.href = levelChoiceUrl;
-            }
-  
-            var currentUrl = window.location.href;
-            var levelChoiceUrlPattern = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
-  
-            if (currentUrl !== levelChoiceUrlPattern) {
-                history.pushState(null, null, levelChoiceUrlPattern);
-            }
-  
-            window.addEventListener('popstate', function() {
-                if (window.location.href !== levelChoiceUrlPattern) {
-                    location.replace(levelChoiceUrlPattern);
-                }
-            });
-        };
         document.addEventListener('DOMContentLoaded', (event) => {
-            const wrongcount = "{{wrong_count}}";
-        
-            if(wrongcount==1){
+            const wrongcount = "{{ wrong_count }}";
+
+            if (wrongcount == 1) {
                 document.getElementById('lp1').style.display = 'none';
-            }
-            else if(wrongcount==2){
+            } else if (wrongcount == 2) {
                 document.getElementById('lp1').style.display = 'none';
                 document.getElementById('lp2').style.display = 'none';
-            }
-            else if(wrongcount==3){
+            } else if (wrongcount == 3) {
                 document.getElementById('lp3').style.display = 'none';
                 document.getElementById('lp1').style.display = 'none';
                 document.getElementById('lp2').style.display = 'none';
-                alert("클리어 실패!! 난이도 선택 화면으로 돌아갑니다")
+                alert("클리어 실패!! 난이도 선택 화면으로 돌아갑니다");
                 var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
-
                 window.location.href = levelChoiceUrl;
             }
-        });
 
+            // 소리 재생/일시정지 버튼 클릭 이벤트 추가
+            const playSoundButton = document.getElementById('playSoundButton');
+            const audio = document.getElementById('myAudio');
+            audio.volume = 0.3;
+            audio.loop = true;
+
+            playSoundButton.addEventListener('click', () => {
+                if (isPlaying) {
+                    audio.pause();
+                    playSoundButton.textContent = 'Play Sound';
+                } else {
+                    audio.play();
+                    playSoundButton.textContent = 'Pause Sound';
+                }
+                isPlaying = !isPlaying;
+            });
+        });
     </script>
 </body>
 </html>

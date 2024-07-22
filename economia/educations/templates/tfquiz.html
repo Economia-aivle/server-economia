@@ -8,8 +8,12 @@
   <link rel="stylesheet" href="{% static 'tfquiz.css' %}" />
   <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
 </head>
-<body>
+<body onload="playSound()">
   {% include 'quiz_header2.html' %}
+  <audio id="myAudio" src="{% static  random_sound %}" preload="auto"></audio>
+
+  <!-- 버튼을 클릭하여 소리를 재생/일시정지 -->
+  <button id="playSoundButton">Play Sound</button>
   <div class="life">
       <img id="lp1" src="{% static 'images/lp.png' %}" alt="lp">
       <img id="lp2" src="{% static 'images/lp.png' %}" alt="lp">

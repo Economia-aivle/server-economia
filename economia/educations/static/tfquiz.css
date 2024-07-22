@@ -99,6 +99,7 @@ color: #E0E0E0;
 	width: 4vw;
 	height: 8vh;
 	margin-left: 5%;
+	cursor: url('images/sword.png') , auto;
 }
 
 
@@ -272,4 +273,7 @@ color: #E0E0E0;
 
 .life{
 	margin-left: 180px;
+}
+#question-container{
+	cursor: url('images/sword.png') , auto;
 }

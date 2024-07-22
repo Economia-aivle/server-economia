@@ -188,12 +188,15 @@ def tf_quiz_page(request, subjects_id, chapter):
     characters = get_player(request, 'characters')
     character = Characters.objects.get(id=characters)
     character_img = character.kind_url
+    sounds = ['sounds/back_sound1.mp3', 'sounds/back_sound2.mp3', 'sounds/back_sound3.mp3']
+    random_sound = random.choice(sounds)
     print(character_img)
     context = {
             'characters': characters,
               'subjects_id': subjects_id,
               'chapter': chapter,
               'character_img':character_img,
+              'random_sound': random_sound,
     } 
     return render(request, 'tfquiz.html', context)
 
@@ -231,6 +234,8 @@ def multiple(request, characters, subjects_id, chapter, num):
     print(character_img)
     multiple_response = requests.get(f'http://127.0.0.1:8000/educations/multipledatas/{characters}')
     multiple_data = multiple_response.json()
+    sounds = ['sounds/back_sound1.mp3', 'sounds/back_sound2.mp3', 'sounds/back_sound3.mp3']
+    random_sound = random.choice(sounds)
 
     multiple_list = [item for item in multiple_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
 
@@ -291,6 +296,7 @@ def multiple(request, characters, subjects_id, chapter, num):
               'hp_percentage': hp_percentage,
               'wrong_count' : wrong_count,
               'character_img' : character_img,
+              'random_sound' :random_sound,
               }
     
     
@@ -306,9 +312,11 @@ def blank(request, characters, subjects_id, chapter, num):
     character = Characters.objects.get(id=characters)
     character_img = character.kind_url
     print(character_img)
+    sounds = ['sounds/back_sound1.mp3', 'sounds/back_sound2.mp3', 'sounds/back_sound3.mp3']
+    random_sound = random.choice(sounds)
     # characters, subject, chapter에 해당하는 데이터를 필터링합니다.
     blank_list = [item for item in blank_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
-
+    
     # 최대 5개의 질문을 가져옵니다.
     questions = []
     max_num = min(5, len(blank_list))
@@ -372,6 +380,7 @@ def blank(request, characters, subjects_id, chapter, num):
         'hp_percentage': hp_percentage,
         'wrong_count': blank_wrong_count,
         'character_img': character_img,
+        'random_sound': random_sound,
     }
 
     return render(request, 'blank.html', context)
@@ -441,3 +450,4 @@ def get_player(request, id):
         return characters_id
     else:
         return player_id
+    

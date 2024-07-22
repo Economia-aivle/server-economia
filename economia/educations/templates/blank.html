@@ -12,6 +12,10 @@
 
 <body>
     {% include 'quiz_header2.html' %}
+    <audio id="myAudio" src="{% static  random_sound %}" preload="auto"></audio>
+
+    <!-- 버튼을 클릭하여 소리를 재생/일시정지 -->
+    <button id="playSoundButton">Play Sound</button>
     <div class="life">
         <img id="lp1" src="{% static 'images/lp.png' %}" alt="lp">
         <img id="lp2" src="{% static 'images/lp.png' %}" alt="lp">
@@ -65,6 +69,7 @@
         const subjects_id = "{{ subjects_id }}";
         const chapter = "{{ chapter }}";
         const num = {{ num }} ;
+        let isPlaying = false;
         
         // 정답 체크 함수
         function checkAnswer() {
@@ -195,7 +200,26 @@
 
                 window.location.href = levelChoiceUrl;
             }
+
+            const playSoundButton = document.getElementById('playSoundButton');
+            const audio = document.getElementById('myAudio');
+            audio.volume = 0.3;
+            audio.loop = true;
+
+            playSoundButton.addEventListener('click', () => {
+                if (isPlaying) {
+                    audio.pause();
+                    playSoundButton.textContent = 'Play Sound';
+                } else {
+                    audio.play();
+                    playSoundButton.textContent = 'Pause Sound';
+                }
+                isPlaying = !isPlaying;
+            });
         });
+
+       
+
     </script>
 </body>
 </html>
