@@ -304,12 +304,9 @@ def check_id(request, player_id):
 def find_account(request):
     return render(request, 'find_account.html')
 
-<<<<<<< HEAD
 def success(request):
     return render(request, 'success.html')
 
-=======
->>>>>>> main
 
 def send_verification_email(email, code):
     send_mail(
