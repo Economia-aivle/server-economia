@@ -21,16 +21,13 @@ class BlacklistTokenMiddleware(MiddlewareMixin):
 
         if auth_header:
             token = auth_header.split()[1]  # Bearer <token>에서 token 추출
-            print("SSSSSSSS: ",token)
-
             try:
                 # AccessToken 검증
                 AccessToken(token)
 
                 # 블랙리스트 확인
                 outstanding_token = TokenBlacklistOutstandingtoken.objects.filter(token=token).first()
-                print("AAAAAA:",outstanding_token)
-                if outstanding_token and TokenBlacklistBlacklistedtoken.objects.filter(token=outstanding_token).exists():
+                if not outstanding_token or TokenBlacklistBlacklistedtoken.objects.filter(token=outstanding_token).exists():
                     print("Token is blacklisted.")
                     return Response({"detail": "Access token is blacklisted."}, status=status.HTTP_403_FORBIDDEN)
 

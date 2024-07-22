@@ -24,6 +24,7 @@ from rest_framework.pagination import PageNumberPagination
 from economia.models import *
 from .serializers import *
 from datetime import datetime
+import jwt
 
 
 verification_codes = {}
@@ -69,7 +70,6 @@ def check_username(request):
 
 def register(request):
     if request.method == 'POST':
-        print(1)
         user_id = request.POST.get('user_id')
         confirm_password = request.POST.get('confirm_password')
         password = request.POST.get('password')
@@ -87,8 +87,9 @@ def register(request):
         if Player.objects.filter(nickname=nickname).exists():
             return JsonResponse({'error': '중복된 닉네임입니다'}, status=400)
 
-        Player.objects.create(player_id=user_id, password=password, email=email, player_name=name, school=school_name, nickname=nickname, last_login = datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-        return JsonResponse({'success': '회원가입이 완료되었습니다.'})
+        Player.objects.create(player_id=user_id, password=password, email=email, 
+                              player_name=name, school=school_name, nickname=nickname, last_login = datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        return JsonResponse({'success': '회원가입이 완료되었습니다.','id':user_id})
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 def signup(request):  # 함수 이름을 'signup'으로 변경
@@ -106,7 +107,7 @@ def get_character_view(request, player_id):
 
 # 캐릭터 생성하기
 @csrf_exempt
-def character_create_view(request):
+def character_create_view(request, player_id):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -130,7 +131,15 @@ def character_create_view(request):
                 return JsonResponse({"error": "Character creation failed. Possible duplicate."}, status=400)
         return JsonResponse(serializer.errors, status=400)
     elif request.method == 'GET':
-        return render(request, 'char_create.html')
+        access_token = request.COOKIES.get('access_token')
+        refresh_token = request.COOKIES.get('refresh_token')
+        decoded = jwt.decode(access_token, 'economia', algorithms=['HS256'])
+        decoded['access_token'] = access_token
+        decoded['refresh_token'] = refresh_token
+        data = Player.objects.get(player_id=decoded['player_id'])
+        data2 = Characters.objects.get(player_id = decoded['user_id'])
+        decoded['character_id'] = data2.id
+        return render(request, 'char_create.html',{"user":decoded})
     return HttpResponseBadRequest("Invalid request method")
 
 @csrf_exempt

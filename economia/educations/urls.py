@@ -5,13 +5,13 @@ from . import views
 
 app_name = 'educations'
 urlpatterns = [
-    path('level_choice/<int:characters>/<str:subject>/<int:chapter>', views.level_choice, name='level_choice'),
+    path('level_choice/<int:characters>/<int:subjects_id>/<str:chapter>/', views.level_choice, name='level_choice'),
     path('chapter_summary', views.chapter_summary, name='chapter_summary'),
-    path('blank/<int:characters>/<str:subject>/<int:chapter>/<int:num>', views.blank, name='blank'),
-    path('multiple/<int:characters>/<str:subject>/<int:chapter>/<int:num>', views.multiple, name='multiple'),
+    path('blank/<int:characters>/<int:subjects_id>/<int:chapter>/<int:num>', views.blank, name='blank'),
+    path('multiple/<int:characters>/<int:subjects_id>/<int:chapter>/<int:num>', views.multiple, name='multiple'),
     path('tf_quiz/', views.tf_quiz_view, name='tf_quiz'),
     path('tf_quiz/<int:question_id>/', views.tf_quiz_view, name='tf_quiz_detail'),
-    path('tf_quiz_page/<int:characters>/<str:subject>/<int:chapter>', views.tf_quiz_page, name='tf_quiz_page'),
+    path('tf_quiz_page/<int:characters>/<int:subjects_id>/<int:chapter>', views.tf_quiz_page, name='tf_quiz_page'),
     path('choose_tf_chapter/', views.choose_tf_chapter_view, name='choose_tf_chapter'),
     path('previous_quiz_answer', views.previous_quiz_answer, name='previous_quiz_answer'),
     path('previous_quiz/<int:characters>', views.previous_quiz, name='previous_quiz'),
@@ -23,7 +23,8 @@ urlpatterns = [
     path('multipledatas/<int:characters>', views.getMultipleDatas, name="MultipleDatas"),
     path('tfdatas/<int:characters>', views.getTfDatas, name="TfDatas"),
     path('getSubjectDatas/<str:subjects>/', views.getSubjectDatas, name='get_subject_datas'),
-    path('chapter/<int:subjects_id>', views.chapter, name='chapter'),
+    path('chapter/<str:subjects>', views.chapter, name='chapter'),
     path('getStageDatas/<int:characters>/', views.getStageDatas, name='StageDatas'),
     path('update_stage/', views.update_stage, name='update_stage'),
+    path('success', views.success, name='success'),
 ]

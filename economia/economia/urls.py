@@ -68,7 +68,6 @@ urlpatterns = [
     path('service_agree/', service_agree, name='service_agree'),
     path('ask', ask, name='ask'),
     path('register', views.register, name='register'),
-    path('api/check-token/', views.CheckTokenView.as_view(), name='check-token'),
 ]
 
 if settings.DEBUG:

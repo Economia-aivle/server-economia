@@ -18,14 +18,18 @@
     <div class="main-container">
       <div class="header">
          
-        <div class="category"># {{ chapter.0.subjects }}</div>
+        <div class="category"># {{ subjects }}</div>
         <button class="quit-btn" onclick="handleButtonClick()">나가기</button>
       </div>
       
       <div class="chapters">
-        {% for item in chapter %} 
-        <a class="chap{{item.id}}" href="{% url 'educations:level_choice' characters=1 subject=chapter.0.subjects chapter=item.id %}" target="_self"> Chapter {{ item.chapters }}</a>
+        {% for item in chapter %}
+        {% for part in item.chapters_list %}
+            <a class="chap{{ item.id }}" href="{% url 'educations:level_choice' characters=1 subjects_id=item.id chapter=forloop.counter %}">
+                {{ part }}
+            </a><br>
         {% endfor %}
+      {% endfor %}
       </div>
       
     </div>

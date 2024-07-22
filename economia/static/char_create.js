@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedCharId = null;
     let selectedCharUrl = null;
     let characterId = null;
-    let playerId = 5; // 실제 로그인한 사용자의 ID로 설정되어야 함
+    const playerId = "{{ user.user_id }}" // 실제 로그인한 사용자의 ID로 설정되어야 함
+    console.log("{{ user.user_id }}");
 
     // 페이지 로드 시 캐릭터 ID 가져오기
     fetch(`/users/get_character/${playerId}/`, {
@@ -15,8 +16,10 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(data => {
         if (data.id) {
             characterId = data.id;
+            window.location.href = '/home'
             console.log("Loaded Character ID:", characterId); // 디버깅 로그 추가
         } else {
+            window.location.href = '/users/char_create/'
             console.log("No character found for player.");
         }
     })
@@ -63,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 characterId = data.id;
                 console.log("Character ID:", characterId);
                 alert('캐릭터가 성공적으로 생성되었습니다!');
+                window.location.href = "/home/" + playerId;
             } else {
                 alert('캐릭터 생성에 실패했습니다: ' + JSON.stringify(data));
             }
@@ -96,6 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Server response:', data);
             if (data.message) {
                 alert('캐릭터 이미지가 성공적으로 변경되었습니다!');
+                window.location.href = "/home/" + playerId;
             } else {
                 alert('캐릭터 이미지 변경에 실패했습니다: ' + JSON.stringify(data));
             }
