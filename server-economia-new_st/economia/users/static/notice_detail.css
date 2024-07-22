@@ -44,7 +44,7 @@ body {
     display: inline-block;
     margin-top: 30px;
     padding: 10px 20px;
-    background-color: #87C4FF;
+    background-color: #43BEEE;
     color: white;
     text-decoration: none;
     border-radius: 5px;
@@ -53,5 +53,5 @@ body {
 }
 
 .back-button:hover {
-    background-color: #5DADE2;
+    background-color: #A6E2F9;
 }
