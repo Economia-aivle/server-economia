@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet" />
+    <title>회원탈퇴</title>
+</head>
+<body>
+    {% include 'header.html' %}
+    <main>
+        <h1>회원탈퇴</h1>
+        <p>정말로 회원탈퇴를 하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
+        <form method="post" action="{% url 'delete_account' player_id=player_id %}">
+            {% csrf_token %}
+            <button type="submit">회원탈퇴</button>
+        </form>
+        <a href="{% url 'mypage' %}">취소</a>
+    </main>
+</body>
+</html>

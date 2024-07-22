@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>학습 하기</title>
+    <link rel="stylesheet" href="{% static 'study.css' %}" />
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <script src="{% static 'study.js' %}"></script>
+</head>
+{% include 'study_header.html' %}
+<body>
+    <main>
+        <div class="wrap-container">
+            <div class="video-container" id="video-container">
+                <iframe width="1400" height="620" src="https://www.youtube.com/embed/E8T9nxrGKH0?si=K7gCpVXCY22NSe93" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <div class="btn">
+                <button class="next-btn">문제풀기</button>
+        </div>
+        </div>
+    </main>
+</body>
+</html>

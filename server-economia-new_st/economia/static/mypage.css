@@ -1,0 +1,64 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    font-family: 'Noto-Sans-KR', sans-serif;
+    background-color: rgb(255, 255, 255);
+}
+
+.main-container {
+    margin-top: 5%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 300px;
+    gap: 20px;
+}
+
+.user-info, .etc, .info {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.title {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 20px; /* 제목과 본문 사이의 간격 */
+}
+
+.left {
+    flex-direction: column;
+}
+
+.user-info, .etc {
+    height: 200px; /* Adjust as necessary */
+    width: 500px;
+}
+
+.info {
+    height: 400px;
+    width: 500px;
+    /* flex: 2; */
+}
+
+.user-info a, .etc a, .info a {
+    text-decoration: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer; 
+    display: flex;
+    margin-top: 20px;
+}
+
+.user-info a:hover, .etc a:hover, .info a:hover {
+    text-decoration: none;
+}
