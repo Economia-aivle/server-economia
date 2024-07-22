@@ -239,6 +239,12 @@ def notice_detail(request, notice_id):
 def admin_dashboard(request):
     return render(request, 'admin_dashboard.html')
 
+def signup(request):
+    return render(request, 'signup.html')
+
+def success(request):
+    return render(request, 'success.html')
+
 class AdminLoginAPI(APIView):
     def post(self, request):
         username = request.data.get('username')
@@ -298,9 +304,12 @@ def check_id(request, player_id):
 def find_account(request):
     return render(request, 'find_account.html')
 
+<<<<<<< HEAD
 def success(request):
     return render(request, 'success.html')
 
+=======
+>>>>>>> main
 
 def send_verification_email(email, code):
     send_mail(

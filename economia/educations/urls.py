@@ -7,8 +7,13 @@ app_name = 'educations'
 urlpatterns = [
     path('level_choice/<int:characters>/<int:subjects_id>/<str:chapter>/', views.level_choice, name='level_choice'),
     path('chapter_summary', views.chapter_summary, name='chapter_summary'),
+<<<<<<< HEAD
     path('blank/<int:characters>/<int:subjects_id>/<int:chapter>/<int:num>', views.blank, name='blank'),
     path('multiple/<int:characters>/<int:subjects_id>/<int:chapter>/<int:num>', views.multiple, name='multiple'),
+=======
+    path('blank/<int:characters>/<str:subject>/<int:chapter>/<int:num>', views.blank, name='blank'),
+    path('multiple/<int:characters>/<str:subject>/<int:chapter>/<int:num>', views.multiple, name='multiple'),
+>>>>>>> main
     path('tf_quiz/', views.tf_quiz_view, name='tf_quiz'),
     path('tf_quiz/<int:question_id>/', views.tf_quiz_view, name='tf_quiz_detail'),
     path('tf_quiz_page/<int:characters>/<int:subjects_id>/<int:chapter>', views.tf_quiz_page, name='tf_quiz_page'),
