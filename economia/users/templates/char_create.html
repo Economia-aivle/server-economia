@@ -20,10 +20,156 @@
         </div>
 
         <div class="buttons-container">
-            <button class="create_btn" id="createBtn"><span class="create_str">생성하기</span></button>
-            <button class="update_btn" id="updateBtn"><span class="update_str">변경하기</span></button>
+            <button class="update_btn" id="updateBtn"><span class="update_str">선택하기</span></button>
         </div>
     </div>
-    <script src="{% static 'char_create.js' %}"></script>
+    <script>
+        const access_token = "{{user.access_token}}"
+        const refresh_token = "{{user.refresh_token}}"
+
+        var button1 = document.querySelector('.char1');
+        var button2 = document.querySelector('.char2');
+        var button3 = document.querySelector('.char3');
+        var button4 = document.querySelector('.char4');
+        var button5 = document.querySelector('.char5');
+
+        var charId1 = button1.getAttribute('data-char-id');
+        var charId2 = button2.getAttribute('data-char-id');
+        var charId3 = button3.getAttribute('data-char-id');
+        var charId4 = button4.getAttribute('data-char-id');
+        var charId5 = button5.getAttribute('data-char-id');
+
+        var imageUrl1 = `/static/images/char${charId1}.png`;
+        var imageUrl2 = `/static/images/char${charId2}.png`;
+        var imageUrl3 = `/static/images/char${charId3}.png`;
+        var imageUrl4 = `/static/images/char${charId4}.png`;
+        var imageUrl5 = `/static/images/char${charId5}.png`;
+
+        button1.style.backgroundImage = `url(${imageUrl1})`;
+        button1.style.backgroundSize = 'cover'; // 배경 이미지가 버튼 크기에 맞도록 설정
+        button1.style.backgroundPosition = 'center'; // 배경 이미지가 버튼의 중앙에 위치하도록 설정
+        button1.style.width = '100px'; // 버튼 너비 설정 (옵션)
+        button1.style.height = '100px';
+
+        button2.style.backgroundImage = `url(${imageUrl2})`;
+        button2.style.backgroundSize = 'cover'; // 배경 이미지가 버튼 크기에 맞도록 설정
+        button2.style.backgroundPosition = 'center'; // 배경 이미지가 버튼의 중앙에 위치하도록 설정
+        button2.style.width = '100px'; // 버튼 너비 설정 (옵션)
+        button2.style.height = '100px';
+
+        button3.style.backgroundImage = `url(${imageUrl3})`;
+        button3.style.backgroundSize = 'cover'; // 배경 이미지가 버튼 크기에 맞도록 설정
+        button3.style.backgroundPosition = 'center'; // 배경 이미지가 버튼의 중앙에 위치하도록 설정
+        button3.style.width = '100px'; // 버튼 너비 설정 (옵션)
+        button3.style.height = '100px';
+
+        button4.style.backgroundImage = `url(${imageUrl4})`;
+        button4.style.backgroundSize = 'cover'; // 배경 이미지가 버튼 크기에 맞도록 설정
+        button4.style.backgroundPosition = 'center'; // 배경 이미지가 버튼의 중앙에 위치하도록 설정
+        button4.style.width = '100px'; // 버튼 너비 설정 (옵션)
+        button4.style.height = '100px';
+
+        button5.style.backgroundImage = `url(${imageUrl5})`;
+        button5.style.backgroundSize = 'cover'; // 배경 이미지가 버튼 크기에 맞도록 설정
+        button5.style.backgroundPosition = 'center'; // 배경 이미지가 버튼의 중앙에 위치하도록 설정
+        button5.style.width = '100px'; // 버튼 너비 설정 (옵션)
+        button5.style.height = '100px';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM fully loaded and parsed");
+        
+            let selectedCharId = null;
+            let selectedCharUrl = null;
+            let characterId = "{{ user.character_id }}";
+            let playerId = "{{ user.user_id }}"; // 실제 로그인한 사용자의 ID로 설정되어야 함
+        
+            console.log("Fetching character data for player ID:", playerId);
+        
+            fetch(`/users/get_character/${playerId}/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                console.log("Received response:", response);
+                return response.json();
+            })
+            .then(data => {
+                console.log("Parsed JSON data:", data);
+                if (data.id) {
+                    characterId = data.id;
+                    console.log("Loaded Character ID:", characterId); // 디버깅 로그 추가
+                } else {
+                    console.log("No character found for player.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
+        
+            // 캐릭터 선택 기능
+            document.querySelectorAll('.char1, .char2, .char3, .char4, .char5').forEach(char => {
+                char.addEventListener('click', function() {
+                    document.querySelectorAll('.char1, .char2, .char3, .char4, .char5').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedCharId = parseInt(this.className.replace('char', '').trim());
+                    selectedCharUrl = getComputedStyle(this).backgroundImage.slice(4, -1).replace(/"/g, "");
+                    console.log("Selected Character:", {id: selectedCharId, url: selectedCharUrl}); // 디버깅 로그 추가
+                });
+            });
+        
+            // 캐릭터 변경 기능
+            document.getElementById('updateBtn').addEventListener('click', function() {
+                if (!characterId || !selectedCharUrl) {
+                    alert('먼저 캐릭터를 생성하고 변경할 이미지를 선택해주세요.');
+                    return;
+                }
+                console.log("Updating Character with ID:", characterId, "and URL:", selectedCharUrl); // 디버깅 로그 추가
+                fetch('/users/char_update/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({
+                        character_id: characterId,
+                        new_image_url: selectedCharUrl
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Server response:', data);
+                    if (data.message) {
+                        alert('캐릭터 이미지가 성공적으로 변경되었습니다!');
+                        window.location.href = "/home/1";
+                    } else {
+                        alert('캐릭터 이미지 변경에 실패했습니다: ' + JSON.stringify(data));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('캐릭터 이미지 변경 중 오류가 발생했습니다: ' + error);
+                });
+            });
+        
+            // CSRF 토큰을 가져오는 함수
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        });
+    </script>
 </body>
 </html>

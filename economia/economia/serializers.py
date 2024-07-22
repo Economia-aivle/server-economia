@@ -8,8 +8,6 @@ class ProductSerializer(serializers.Serializer):
     player_id = serializers.CharField(max_length=20)
     password = serializers.CharField(max_length=255)
 
-
-
 class CharacterSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     player_id = serializers.CharField(max_length=20)
@@ -24,7 +22,6 @@ class SubjectSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     subjects = serializers.CharField(max_length=20)
     chapters = serializers.CharField(max_length=1000)
-    
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 

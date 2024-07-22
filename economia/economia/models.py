@@ -97,6 +97,7 @@ class Blank(models.Model):
     subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
+    time = models.DateTimeField()
 
     class Meta:
         managed = False
@@ -157,7 +158,7 @@ class DjangoAdminLog(models.Model):
     action_flag = models.PositiveSmallIntegerField()
     change_message = models.TextField()
     content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    user = models.ForeignKey('Player', models.DO_NOTHING)
 
     class Meta:
         managed = False
@@ -225,6 +226,7 @@ class Multiple(models.Model):
     subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
+    time = models.DateTimeField()
 
     class Meta:
         managed = False
@@ -243,6 +245,7 @@ class NoticeBoard(models.Model):
 
 
 class Player(AbstractBaseUser):
+    id = models.BigAutoField(primary_key=True)
     player_id = models.CharField(max_length=20, unique=True)
     player_name = models.CharField(max_length=5, blank=True, null=True)
     nickname = models.CharField(unique=True, max_length=255)
@@ -269,6 +272,45 @@ class Player(AbstractBaseUser):
     class Meta:
         managed = False
         db_table = 'player'
+        
+class AuthGroup(models.Model):
+    name = models.CharField(unique=True, max_length=150)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_group'
+
+
+class AuthGroupPermissions(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
+    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_group_permissions'
+        unique_together = (('group', 'permission'),)
+
+
+class AuthPermission(models.Model):
+    name = models.CharField(max_length=255)
+    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
+    codename = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_permission'
+        unique_together = (('content_type', 'codename'),)
+
+
+class AuthtokenToken(models.Model):
+    key = models.CharField(primary_key=True, max_length=40)
+    created = models.DateTimeField()
+    user = models.OneToOneField('Player', models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'authtoken_token'
 
 
 class Qna(models.Model):
@@ -341,7 +383,31 @@ class Tf(models.Model):
     subjects = models.ForeignKey(Subjects, models.DO_NOTHING)
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
+    time = models.DateTimeField()
 
     class Meta:
         managed = False
         db_table = 'tf'
+
+
+class TokenBlacklistBlacklistedtoken(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    blacklisted_at = models.DateTimeField()
+    token = models.OneToOneField('TokenBlacklistOutstandingtoken', models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'token_blacklist_blacklistedtoken'
+
+
+class TokenBlacklistOutstandingtoken(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    token = models.TextField()
+    created_at = models.DateTimeField(blank=True, null=True)
+    expires_at = models.DateTimeField()
+    user = models.ForeignKey(Player, models.DO_NOTHING, blank=True, null=True)
+    jti = models.CharField(unique=True, max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'token_blacklist_outstandingtoken'

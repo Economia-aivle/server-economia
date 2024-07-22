@@ -354,7 +354,7 @@ def chapter_summary(request):
 
 def chapter(request, subjects):
     characters = get_player(request, 'characters')
-    subjects='국어'
+    subjects = Subjects.objects.get(id=subjects).subjects
     response = requests.get(f'http://127.0.0.1:8000/educations/getSubjectDatas/{subjects}/')
     data = response.json()
     for chapter in data:

@@ -16,6 +16,7 @@
 #     ordering = ('-date_joined',)
 
 # # 기존 UserAdmin을 커스텀 버전으로 교체
+# 기존 UserAdmin을 커스텀 버전으로 교체
 # admin.site.unregister(User)
 # admin.site.register(User, CustomUserAdmin)
 

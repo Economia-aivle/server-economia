@@ -8,6 +8,7 @@ from django.conf.urls.static import static
 from django.contrib.auth.views import LogoutView
 from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView)
  
+
 def index(request):
     return render(request, 'index.html')
  
@@ -43,11 +44,9 @@ def service_term(request):
     return render(request,'terms/service_term.html')
 def teen_term(request):
     return render(request,'terms/teen_term.html')
-def test(request):
-    return render(request,'test.html')
- 
- 
- 
+
+
+
 urlpatterns = [
     path("", views.index, name='home'),  # Combined and named "home"
     path('users/', include('users.urls')),
@@ -70,7 +69,6 @@ urlpatterns = [
     path('service_agree/', service_agree, name='service_agree'),
     path('ask', ask, name='ask'),
     path('register', views.register, name='register'),
-    path('test', test, name='test'),
 ]
  
 if settings.DEBUG:

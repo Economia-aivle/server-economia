@@ -23,6 +23,7 @@ import string
 from rest_framework.pagination import PageNumberPagination
 from economia.models import *
 from .serializers import *
+from datetime import datetime
 import jwt
 
 
@@ -93,30 +94,13 @@ def register(request):
         if Player.objects.filter(nickname=nickname).exists():
             return JsonResponse({'error': '중복된 닉네임입니다'}, status=400)
 
-        Player.objects.create(player_id=user_id, password=password, email=email, player_name=name, school=school_name, nickname=nickname)
-        return JsonResponse({'success': '회원가입이 완료되었습니다.'})
+        Player.objects.create(player_id=user_id, password=password, email=email, 
+                              player_name=name, school=school_name, nickname=nickname, last_login = datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        return JsonResponse({'success': '회원가입이 완료되었습니다.','id':user_id})
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 def signup(request):  # 함수 이름을 'signup'으로 변경
     return render(request, 'signup.html')  # 템플릿 이름을 'signup.html'로 변경
-
-def find_account(request):  # 함수 이름을 'signup'으로 변경
-    return render(request, 'find_account.html')  # 템플릿 이름을 'signup.html'로 변경
-
-
-import json
-
-from django.shortcuts import render, redirect
-from django.views.decorators.csrf import csrf_exempt
-from economia.models import Characters
-from django.http import JsonResponse, HttpResponseBadRequest
-from .serializers import CreateCharacterSerializer
-from django.db import IntegrityError
-from django.core.mail import send_mail
-from django.conf import settings
-from django.contrib import messages
-from economia.models import *
-import random
 
 @csrf_exempt
 def get_character_view(request, player_id):
@@ -130,7 +114,7 @@ def get_character_view(request, player_id):
 
 # 캐릭터 생성하기
 @csrf_exempt
-def character_create_view(request):
+def character_create_view(request, player_id):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -154,7 +138,15 @@ def character_create_view(request):
                 return JsonResponse({"error": "Character creation failed. Possible duplicate."}, status=400)
         return JsonResponse(serializer.errors, status=400)
     elif request.method == 'GET':
-        return render(request, 'char_create.html')
+        access_token = request.COOKIES.get('access_token')
+        refresh_token = request.COOKIES.get('refresh_token')
+        decoded = jwt.decode(access_token, 'economia', algorithms=['HS256'])
+        decoded['access_token'] = access_token
+        decoded['refresh_token'] = refresh_token
+        data = Player.objects.get(player_id=decoded['player_id'])
+        data2 = Characters.objects.get(player_id = decoded['user_id'])
+        decoded['character_id'] = data2.id
+        return render(request, 'char_create.html',{"user":decoded})
     return HttpResponseBadRequest("Invalid request method")
 
 @csrf_exempt
@@ -262,6 +254,12 @@ def notice_detail(request, notice_id):
 def admin_dashboard(request):
     return render(request, 'admin_dashboard.html')
 
+def signup(request):
+    return render(request, 'signup.html')
+
+def success(request):
+    return render(request, 'success.html')
+
 class AdminLoginAPI(APIView):
     def post(self, request):
         username = request.data.get('username')
@@ -322,6 +320,9 @@ def find_account_id(request):
 
 def check_id(request, player_id):
     return render(request, 'check_id.html', {'player_id': player_id})
+
+def find_account(request):
+    return render(request, 'find_account.html')
 
 
 def send_verification_email(email, code):
