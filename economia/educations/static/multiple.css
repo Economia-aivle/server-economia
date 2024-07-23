@@ -40,19 +40,21 @@ body{
 	
 }
 .character {
+	position: fixed;
     text-align: center;
 	cursor: url('images/sword.png') , auto;
-	margin-top:10%
+	bottom: 15%;
+	right: 5%;
 }
 .character img{
-    height: 246px;
-    width: 260px;
+    height: 20vh;
+	width: 10vw;
 }
 
   
 .option-btn {
-    width: 30vw;
-    height: 5vh;
+    width: auto;
+    height: auto;
     border: none;
     border-radius: 10px;
     margin: 10px 0;
@@ -130,9 +132,11 @@ body{
   }
 
   .mychar{
-	height: 30vh;
-	width: 15vw;
-	margin-top:13%
+	position: fixed;
+	height: 20vh;
+	width: 10vw;
+	top: 65%;
+	left: 5%;
 }
 .answer-container{
 	margin-right: 10%;

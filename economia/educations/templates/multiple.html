@@ -24,9 +24,10 @@
         Q{{ num }}. {{ question.question_text }}
     </div>
     <main>
-        <div class="wrap-container">
-            <img class="magic" src="{% static 'images/magic.gif' %}" alt="" style="display:none;" >
+        <img class="magic" src="{% static 'images/magic.gif' %}" alt="" style="display:none;" >
             <img class="mychar" src="{{ character_img }}" alt="char" />
+        <div class="wrap-container">
+            
             <div class="answer-container">
                 <form id="answer-form" method="post">
                     {% csrf_token %}
@@ -37,12 +38,13 @@
                     <button class="option-btn" type="button" id="option4" onclick="selectOption(this)" name="answer" value="4">4. {{ question.option_d }}</button>
                 </form>
             </div>
-            <div class="character" onclick="submitAnswer()">
-                <img class="enemy_magic" src="{% static 'images/magic.gif' %}" alt="" style="display:none;">
-                <img class="enemy_char" src="{% static 'images/enemy1.png' %}" alt="char" />
-                <div class="hp-bar-container">
-                    <div id="hp-bar" class="hp-bar" style="width: {{ hp_percentage }}%;"></div>
-                </div>
+            
+        </div>
+        <div class="character" onclick="submitAnswer()">
+            <img class="enemy_magic" src="{% static 'images/magic.gif' %}" alt="" style="display:none;">
+            <img class="enemy_char" src="{% static 'images/enemy1.png' %}" alt="char" />
+            <div class="hp-bar-container">
+                <div id="hp-bar" class="hp-bar" style="width: {{ hp_percentage }}%;"></div>
             </div>
         </div>
         <div class="wrong-container" id="wrong-container" style="display:none;">
@@ -194,7 +196,7 @@
                 }
             }, 1000);
         });
-
+/*
         window.onload = function() {
 
 
@@ -215,7 +217,7 @@
                     location.replace(levelChoiceUrlPattern);
                 }
             });
-        };
+        }; */
     </script>
 </body>
 </html>

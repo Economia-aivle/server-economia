@@ -347,25 +347,25 @@ def multiple(request, characters, subjects_id, chapter, num):
             request.session['wrong_count'] = wrong_count
             # 오답인 경우
             return JsonResponse({'status': 'wrong', 'message': '오답입니다.'})
-    else:
-        if num == 1:
-            result = make_questions('금융', 1)
-            m_question = result['question']
-            m_exam = result['exam']
-            m_ans = result['ans']
-            print(m_question)
-            print(m_exam)
-            print(m_ans)
+    # else:
+        # if num == 1:
+            # result = make_questions('금융', 1)
+            # m_question = result['question']
+            # m_exam = result['exam']
+            # m_ans = result['ans']
+            # print(m_question)
+            # print(m_exam)
+            # print(m_ans)
             
-            for i in range(5):
-                a = m_exam[i][0]
-                b = m_exam[i][1]
-                c = m_exam[i][2]
-                d = m_exam[i][3]
-                Multiple.objects.create(characters_id=characters, question_text=m_question[i],
-                                option_a = a, option_b = b, option_c = c, option_d = d,
-                                correct_answer=int(m_ans[i]), subjects_id=subjects_id, chapter=chapter, explanation="123123123")
-    
+            # for i in range(5):
+            #     a = m_exam[i][0]
+            #     b = m_exam[i][1]
+            #     c = m_exam[i][2]
+            #     d = m_exam[i][3]
+            #     Multiple.objects.create(characters_id=characters, question_text=m_question[i],
+            #                     option_a = a, option_b = b, option_c = c, option_d = d,
+            #                     correct_answer=int(m_ans[i]), subjects_id=subjects_id, chapter=chapter, explanation="123123123")
+
     correct_count = request.session.get('correct_count', 0)
     wrong_count = request.session.get('wrong_count', 0)
     hp_percentage = max(0, 100 - (correct_count * 20))  # 체력 퍼센트 계산
