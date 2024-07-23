@@ -12,9 +12,8 @@
 
 <body>
     {% include 'quiz_header2.html' %}
-    <audio id="myAudio" src="{% static  random_sound %}" preload="auto"></audio>
+    <audio id="myAudio" src="{% static random_sound %}" preload="auto"></audio>
 
-    <!-- 버튼을 클릭하여 소리를 재생/일시정지 -->
     <button id="playSoundButton">Play Sound</button>
     <div class="life">
         <img id="lp1" src="{% static 'images/lp.png' %}" alt="lp">
@@ -24,27 +23,28 @@
     <main>
         <div class="wrap-container" id="wrap-container">
             <div class="distance">
-            <form class="character" id="answer-form" method="post">
-                {% csrf_token %}
-                <img class="magic" src="{% static 'images/magic.gif' %}"  alt="" style="display:none;" >
-                <img class="mychar" src="{{ character_img }}" alt="char" />
-                <div class="answer_form">
-                    <input type="text" class="answer" id="answer" placeholder="입력"/>
-                    <button class="next-btn" type="button" onclick="checkAnswer()">Enter</button>
-                </div>
-            </form>
-            <div class="enemy">
-                <div class="question-container">
-                    <div class="question">
-                        Q{{ num }}. {{ question.question_text }}</div>
-                </div>
-                <img class="enemy_magic" src="{% static 'images/magic.gif' %}"  alt="" style="display:none;">
-            <img class="enemy_char" src="{% static 'images/enemy1.png' %}" alt="char" />
-                <div class="hp-bar-container">
-                    <div id="hp-bar" class="hp-bar" style="width: {{ hp_percentage }}%;"></div>
+                <form class="character" id="answer-form" method="post">
+                    {% csrf_token %}
+                    <img class="magic" src="{% static 'images/magic.gif' %}" alt="" style="display:none;">
+                    <img class="mychar" src="{{ character_img }}" alt="char" />
+                    <div class="answer_form">
+                        <input type="text" class="answer" id="answer" placeholder="입력" />
+                        <button class="next-btn" type="button" onclick="checkAnswer()">Enter</button>
+                    </div>
+                </form>
+                <div class="enemy">
+                    <div class="question-container">
+                        <div class="question">
+                            Q{{ num }}. {{ question.question_text }}
+                        </div>
+                    </div>
+                    <img class="enemy_magic" src="{% static 'images/magic.gif' %}" alt="" style="display:none;">
+                    <img class="enemy_char" src="{% static 'images/enemy1.png' %}" alt="char" />
+                    <div class="hp-bar-container">
+                        <div id="hp-bar" class="hp-bar" style="width: {{ hp_percentage }}%;"></div>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
         <div class="wrong-container" id="wrong-container" style="display:none;">
             <div class="answer-bubble">
@@ -62,23 +62,18 @@
         </div>
     </main>
 
-    <!-- JavaScript 코드 -->
     <script>
-        // Django 템플릿 엔진으로부터 받은 값들을 JavaScript 변수에 할당
         const characters = "{{ characters }}";
         const subjects_id = "{{ subjects_id }}";
         const chapter = "{{ chapter }}";
-        const num = {{ num }} ;
+        const num = {{ num }};
         let isPlaying = false;
-        
-        // 정답 체크 함수
+
         function checkAnswer() {
             const userAnswer = document.getElementById('answer').value.trim();
-            console.log(userAnswer)
             if (userAnswer === '') {
                 alert('답을 입력해주세요.');
-                return; // 입력값이 빈칸이면 함수 종료
-
+                return;
             }
             const formData = new FormData();
             formData.append('answer', userAnswer);
@@ -94,117 +89,76 @@
                 if (data.status === 'complete') {
                     document.querySelector('.enemy_magic').style.display = 'block';
                     document.querySelector('.enemy_char').classList.add('wrong');
-                    
-                    setTimeout(function () {
+
+                    setTimeout(function() {
                         alert(data.message);
                         window.location.href = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
-                            }, 1000);
-                        
+                    }, 1000);
                 } else if (data.status === 'wrong') {
                     alert(data.message);
                     document.querySelector('.magic').style.display = 'block';
                     document.querySelector('.mychar').classList.add('wrong');
-                    setTimeout(function () {
-                    document.querySelector('.wrap-container').style.display = 'none';
-                    document.querySelector('.question-container').style.display = 'none';
-                    document.getElementById('wrong-container').style.display = 'block';
-                        }, 1000);
-                    
+                    setTimeout(function() {
+                        document.querySelector('.wrap-container').style.display = 'none';
+                        document.querySelector('.question-container').style.display = 'none';
+                        document.getElementById('wrong-container').style.display = 'block';
+                    }, 1000);
                 } else {
                     alert(data.message);
                     document.querySelector('.enemy_magic').style.display = 'block';
                     document.querySelector('.enemy_char').classList.add('wrong');
-                    setTimeout(function () {
+                    setTimeout(function() {
                         window.location.href = `/educations/blank/${characters}/${subjects_id}/${chapter}/${num + 1}`;
-                            }, 1000);
+                    }, 1000);
                 }
             })
             .catch(error => console.error('Error:', error));
-            
-    
-            function nextQuestion() {
-                if (num >= 5) {
-                    window.location.href = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
-                } else {
-                    window.location.href = `/educations/multiple/${characters}/${subjects_id}/${chapter}/${num + 1}`;
-                }
-
-
-            }
-
         }
 
-        // 다음 문제로 넘어가는 함수
         function nextQuestion() {
-            var num = {{ num }};
-            num++; // 다음 문제 번호로 업데이트
-          
-            // 6 이상이면 summary 페이지로 이동, 아니면 다음 문제 페이지로 이동
-            if (num >= 6) {
-                window.location.href = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
-            } else {
-                window.location.href = `/educations/blank/${characters}/${subjects_id}/${chapter}/${num}`;
-            }
+            const nextUrl = num >= 5
+                ? "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}"
+                : `/educations/blank/${characters}/${subjects_id}/${chapter}/${num + 1}`;
+            window.location.href = nextUrl;
         }
-
-        window.onload = function() {
-            // 특정 URL로 이동할 함수
-            function redirectToLevelChoice() {
-                var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
-                window.location.href = levelChoiceUrl;
-            }
-
-            // 현재 페이지의 URL
-            var currentUrl = window.location.href;
-
-            // 특정 URL 패턴
-            var levelChoiceUrlPattern = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
-
-            // 현재 URL이 특정 URL 패턴과 다를 경우
-            if (currentUrl !== levelChoiceUrlPattern) {
-                // history.pushState를 사용하여 현재 페이지를 특정 URL로 변경
-                history.pushState(null, null, levelChoiceUrlPattern);
-            }
-
-            // 브라우저에서 뒤로 가기 버튼을 클릭했을 때 이벤트 리스너 등록
-            window.addEventListener('popstate', function() {
-                // 현재 페이지가 특정 URL 패턴과 다를 경우
-                if (window.location.href !== levelChoiceUrlPattern) {
-                    // location.replace를 사용하여 특정 URL로 이동
-                    location.replace(levelChoiceUrlPattern);
-                }
-            });
-            
-            // 새로고침 시에도 특정 URL로 이동
-            window.onbeforeunload = function() {
-                location.replace(levelChoiceUrlPattern);
-            };
-        }; 
 
         document.addEventListener('DOMContentLoaded', (event) => {
-            const wrongcount = "{{wrong_count}}";
-        
-            if(wrongcount==1){
+            const wrongcount = "{{ wrong_count }}";
+
+            if (wrongcount == 1) {
                 document.getElementById('lp1').style.display = 'none';
-            }
-            else if(wrongcount==2){
+            } else if (wrongcount == 2) {
                 document.getElementById('lp1').style.display = 'none';
                 document.getElementById('lp2').style.display = 'none';
-            }
-            else if(wrongcount==3){
+            } else if (wrongcount == 3) {
                 document.getElementById('lp3').style.display = 'none';
                 document.getElementById('lp1').style.display = 'none';
                 document.getElementById('lp2').style.display = 'none';
-                alert("클리어 실패!! 난이도 선택 화면으로 돌아갑니다")
+                alert("클리어 실패!! 난이도 선택 화면으로 돌아갑니다");
                 var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
-
                 window.location.href = levelChoiceUrl;
             }
 
             const playSoundButton = document.getElementById('playSoundButton');
             const audio = document.getElementById('myAudio');
-            audio.volume = 0.3;
+            audio.volume = 0.08;
             audio.loop = true;
+
+            // 페이지 num이 1일 때 localStorage 초기화
+            if (num === 1) {
+                localStorage.removeItem('isPlaying');
+                localStorage.removeItem('currentTime');
+                isPlaying = false;
+                audio.currentTime = 0;
+            } else {
+                // localStorage에서 재생 상태와 현재 시간을 복원
+                if (localStorage.getItem('isPlaying') === 'true') {
+                    audio.currentTime = parseFloat(localStorage.getItem('currentTime')) || 0;
+                    audio.play();
+                    playSoundButton.textContent = 'Pause Sound';
+                    isPlaying = true;
+                }
+            }
 
             playSoundButton.addEventListener('click', () => {
                 if (isPlaying) {
@@ -215,11 +169,38 @@
                     playSoundButton.textContent = 'Pause Sound';
                 }
                 isPlaying = !isPlaying;
+                localStorage.setItem('isPlaying', isPlaying);
             });
+
+            // 재생 중일 때 매초 현재 시간을 localStorage에 저장
+            setInterval(() => {
+                if (isPlaying) {
+                    localStorage.setItem('currentTime', audio.currentTime);
+                }
+            }, 1000);
         });
 
-       
+        window.onload = function() {
 
+
+            function redirectToLevelChoice() {
+                var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
+                window.location.href = levelChoiceUrl;
+            }
+        
+            var currentUrl = window.location.href;
+            var levelChoiceUrlPattern = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
+        
+            if (currentUrl !== levelChoiceUrlPattern) {
+                history.pushState(null, null, levelChoiceUrlPattern);
+            }
+        
+            window.addEventListener('popstate', function() {
+                if (window.location.href !== levelChoiceUrlPattern) {
+                    location.replace(levelChoiceUrlPattern);
+                }
+            });
+        };
     </script>
 </body>
 </html>

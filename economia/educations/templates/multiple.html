@@ -11,21 +11,21 @@
 </head>
 <body>
     {% include 'quiz_header2.html' %}
-    <audio id="myAudio" src="{% static  random_sound %}" preload="auto"></audio>
+    <audio id="myAudio" src="{% static random_sound %}" preload="auto"></audio>
 
     <!-- 버튼을 클릭하여 소리를 재생/일시정지 -->
-    <button id="playSoundButton">Play Sound</button>
-
     <div class="life">
         <img id="lp1" src="{% static 'images/lp.png' %}" alt="lp">
         <img id="lp2" src="{% static 'images/lp.png' %}" alt="lp">
         <img id="lp3" src="{% static 'images/lp.png' %}" alt="lp">
+        <button id="playSoundButton">Play Sound</button>
     </div>
     <div class="question-container">
         Q{{ num }}. {{ question.question_text }}
     </div>
     <main>
         <div class="wrap-container">
+            <img class="magic" src="{% static 'images/magic.gif' %}" alt="" style="display:none;" >
             <img class="mychar" src="{{ character_img }}" alt="char" />
             <div class="answer-container">
                 <form id="answer-form" method="post">
@@ -38,7 +38,8 @@
                 </form>
             </div>
             <div class="character" onclick="submitAnswer()">
-                <img src="{% static 'images/enemy1.png' %}" alt="char" />
+                <img class="enemy_magic" src="{% static 'images/magic.gif' %}" alt="" style="display:none;">
+                <img class="enemy_char" src="{% static 'images/enemy1.png' %}" alt="char" />
                 <div class="hp-bar-container">
                     <div id="hp-bar" class="hp-bar" style="width: {{ hp_percentage }}%;"></div>
                 </div>
@@ -63,11 +64,13 @@
 
     <script>
         let selectedOption = null;
-        let isPlaying = false;
         const characters = "{{ characters }}";
         const subjects_id = "{{ subjects_id }}";
         const chapter = "{{ chapter }}";
         const num = {{ num }};
+        let isPlaying = sessionStorage.getItem('isPlaying') === 'true';
+        let audioCurrentTime = parseFloat(sessionStorage.getItem('audioCurrentTime')) || 0;
+        const audio = document.getElementById('myAudio');
 
         function selectOption(selectedBtn) {
             const buttons = document.querySelectorAll('.option-btn');
@@ -99,16 +102,29 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'complete') {
-                    alert(data.message);
-                    window.location.href = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
+                    document.querySelector('.enemy_magic').style.display = 'block';
+                    document.querySelector('.enemy_char').classList.add('wrong');
+                    
+                    setTimeout(function () {
+                        alert(data.message);
+                        window.location.href = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
+                    }, 1000);
                 } else if (data.status === 'wrong') {
                     alert(data.message);
-                    document.querySelector('.wrap-container').style.display = 'none';
-                    document.querySelector('.question-container').style.display = 'none';
-                    document.getElementById('wrong-container').style.display = 'block';
+                    document.querySelector('.magic').style.display = 'block';
+                    document.querySelector('.mychar').classList.add('wrong');
+                    setTimeout(function () {
+                        document.querySelector('.wrap-container').style.display = 'none';
+                        document.querySelector('.question-container').style.display = 'none';
+                        document.getElementById('wrong-container').style.display = 'block';
+                    }, 1000);
                 } else {
                     alert(data.message);
-                    window.location.href = `/educations/multiple/${characters}/${subjects_id}/${chapter}/${num + 1}`;
+                    document.querySelector('.enemy_magic').style.display = 'block';
+                    document.querySelector('.enemy_char').classList.add('wrong');
+                    setTimeout(function () {
+                        window.location.href = `/educations/multiple/${characters}/${subjects_id}/${chapter}/${num + 1}`;
+                    }, 1000);
                 }
             })
             .catch(error => console.error('Error:', error));
@@ -140,9 +156,24 @@
 
             // 소리 재생/일시정지 버튼 클릭 이벤트 추가
             const playSoundButton = document.getElementById('playSoundButton');
-            const audio = document.getElementById('myAudio');
-            audio.volume = 0.3;
+            audio.volume = 0.08;
             audio.loop = true;
+
+            // 페이지 로드 시 상태 복원 또는 초기화
+            if (num === 1) {
+                sessionStorage.removeItem('isPlaying');
+                sessionStorage.removeItem('audioCurrentTime');
+                isPlaying = false;
+                audioCurrentTime = 0;
+            } else {
+                audio.currentTime = audioCurrentTime;
+                if (isPlaying) {
+                    audio.play();
+                    playSoundButton.textContent = 'Pause Sound';
+                } else {
+                    playSoundButton.textContent = 'Play Sound';
+                }
+            }
 
             playSoundButton.addEventListener('click', () => {
                 if (isPlaying) {
@@ -153,8 +184,38 @@
                     playSoundButton.textContent = 'Pause Sound';
                 }
                 isPlaying = !isPlaying;
+                sessionStorage.setItem('isPlaying', isPlaying);
             });
+
+            // 현재 시간을 저장하는 인터벌 설정
+            setInterval(() => {
+                if (isPlaying) {
+                    sessionStorage.setItem('audioCurrentTime', audio.currentTime);
+                }
+            }, 1000);
         });
+
+        window.onload = function() {
+
+
+            function redirectToLevelChoice() {
+                var levelChoiceUrl = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
+                window.location.href = levelChoiceUrl;
+            }
+        
+            var currentUrl = window.location.href;
+            var levelChoiceUrlPattern = "{% url 'educations:level_choice' characters=characters subjects_id=subjects_id chapter=chapter %}";
+        
+            if (currentUrl !== levelChoiceUrlPattern) {
+                history.pushState(null, null, levelChoiceUrlPattern);
+            }
+        
+            window.addEventListener('popstate', function() {
+                if (window.location.href !== levelChoiceUrlPattern) {
+                    location.replace(levelChoiceUrlPattern);
+                }
+            });
+        };
     </script>
 </body>
 </html>

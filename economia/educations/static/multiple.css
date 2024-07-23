@@ -33,7 +33,7 @@ body{
 
 .wrap-container { 
 	position:absolute;
-	top : 10%;
+	top : 20%;
 	display: flex;
 	justify-content: center;
 	
@@ -131,7 +131,7 @@ body{
   .mychar{
 	height: 30vh;
 	width: 15vw;
-	margin-top:18%
+	margin-top:22%
 }
 .answer-container{
 	margin-right: 10%;
@@ -141,4 +141,29 @@ body{
 
 .life{
 	margin-left: 180px;
+	width: 80%;
+}
+#playSoundButton{
+	float: right;
+
+}
+
+.magic{
+	margin-left: 10%;
+	position: absolute;
+	bottom: 10%;
+	left:-18%;
+	z-index: 1;
+}
+
+.enemy_magic{
+	position: absolute;
+	z-index: 1;
+}
+.enemy_char.wrong{
+	filter: invert(100%);
+}
+
+.mychar.wrong{
+	filter: invert(100%);
 }

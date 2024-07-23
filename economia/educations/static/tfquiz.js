@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
     loadQuestion();
     const playSoundButton = document.getElementById('playSoundButton');
             const audio = document.getElementById('myAudio');
-            audio.volume = 0.3;
+            audio.volume = 0.05;
             audio.loop = true;
 
             playSoundButton.addEventListener('click', () => {

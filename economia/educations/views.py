@@ -234,8 +234,7 @@ def multiple(request, characters, subjects_id, chapter, num):
     print(character_img)
     multiple_response = requests.get(f'http://127.0.0.1:8000/educations/multipledatas/{characters}')
     multiple_data = multiple_response.json()
-    sounds = ['sounds/back_sound1.mp3', 'sounds/back_sound2.mp3', 'sounds/back_sound3.mp3']
-    random_sound = random.choice(sounds)
+    random_sound = 'sounds/back_sound3.mp3'
 
     multiple_list = [item for item in multiple_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
 
@@ -286,7 +285,7 @@ def multiple(request, characters, subjects_id, chapter, num):
     correct_count = request.session.get('correct_count', 0)
     wrong_count = request.session.get('wrong_count', 0)
     hp_percentage = max(0, 100 - (correct_count * 20))  # 체력 퍼센트 계산
-    print(wrong_count)
+    print(correct_count)
     context ={'question': question,
               'num': num,
               'characters': characters,
@@ -312,8 +311,7 @@ def blank(request, characters, subjects_id, chapter, num):
     character = Characters.objects.get(id=characters)
     character_img = character.kind_url
     print(character_img)
-    sounds = ['sounds/back_sound1.mp3', 'sounds/back_sound2.mp3', 'sounds/back_sound3.mp3']
-    random_sound = random.choice(sounds)
+    random_sound = 'sounds/back_sound2.mp3'
     # characters, subject, chapter에 해당하는 데이터를 필터링합니다.
     blank_list = [item for item in blank_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
     
