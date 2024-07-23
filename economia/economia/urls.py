@@ -68,6 +68,7 @@ urlpatterns = [
     path('service_agree/', service_agree, name='service_agree'),
     path('ask', ask, name='ask'),
     path('register', views.register, name='register'),
+    
 ]
 
 if settings.DEBUG:

@@ -106,13 +106,13 @@
                
                 <div class="announcement">
                     <h1 class="announcement-title">공지</h1>
-                    {% for notice in user.notice_list %}
-                        <a class="announcement-text" href="#" target="_self">{{notice.title}}</a>
+                    {% for notice in user.notice %}
+                        <a class="announcement-text" href="{% url 'users:notice_detail' notice.id %}" target="_self">{{notice.title}}</a>  <!-- 수정된 부분 -->
                     {% endfor %}
                     <button class="announcement-view" onclick="boardButtonClick()">더보기</button>
                 </div>
             </div>
-            <div class="row">
+            <div class="row">x
                 <div class="advertiser">
                     <button class="ads" href="https://aivle.kt.co.kr/home/main/applyMain?mcd=MC00000051" target="_blank"></button>
                 </div>
