@@ -9,10 +9,10 @@ main{
 	text-align: center;
 }
 body{
-	height: 90vh;
+	height: 85vh;
 	background-image: url('images/tf_back.png');
 	background-repeat : no-repeat;
-	background-size: cover;
+	background-size: 100% 117%;
 }
 .question-container{
 	margin-right: 5%;
@@ -20,7 +20,7 @@ body{
 }
 
 .wrap-container {
-	margin-top: -4%;
+	margin-top: -6%;
 	width: 80vw;
 	position:absolute;
 	display: flex;
@@ -272,8 +272,11 @@ color: #E0E0E0;
 }
 
 .life{
-	margin-left: 180px;
+	margin-left: 5%;
 }
 #question-container{
 	cursor: url('images/sword.png') , auto;
+}
+#playSoundButton{
+	float: right;
 }

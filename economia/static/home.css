@@ -22,18 +22,21 @@ img {border: none;}
 .search {
     width: 20px;
     height: 20px;
-    background-image: url("/static/images/search.png");
-    background-size: cover;
-    background-position: center;
+    
  
 }
 
 .image-button {
-    background: none;
+    background-image: url("/static/images/search.png");
+    background-size: cover;
+    background-position: center;
     border: none;
+    background-color: transparent;
     padding: 0;
     margin: 0;
     cursor: pointer; /* 마우스를 올렸을 때 커서가 포인터로 바뀌게 합니다 */
+    width: 20px;
+    height: 20px;
     
 }
 

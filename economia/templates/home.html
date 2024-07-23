@@ -74,7 +74,6 @@
                     <div class="ranking">
                         <h1 class="ranking-text">랭킹&nbsp;&nbsp;&nbsp;{{user.rank}}등
                             <button class="image-button" onclick="rankingButtonClick()">
-                                <img class="search">
                             </button>
                         </h1>
                     </div>
@@ -84,7 +83,6 @@
                 <div class="view-solved">
                     <h1 class="view-solved-text">내가 푼 문제 보기
                         <button class="image-button" onclick="beforeButtonClick()">
-                            <img class="search">
                         </button>
                     </h1>
                     <a class="chapter-1" href="#" target="_self">OX : Chapter {{user.chapter_tf}}</a>
@@ -104,7 +102,7 @@
                
                 <div class="announcement">
                     <h1 class="announcement-title">공지</h1>
-                    {% for notice in user.notice %}
+                    {% for notice in user.notice_list %}
                         <a class="announcement-text" href="{% url 'users:notice_detail' notice.id %}" target="_self">{{notice.title}}</a>  <!-- 수정된 부분 -->
                     {% endfor %}
                     <button class="announcement-view" onclick="boardButtonClick()">더보기</button>

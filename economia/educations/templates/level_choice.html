@@ -7,6 +7,43 @@
     <title>학습 하기</title>
     <link rel="stylesheet" href="{% static 'level_choice.css' %}" />
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <style>
+      #loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      .loader {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .spinner {
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .loading-text {
+        margin-top: 20px;
+        font-size: 1.5em;
+        color: #3498db;
+      }
+    </style>
   </head>
   {% include 'study_header.html' %}
   <body>
@@ -15,23 +52,28 @@
         <div class="chapter_title"><p>{{ part }}</p></div>
       <div class="wrap-container">
         <span class="btn-cho">
-            <button class="next-btn {% if chapter_sub is None or chapter_sub == 1 or chapter_sub == 2 or chapter_sub == 3 %}active{% endif %}" onclick="location.href = '{% url 'educations:tf_quiz_page' subjects_id=subjects_id chapter=chapter %}'">
+            <button class="next-btn {% if chapter_sub is None or chapter_sub == 1 or chapter_sub == 2 or chapter_sub == 3 %}active{% endif %}" onclick="showLoadingScreen('{% url 'educations:tf_quiz_page' subjects_id=subjects_id chapter=chapter %}')">
                 <img class="cho" src="{% static 'images/choga.png' %}" alt="초급">
             </button>
         </span>
         <span class="btn-jung">
-            <button class="next-btn {% if chapter_sub is 2 or chapter_sub == 3 %}active{% endif %}" onclick="location.href = '{% url 'educations:multiple' characters=1 subjects_id=subjects_id chapter=chapter num=1 %}'">
+            <button class="next-btn {% if chapter_sub is 2 or chapter_sub == 3 %}active{% endif %}" onclick="showLoadingScreen('{% url 'educations:multiple' characters=1 subjects_id=subjects_id chapter=chapter num=1 %}')">
               <img class="jung" src="{% static 'images/tree.png' %}" alt="중급">
             </button>
         </span>
         <span class="btn-go">
-            <button class="next-btn {% if chapter_sub is 3 %}active{% endif %}" onclick="location.href = '{% url 'educations:blank' characters=1 subjects_id=subjects_id chapter=chapter num=1 %}'">
+            <button class="next-btn {% if chapter_sub is 3 %}active{% endif %}" onclick="showLoadingScreen('{% url 'educations:blank' characters=1 subjects_id=subjects_id chapter=chapter num=1 %}')">
               <img class="go" src="{% static 'images/block.png' %}" alt="고급">
             </button>
         </span>
       </div>
     </main>
-    
+    <div id="loading-screen">
+      <div class="loader">
+        <div class="spinner"></div>
+        <div class="loading-text">문제 생성중입니다. (약 10초)</div>
+      </div>
+    </div>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         var jungBtn = document.querySelector('.btn-jung .next-btn');
@@ -49,6 +91,11 @@
           goImg.src = '{% static 'images/lock_block.png' %}';
         }
       });
+
+      function showLoadingScreen(url) {
+        document.getElementById('loading-screen').style.display = 'flex';
+        window.location.href = url;
+      }
     </script>
   </body>
 </html>

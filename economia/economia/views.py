@@ -122,7 +122,7 @@ def home(request, subject_id):
     def level(exp):
         total = int(exp)
         present = 100
-        lev = 0
+        lev = 1
 
         while (total - present) >= 0:
             total -= present

@@ -10,13 +10,13 @@ main{
 
 }
 body{
-	height: 95vh;
+	height: 85vh;
 	background-image: url('images/multiple_back.png');
 	background-repeat : no-repeat;
-	background-size: cover;
+	background-size: 100% 117%;
 }
 .question-container{
-	width: 600px;
+	width: 30vw;
     height: auto;
     border: none;
     border-radius: 10px;
@@ -36,12 +36,13 @@ body{
 	top : 20%;
 	display: flex;
 	justify-content: center;
+	height: 20%;
 	
 }
 .character {
     text-align: center;
 	cursor: url('images/sword.png') , auto;
-	margin-top:20%
+	margin-top:10%
 }
 .character img{
     height: 246px;
@@ -50,8 +51,8 @@ body{
 
   
 .option-btn {
-    width: 600px;
-    height: 60px;
+    width: 30vw;
+    height: 5vh;
     border: none;
     border-radius: 10px;
     margin: 10px 0;
@@ -131,12 +132,12 @@ body{
   .mychar{
 	height: 30vh;
 	width: 15vw;
-	margin-top:22%
+	margin-top:13%
 }
 .answer-container{
 	margin-right: 10%;
 	margin-left: 10%;	
-	margin-top: 150px;
+	margin-top: 5%;
 }
 
 .life{

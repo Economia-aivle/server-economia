@@ -12,6 +12,41 @@ import random
 import jwt
 from django.contrib.sessions.models import Session
 
+from langchain.vectorstores import Chroma, FAISS
+from langchain.embeddings import HuggingFaceEmbeddings
+from langchain.chat_models import ChatOpenAI
+
+from langchain_core.prompts import PromptTemplate
+from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
+from langchain_core.pydantic_v1 import BaseModel, Field
+
+embeddings = HuggingFaceEmbeddings(
+    model_name='jhgan/ko-sroberta-nli', # 최신버전 : jhgan/ko-sroberta-multitask - https://github.com/jhgan00/ko-sentence-transformers?tab=readme-ov-file 참조
+    model_kwargs={'device':'cpu'},
+    encode_kwargs={'normalize_embeddings':True},
+)
+
+# faiss_db = FAISS.load_local('./DB_faiss', embeddings, allow_dangerous_deserialization=True)
+chroma_db = Chroma(persist_directory='./DB_chroma', embedding_function=embeddings)  # educations와 같은 폴더에 db 저장해야 함.
+chat = ChatOpenAI(model='gpt-4o', temperature=1.0)
+
+class selc_question_form(BaseModel):
+    question: list = Field(description="문제")
+    exam: list = Field(description="보기")
+    ans: list = Field(description="답")
+    
+class question_form(BaseModel):
+    question: list = Field(description="문제")
+    ans: list = Field(description="답")
+
+query_set = ['Documents마다 OX 문제와 답 한 개씩 총 5문제를 만들어줘.', 
+             'Documents마다 보기가 4개인 문제와 답 한 개씩 총 5문제를 한국어로 만들어줘. 보기는 숫자를 포함해서 표시해줘. 답은 int형으로 숫자만 알려줘. 중복 답은 없도록 해줘.',
+             'Documents마다 빈칸 문제와 답 한 개씩 총 5문제를 만들어줘.', 
+             ]
+
+form_set = [question_form, selc_question_form, question_form]
+
+
 
 @api_view(['GET'])
 def getBlankDatas(request, characters):
@@ -111,6 +146,30 @@ def level_choice(request, characters, subjects_id, chapter):
     
     return render(request, 'level_choice.html', context)
 
+def make_questions(cate, q_type): # 숫자로 받을만 하지 않을까? 지금은 0: OX     1: 객관식   2: 빈칸 순서임
+    db = chroma_db.get(where={'category': cate})
+    
+    docs = random.sample(db['documents'], 5)
+
+    output_parser = JsonOutputParser(pydantic_object=form_set[q_type])
+    format_instructions = output_parser.get_format_instructions()
+
+    query = query_set[q_type]
+    template = '''
+    아래의 자료만을 사용하여 질문에 답하세요: 
+    {docs}
+    답변은 해당 형식에 맞게 모아서 만들어주세요:
+    {form}
+
+    질문: {query}
+    '''
+
+    prompt = PromptTemplate.from_template(template)
+
+    chain = prompt | chat | output_parser
+    res = chain.invoke({'docs': docs, 'form':format_instructions, 'query': query})
+    return res
+
 
 @csrf_exempt
 def tf_quiz_view(request):
@@ -191,6 +250,15 @@ def tf_quiz_page(request, subjects_id, chapter):
     sounds = ['sounds/back_sound1.mp3', 'sounds/back_sound2.mp3', 'sounds/back_sound3.mp3']
     random_sound = random.choice(sounds)
     print(character_img)
+    result = make_questions('금융', 0)
+    m_question = result['question']
+    m_ans = result['ans']
+    print(m_question)
+    print(m_ans)
+    
+    for i in range(5):
+        Tf.objects.create(characters_id=characters, question_text=m_question[i], correct_answer=m_ans[i],
+                          subjects_id=subjects_id, chapter=chapter, explanation="123123123")
     context = {
             'characters': characters,
               'subjects_id': subjects_id,
@@ -229,29 +297,23 @@ def choose_tf_chapter_view(request):
 def multiple(request, characters, subjects_id, chapter, num):
     # characters, subject, chapter에 해당하는 데이터를 필터링합니다.
     characters = get_player(request, 'characters')
+    player_id = get_player(request, 'player')
     character = Characters.objects.get(id=characters)
     character_img = character.kind_url
     print(character_img)
-    multiple_response = requests.get(f'http://127.0.0.1:8000/educations/multipledatas/{characters}')
-    multiple_data = multiple_response.json()
     random_sound = 'sounds/back_sound3.mp3'
 
-    multiple_list = [item for item in multiple_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
-
-    questions = []
-    max_num = min(5, len(multiple_list))
-    for i in range(max_num):
-        item = multiple_list[-(i + 1)]
-        item['num'] = max_num - i
-        questions.append(item)
-
-    question = questions[num - 1] if num <= max_num else None
     if num == 6:
         return redirect('educations:level_choice', characters=characters, subjects_id=subjects_id, chapter=chapter)
     # # POST 요청 처리
-    if request.method == 'POST':
+    if request.method == 'POST':     
+        multiple_response = requests.get(f'http://127.0.0.1:8000/educations/multipledatas/{characters}')
+        multiple_data = multiple_response.json()
+        multiple_list = [item for item in multiple_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
+        
         user_answer = request.POST.get('answer')
-        correct_answer = question['correct_answer']
+        correct_answer = multiple_list[-num]['correct_answer']
+        
         if user_answer == correct_answer:
             # 정답인 경우
             correct_count = request.session.get('correct_count', 0) + 1
@@ -261,11 +323,14 @@ def multiple(request, characters, subjects_id, chapter, num):
                 # 모든 문제를 맞춘 경우 Stage 모델의 chapter_sub를 3으로 업데이트
                 try:
                     stage_data = Stage.objects.get(characters_id=characters, subjects_id=subjects_id, chapter=chapter)
-                    character_score = Characters.objects.get(characters_id=characters)
+                    character_score = SubjectsScore.objects.get(characters_id=characters, subjects_id=subjects_id)
+                    character_exp = Characters.objects.get(id = characters)
                     stage_data.chapter_sub = 3
-                    character_score.score +=200
+                    character_score.score +=10
+                    character_exp.exp +=10
                     character_score.save()
                     stage_data.save()
+                    character_exp.save()
                 except Stage.DoesNotExist:
                     pass
                 
@@ -282,10 +347,36 @@ def multiple(request, characters, subjects_id, chapter, num):
             request.session['wrong_count'] = wrong_count
             # 오답인 경우
             return JsonResponse({'status': 'wrong', 'message': '오답입니다.'})
+    else:
+        if num == 1:
+            result = make_questions('금융', 1)
+            m_question = result['question']
+            m_exam = result['exam']
+            m_ans = result['ans']
+            print(m_question)
+            print(m_exam)
+            print(m_ans)
+            
+            for i in range(5):
+                a = m_exam[i][0]
+                b = m_exam[i][1]
+                c = m_exam[i][2]
+                d = m_exam[i][3]
+                Multiple.objects.create(characters_id=characters, question_text=m_question[i],
+                                option_a = a, option_b = b, option_c = c, option_d = d,
+                                correct_answer=int(m_ans[i]), subjects_id=subjects_id, chapter=chapter, explanation="123123123")
+    
     correct_count = request.session.get('correct_count', 0)
     wrong_count = request.session.get('wrong_count', 0)
     hp_percentage = max(0, 100 - (correct_count * 20))  # 체력 퍼센트 계산
-    print(correct_count)
+    
+    multiple_response = requests.get(f'http://127.0.0.1:8000/educations/multipledatas/{characters}')
+    multiple_data = multiple_response.json()
+    
+    multiple_list = [item for item in multiple_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
+    question = multiple_list[-num]
+    
+    
     context ={'question': question,
               'num': num,
               'characters': characters,
@@ -305,31 +396,23 @@ def multiple(request, characters, subjects_id, chapter, num):
 
 
 def blank(request, characters, subjects_id, chapter, num):
-    blank_response = requests.get(f'http://127.0.0.1:8000/educations/blankdatas/{characters}')
-    blank_data = blank_response.json()
     characters = get_player(request, 'characters')
     character = Characters.objects.get(id=characters)
     character_img = character.kind_url
     print(character_img)
     random_sound = 'sounds/back_sound2.mp3'
-    # characters, subject, chapter에 해당하는 데이터를 필터링합니다.
-    blank_list = [item for item in blank_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
-    
-    # 최대 5개의 질문을 가져옵니다.
-    questions = []
-    max_num = min(5, len(blank_list))
-    for i in range(max_num):
-        blank_list[i]['num'] = i + 1
-        questions.append(blank_list[i])
-    
-    # 현재 num에 해당하는 질문을 가져옵니다.
-    question = questions[num - 1] if num <= max_num else None
+   
     if num == 6:
         return redirect('educations:level_choice', characters=characters, subjects_id=subjects_id, chapter=chapter)
     
     if request.method == 'POST':
+        blank_response = requests.get(f'http://127.0.0.1:8000/educations/blankdatas/{characters}')
+        blank_data = blank_response.json()
+        blank_list = [item for item in blank_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
+        
         user_answer = request.POST.get('answer')
-        correct_answer = question['correct_answer']
+        correct_answer = blank_list[-num]['correct_answer']
+        
         if user_answer == correct_answer:
             # 정답인 경우
             blank_correct_count = request.session.get('blank_correct_count', 0) + 1
@@ -365,6 +448,23 @@ def blank(request, characters, subjects_id, chapter, num):
             # 오답인 경우
             return JsonResponse({'status': 'wrong', 'message': '오답입니다.'})
     
+    else:
+        if num == 1:
+            result = make_questions('금융', 2)
+            m_question = result['question']
+            m_ans = result['ans']
+            print(m_question)
+            print(m_ans)
+        
+            for i in range(5):
+                Blank.objects.create(characters_id=characters, question_text=m_question[i], correct_answer=m_ans[i],
+                                subjects_id=subjects_id, chapter=chapter, explanation="123123123")
+    blank_response = requests.get(f'http://127.0.0.1:8000/educations/blankdatas/{characters}')
+    blank_data = blank_response.json()
+
+    blank_list = [item for item in blank_data if item['characters'] == characters and item['subjects'] == subjects_id and item['chapter'] == chapter]
+    question = blank_list[-num]
+
     blank_correct_count = request.session.get('blank_correct_count', 0)
     blank_wrong_count = request.session.get('blank_wrong_count', 0)
     hp_percentage = max(0, 100 - (blank_correct_count * 20))  # 체력 퍼센트 계산

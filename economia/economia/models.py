@@ -77,7 +77,7 @@ class Blank(models.Model):
     subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
-    time = models.DateTimeField()
+    time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False
@@ -205,7 +205,7 @@ class Multiple(models.Model):
     subjects = models.ForeignKey('Subjects', models.DO_NOTHING)
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
-    time = models.DateTimeField()
+    time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False
@@ -293,7 +293,7 @@ class Tf(models.Model):
     subjects = models.ForeignKey(Subjects, models.DO_NOTHING)
     chapter = models.IntegerField()
     explanation = models.CharField(max_length=500, blank=True, null=True)
-    time = models.DateTimeField()
+    time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False

@@ -10,10 +10,10 @@ main{
 
 }
 body{
-	height: 95vh;
+	height: 85vh;
 	background-image: url('images/blank_back.png');
 	background-repeat : no-repeat;
-	background-size: cover;
+	background-size: 100% 117%;
 }
 
 
@@ -28,7 +28,7 @@ body{
 	
 }
 .character {
-	margin-top: 15%;
+	margin-top: -3%;
 	display: flex;
 	flex-direction: column;
 }
@@ -97,14 +97,14 @@ color: #E0E0E0;
 }
 
 .enemy img{
-	bottom: 10%;
+	bottom: 43%;
 	position: absolute;
 	height: 246px;
     width: 260px;
 	right: 5%;
 }
 .hp-bar-container {
-	bottom: 3%;
+	bottom: 40%;
 	width: 200px;
 	position: absolute;
 	height: 20px;
@@ -126,7 +126,8 @@ color: #E0E0E0;
     height: 230px;
 	max-height: 230px;
     padding: 20px;
-	right: 50%;
+	right: 70%;
+	bottom: 100%;
 	display: flex;
   	justify-content: center;
   	align-items: center;
@@ -174,4 +175,8 @@ color: #E0E0E0;
 }
 .enemy_char.wrong{
 	filter: invert(100%);
+}
+
+#playSoundButton{
+	float: right;
 }
