@@ -58,7 +58,7 @@
             <div class="row">
                 <div class="current-problem">
                     <h1 class="status">진행중인 문제</h1>
-                    <h3 class="chapter">Chapter {{user.chapter}}</h3>
+                    <h3 class="chapter">{{user.chapter}}</h3>
                     <h3 class="difficulty">{{user.kind}}</h3>
                 </div>
                 <div class="current-scenario">
@@ -73,9 +73,9 @@
                     </div>
                     <div class="ranking">
                         <h1 class="ranking-text">랭킹&nbsp;&nbsp;&nbsp;{{user.rank}}등
-                            <a href="/users/ranking">
+                            <button class="image-button" onclick="rankingButtonClick()">
                                 <img class="search">
-                            </a>
+                            </button>
                         </h1>
                     </div>
                 </div>
@@ -83,9 +83,9 @@
             <div class="row">
                 <div class="view-solved">
                     <h1 class="view-solved-text">내가 푼 문제 보기
-                        <a href="/educationts/previous_quiz/{{ user.character_id }}">
+                        <button class="image-button" onclick="beforeButtonClick()">
                             <img class="search">
-                        </a>
+                        </button>
                     </h1>
                     <a class="chapter-1" href="#" target="_self">OX : Chapter {{user.chapter_tf}}</a>
                     <a class="chapter-2" href="#" target="_self">빈칸 채우기 : Chapter {{user.chapter_blank}}</a>
@@ -94,13 +94,11 @@
                 </div>
                 <div class="created-scenarios">
                     <h1 class="created-scenario-text">작성한 시나리오
-                        <a href="/scenarios/scenario_list">
-                            <img class="search">
-                        </a>
+                        <button class="image-button" onclick="scenarioButtonClick()">
+                        </button>
                     </h1>
                     {% for comment in user.comment_list %}
                         <a class="created-scenario" href="#" target="_self">{{comment.texts}}</a>
-                    <div></div>
                     {% endfor %}
                 </div>
                
@@ -112,7 +110,7 @@
                     <button class="announcement-view" onclick="boardButtonClick()">더보기</button>
                 </div>
             </div>
-            <div class="row">x
+            <div class="row">
                 <div class="advertiser">
                     <button class="ads" href="https://aivle.kt.co.kr/home/main/applyMain?mcd=MC00000051" target="_blank"></button>
                 </div>
@@ -214,6 +212,17 @@
     function boardButtonClick() {
         window.location.href = '/users/notice/';
     }
+    function beforeButtonClick() {
+        window.location.href = '/educationts/previous_quiz/' + characters;
+    }
+    function scenarioButtonClick() {
+        window.location.href = '/scenarios/scenario_list';
+    }
+    function rankingButtonClick() {
+        window.location.href = '/users/ranking';
+    }
+
+
 </script>
 
 </body>
