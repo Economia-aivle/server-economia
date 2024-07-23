@@ -33,10 +33,11 @@ body{
 	flex-direction: column;
 }
 .character .mychar{
+	position: fixed;
 	margin-left: 10%;
-	
-    height: 246px;
-    width: 260px;
+	bottom: 30%;
+	height: 20vh;
+	width: 10vw;
 	float: left;
 }
 .character .mychar.wrong{
@@ -45,7 +46,8 @@ body{
 
 .answer_form{
 	float: left;
-    margin-top: 5%;
+	position: fixed;
+    bottom: 20%;
 	text-align: center;
 }
 .answer{
@@ -97,21 +99,21 @@ color: #E0E0E0;
 }
 
 .enemy img{
-	bottom: 43%;
-	position: absolute;
-	height: 246px;
-    width: 260px;
-	right: 5%;
+	bottom: 30%;
+	position: fixed;
+	height: 20vh;
+	width: 10vw;
+	right: 10%;
 }
 .hp-bar-container {
-	bottom: 40%;
+	bottom: 28%;
 	width: 200px;
-	position: absolute;
+	position: fixed;
 	height: 20px;
 	border: 1px solid #000;
 	background-color: #f3f3f3;
 	margin-left: 30px;
-	right: 7%;
+	right: 8%;
   }
   .hp-bar {
 	height: 100%;
@@ -160,6 +162,11 @@ color: #E0E0E0;
 }
 .life{
 	margin-left: 180px;
+	width: 80%;
+}
+#playSoundButton{
+	float: right;
+	margin-right: 5%;
 }
 .magic{
 	margin-left: 10%;
@@ -180,3 +187,40 @@ color: #E0E0E0;
 #playSoundButton{
 	float: right;
 }
+
+.answer-bubble .ans{
+    font-size: 60px;
+    margin-top: 30px;
+}
+.answer-bubble p{
+    font-size: 20px;
+}
+.answer-bubble {
+	position: relative;
+	background: #ffffff;
+	border-radius: .4em;
+    width: 1380px;
+    height: auto;
+    padding: 20px;
+}
+
+.wrong-container .next{
+	background-color: #39A7FF;
+	font-size: 20px;
+	color: white;
+	width: 150px;
+	height: 60px;
+	border: none;
+	border-top-left-radius:20px;
+	border-top-right-radius:20px;
+	border-bottom-left-radius:20px;
+	border-bottom-right-radius:20px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	font-family: 'Noto Sans KR', sans-serif; 
+	float: right;
+}
+.next:hover {
+	background-color: #1A85D6; 
+	color: #E0E0E0; 
+	}

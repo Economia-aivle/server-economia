@@ -423,9 +423,12 @@ def blank(request, characters, subjects_id, chapter, num):
                 # 모든 문제를 맞춘 경우 Stage 모델의 chapter_sub를 3으로 업데이트
                 try:
                     stage_data = Stage.objects.get(characters_id=characters, subjects_id=subjects_id, chapter=chapter)
-                    character_score = Characters.objects.get(characters_id=characters)
-                    character_score.score +=300
+                    character_exp = Characters.objects.get(id=characters)
+                    character_score = SubjectsScore.objects.get(characters_id=characters, subjects_id=subjects_id)
+                    character_exp.exp +=10
+                    character_score.score +=10
                     stage_data.chapter_sub = 3
+                    character_exp.save()
                     character_score.save()
                     stage_data.save()
                 except Stage.DoesNotExist:
@@ -448,17 +451,17 @@ def blank(request, characters, subjects_id, chapter, num):
             # 오답인 경우
             return JsonResponse({'status': 'wrong', 'message': '오답입니다.'})
     
-    else:
-        if num == 1:
-            result = make_questions('금융', 2)
-            m_question = result['question']
-            m_ans = result['ans']
-            print(m_question)
-            print(m_ans)
+    # else:
+    #     if num == 1:
+    #         result = make_questions('금융', 2)
+    #         m_question = result['question']
+    #         m_ans = result['ans']
+    #         print(m_question)
+    #         print(m_ans)
         
-            for i in range(5):
-                Blank.objects.create(characters_id=characters, question_text=m_question[i], correct_answer=m_ans[i],
-                                subjects_id=subjects_id, chapter=chapter, explanation="123123123")
+    #         for i in range(5):
+    #             Blank.objects.create(characters_id=characters, question_text=m_question[i], correct_answer=m_ans[i],
+    #                             subjects_id=subjects_id, chapter=chapter, explanation="123123123")
     blank_response = requests.get(f'http://127.0.0.1:8000/educations/blankdatas/{characters}')
     blank_data = blank_response.json()
 

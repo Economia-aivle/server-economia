@@ -7,47 +7,9 @@
     <title>학습 하기</title>
     <link rel="stylesheet" href="{% static 'level_choice.css' %}" />
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
-    <style>
-      #loading-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(255, 255, 255, 0.8);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-      }
-      .loader {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-      .spinner {
-        border: 16px solid #f3f3f3;
-        border-radius: 50%;
-        border-top: 16px solid #3498db;
-        width: 120px;
-        height: 120px;
-        animation: spin 2s linear infinite;
-      }
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      .loading-text {
-        margin-top: 20px;
-        font-size: 1.5em;
-        color: #3498db;
-      }
-    </style>
   </head>
   {% include 'study_header.html' %}
   <body>
-    
     <main>
         <div class="chapter_title"><p>{{ part }}</p></div>
       <div class="wrap-container">
@@ -75,6 +37,13 @@
       </div>
     </div>
     <script>
+      // 페이지가 다시 표시될 때 로딩 화면 숨기기
+      window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+          document.getElementById('loading-screen').style.display = 'none';
+        }
+      });
+
       document.addEventListener('DOMContentLoaded', function() {
         var jungBtn = document.querySelector('.btn-jung .next-btn');
         var goBtn = document.querySelector('.btn-go .next-btn');

@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>문제풀이 - OX</title>
     <link rel="stylesheet" href="{% static 'blank.css' %}">
-    <link rel="stylesheet" href="{% static 'wrong_explanation.css' %}">
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
 </head>
 
@@ -39,7 +38,7 @@
                         </div>
                     </div>
                     <img class="enemy_magic" src="{% static 'images/magic.gif' %}" alt="" style="display:none;">
-                    <img class="enemy_char" src="{% static 'images/enemy1.png' %}" alt="char" />
+                    <img class="ccc" src="{% static 'images/enemy1.png' %}" alt="char" />
                     <div class="hp-bar-container">
                         <div id="hp-bar" class="hp-bar" style="width: {{ hp_percentage }}%;"></div>
                     </div>
@@ -52,9 +51,6 @@
                 <p>
                     {{ question.explanation }}
                 </p>
-            </div>
-            <div class="character">
-                <img src="{{ character_img }}" alt="char" />
             </div>
             <div class="next-button-container">
                 <button class="next" id="next-btn" onclick="nextQuestion()">{% if num == 5 %}Finish{% else %}다음문제{% endif %}</button>
@@ -180,7 +176,7 @@
             }, 1000);
         });
 
-        window.onload = function() {
+        /*window.onload = function() {
 
 
             function redirectToLevelChoice() {
@@ -200,7 +196,7 @@
                     location.replace(levelChoiceUrlPattern);
                 }
             });
-        };
+        };*/
     </script>
 </body>
 </html>

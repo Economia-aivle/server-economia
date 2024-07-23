@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>문제풀이 - OX</title>
     <link rel="stylesheet" href="{% static 'multiple.css' %}" />
-    <link rel="stylesheet" href="{% static 'wrong_explanation.css' %}">
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
 </head>
 <body>
@@ -53,14 +52,10 @@
                 <p class="ans">답: {{ question.correct_answer }}</p>
                 <p>{{ question.explanation }}</p>
             </div>
-            <div class="character">
-                <img src="{{ character_img }}" alt="char" />
-            </div>
-            <div class="next-button-container">
+
                 <button class="next" id="next-btn" onclick="nextQuestion()">
                     {% if num == 5 %}Finish{% else %}다음문제{% endif %}
                 </button>
-            </div>
         </div>
     </main>
 
@@ -117,6 +112,8 @@
                     document.querySelector('.mychar').classList.add('wrong');
                     setTimeout(function () {
                         document.querySelector('.wrap-container').style.display = 'none';
+                        document.querySelector('.character').style.display = 'none';
+                        document.querySelector('.magic').style.display = 'none';
                         document.querySelector('.question-container').style.display = 'none';
                         document.getElementById('wrong-container').style.display = 'block';
                     }, 1000);
