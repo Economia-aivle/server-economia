@@ -7,7 +7,6 @@
     <title>mypage</title>
     <link rel="stylesheet" href="{% static 'mypage.css' %}" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap">
-    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
   </head>
     {% include 'header.html' %}
   <body>
@@ -17,7 +16,7 @@
         <div class="user-info">
           <h2 class="title">개인정보 변경</h2>
           <a class="update_info" href="update_info" target="_self">개인정보 변경</a>
-          <a class="delete-account" href="{% url 'users:delete_account' %}" target="_self">회원 탈퇴</a>
+          <a class="delete-account" href="/users/delete_account/{{user.player_id}}" target="_self">회원 탈퇴</a>
         </div>
         <div class="etc">
           <h2 class="title">기타</h2>

@@ -7,7 +7,6 @@
     <title>시나리오</title>
     <link rel="stylesheet" href="{% static 'previous_scenario.css' %}" />
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
-    <script src="{% static 'previous_scenario.js' %}"></script>
 </head>
 <body>
     {% include "header.html" %}
@@ -80,7 +79,7 @@
                         {% if child.parent_id == item.id %}
                             <div class="childcomment_container">
                                 <div class="child_comment_box">
-                                    {% if child.player_id == player_id %}
+                                    {% if child.characters_id == characters_id %}
                                         <form method="post" action="{% url 'scenarios:delete_childcomment' child.id %}" class="deleteForm">
                                             {% csrf_token %}
                                             <input type="hidden" name="scenario_id" value="{{ scenario.0.id }}">
@@ -101,24 +100,26 @@
                     <!-- 대댓글 작성 폼 -->
                     <div class="form_container">
                         <div class="child_comment_form">
-                            <form method="post" action="{% url 'scenarios:submit_childcomment' %}" enctype="multipart/form-data">
+                            <form method="post" action="{% url 'scenarios:submit_childcomment' %}" enctype="multipart/form-data" id="childcomment-form-{{ item.id }}">
                                 {% csrf_token %}
                                 <input type="hidden" name="parent_id" value="{{ item.id }}">
                                 <input type="hidden" name="scenario_id" value="{{ scenario.0.id }}">
                                 <input type="text" name="childcomment_text" class="childcomment_input" placeholder="의견 입력">
-                                <input type="file" id="fileInput" name="image" style="display: none;" onchange="updateFileName()" accept=".jpg,.jpeg,.gif,.png,.webp">
+                                <input type="file" id="fileInput-{{ item.id }}" name="image" style="display: none;" onchange="updateFileName({{ item.id }})">
                                 <!-- 커스텀 버튼 및 파일 이름 표시 -->
-                                <button type="button" id="customButton" onclick="document.getElementById('fileInput').click();"></button>
+                                <button type="button" class="customButton" id="customButton-{{ item.id }}" onclick="document.getElementById('fileInput-{{ item.id }}').click();"></button>
                                 
                                 <button type="submit" class="childcomment_submit_button"></button>
                             </form>
                         </div>
-                        <span id="fileName" style="margin-left: 10px;"></span>
+                        <span id="fileName-{{ item.id }}" style="margin-left: 10px;"></span>
                     </div>
                 </div>
             {% endfor %}
         {% endif %}
     </div>
+</body>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const deleteForms = document.querySelectorAll('.deleteForm');
@@ -195,11 +196,10 @@
        
         }
     });
-    function updateFileName() {
-        var input = document.getElementById('fileInput');
-        var fileName = document.getElementById('fileName');
-        fileName.textContent = input.files[0].name;
+    function updateFileName(commentId) {
+        const input = document.getElementById(`fileInput-${commentId}`);
+        const fileNameSpan = document.getElementById(`fileName-${commentId}`);
+        fileNameSpan.textContent = input.files[0].name;
     }
-
 </script>
 </html>

@@ -6,12 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>공지사항</title>
     <link rel="stylesheet" href="{% static 'notice.css' %}" />
-    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
 </head>
 <body>
     {% include 'header.html' %}
     <div class="search_container">
-        <form method="GET" action="{% url 'users:notice_list' %}">
+        <form method="GET" action="{% url 'users:notice' %}">
             <input type="text" class="search_input" name="search" placeholder="검색" value="{{ search_query }}">
             <button type="submit" class="search_btn">찾기</button>
         </form>
@@ -22,7 +21,7 @@
                 <tr>
                     <th>번호</th>
                     <th>제목</th>
-                    <th>작성자</th>
+
                     <th>날짜</th>
                 </tr>
             </thead>
@@ -31,8 +30,8 @@
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td><a href="{% url 'users:notice_detail' notice.id %}">{{ notice.title }}</a></td>
-                    <td>{{ notice.author }}</td>
-                    <td>{{ notice.created_at|date:"y.m.d" }}</td>
+
+                    <td>{{ notice.write_time|date:"y.m.d" }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

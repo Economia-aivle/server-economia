@@ -130,10 +130,38 @@
             <ul>
                 <li><a href="{% url 'home' %}">학습하기</a></li>
                 <li><a href="{% url 'scenarios:scenario_list' %}">시나리오</a></li>
-                <li><a href="/mypage">마이페이지</a></li>
-                <li><a href="">로그아웃</a></li>
+                <li><a href="{% url 'mypage' %}">마이페이지</a></li>
+                <li><a class="logout-btn">로그아웃</a></li>
             </ul>
         </nav>
     </div>
 </header>
+<script>
+    var percent = "{{ user.percent }}";
+    var access_token = "{{user.access_token}}";
+    var refresh_token = "{{user.refresh_token}}";
+    var characters = "{{user.character_id}}"
+    document.querySelector('.logout-btn').addEventListener('click', function() {
+        fetch('/onboarding/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${access_token}`
+            },
+            body: JSON.stringify({
+                'access_token': access_token,
+                'refresh_token': refresh_token
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = '/onboarding';
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+            } else {
+                console.error('Logout failed');
+            }
+        });
+    });
+</script>
 </html>

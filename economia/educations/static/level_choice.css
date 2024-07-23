@@ -20,9 +20,9 @@ body{
 }
 
 .wrap-container { 
-	position:absolute;
+	position: absolute;
+	height: 30vh;
     display: flex;
-	height: 800px;
 }
 
 
@@ -38,7 +38,6 @@ body{
 	cursor: pointer;
 	transition: background-color 0.3s ease;
 	font-family: 'Noto Sans KR', sans-serif; 
-	height: 600px;
 }
 
 
@@ -74,8 +73,8 @@ body{
     background-image: url('images/chapter_title.png');
     background-repeat: no-repeat;
     background-size: cover;
-	width: 1000px;
-	height: 160px;
+	width: 80vw;
+	height: 20vh;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -83,10 +82,10 @@ body{
 }
 .chapter_title p {
 	margin-left: 7%;
-	font-size: 40px;
+	font-size: 100%;
 }
 
 .jung, .go, .cho {
-	height: 90%;
-	position: relative;
+	height: 50vh;
+	position: absolute;
 }

@@ -25,6 +25,4 @@ urlpatterns = [
     path('delete_childcomment/<int:id>/', views.delete_childcomment, name='delete_childcomment'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('chapter/<str:subjects>/', views.delete_childcomment, name='delete_childcomment'),
-    
 ]

@@ -19,7 +19,6 @@ from datetime import datetime, timedelta, timezone
 import jwt
 from django.db.models import F, Window
 from django.db.models.functions import Rank
-from rest_framework.response import Response
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
 from rest_framework_simplejwt.exceptions import TokenError
 from django.middleware.csrf import get_token
@@ -58,7 +57,10 @@ def chapter(request):
     return render(request, 'chapter.html')
 
 def mypage(request):
-    return render(request, 'mypage.html')
+    access_token = request.COOKIES.get('access_token')
+    refresh_token = request.COOKIES.get('refresh_token')
+    decoded = jwt.decode(access_token, 'economia', algorithms=['HS256'])
+    return render(request, 'mypage.html', {"user":decoded})
 
 def onboarding(request):
     return render(request, 'onboarding.html')
@@ -116,7 +118,6 @@ def refresh_access_token(refresh_token):
 def home(request, subject_id):
     access_token = request.COOKIES.get('access_token')
     refresh_token = request.COOKIES.get('refresh_token')
-    
 
     def level(exp):
         total = int(exp)
@@ -223,43 +224,43 @@ def home(request, subject_id):
                 
             if tf and blank and mul:
                 if tf.time > blank.time and tf.time > mul.time:
-                    decoded['chapter'] = tf.chapter
+                    decoded['chapter'] = "Chapter " + tf.chapter
                     decoded['kind'] = "문제 유형 : OX"
                 elif blank.time > tf.time and blank.time > mul.time:
-                    decoded['chapter'] = blank.chapter
+                    decoded['chapter'] = "Chapter " + blank.chapter
                     decoded['kind'] = "문제 유형 : 빈칸 채우기"
                 else:
-                    decoded['chapter'] = mul.chapter
+                    decoded['chapter'] = "Chapter " +  mul.chapter
                     decoded['kind'] = "문제 유형 : 객관식"
             elif tf and blank:
                 if tf.time > blank.time:
-                    decoded['chapter'] = tf.chapter
+                    decoded['chapter'] = "Chapter " + tf.chapter
                     decoded['kind'] = "문제 유형 : OX"
                 else:
-                    decoded['chapter'] = blank.chapter
+                    decoded['chapter'] = "Chapter " + blank.chapter
                     decoded['kind'] = "문제 유형 : 빈칸 채우기"
             elif mul and blank:
                 if mul.time > blank.time:
-                    decoded['chapter'] = mul.chapter
+                    decoded['chapter'] = "Chapter " + mul.chapter
                     decoded['kind'] = "문제 유형 : 객관식"
                 else:
-                    decoded['chapter'] = blank.chapter
+                    decoded['chapter'] = "Chapter " + blank.chapter
                     decoded['kind'] = "문제 유형 : 빈칸 채우기"
             elif tf and mul:
                 if tf.time > mul.time:
-                    decoded['chapter'] = tf.chapter
+                    decoded['chapter'] = "Chapter " + tf.chapter
                     decoded['kind'] = "문제 유형 : OX"
                 else:
-                    decoded['chapter'] = mul.chapter
+                    decoded['chapter'] = "Chapter " + mul.chapter
                     decoded['kind'] = "문제 유형 : 객관식"
             elif tf:
-                decoded['chapter'] = tf.chapter
+                decoded['chapter'] = "Chapter " + tf.chapter
                 decoded['kind'] = "문제 유형 : OX"
             elif blank:
-                decoded['chapter'] = blank.chapter
+                decoded['chapter'] = "Chapter " + blank.chapter
                 decoded['kind'] = "문제 유형 : 빈칸 채우기"
             elif mul:
-                decoded['chapter'] = mul.chapter
+                decoded['chapter'] = "Chapter " + mul.chapter
                 decoded['kind'] = "문제 유형 : 객관식"
             else:
                 decoded['chapter'] = "현재 진행중인 문제가 없습니다."

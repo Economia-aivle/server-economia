@@ -48,4 +48,3 @@ class ResetBlankCorrectCountMiddleware:
             request.session['blank_correct_count'] = 0
 
         return response
-

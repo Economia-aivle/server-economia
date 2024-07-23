@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'omyu_pretty';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     background-color: #E0F4FF;
     margin: 0;
@@ -17,33 +24,34 @@ body {
 
 .search_input {
     width: 550px;
-    height: 35px;
+    height: 20px;
     margin-top: 20px;
     padding: 20px;
     font-size: 24px;
+    font-family: 'omyu_pretty';
     border: none;
     border-radius: 10px;
     outline: none;
 }
 
 .search_btn {
-    background-color: #87CEEB; /* 하늘색 배경 */
+    background-color: #43BEEE; /* 하늘색 배경 */
     color: white; /* 텍스트 색상 */
     border: none;
     padding: 10px 20px; /* 상하 10px, 좌우 20px 패딩 추가 */
     font-size: 24px; /* 글자 크기 조절 */
+    font-family: 'omyu_pretty';
     width: 150px; /* 버튼 너비 조절 */
-    height: 50px; /* 버튼 높이 조절 */
+    height: 60px; /* 버튼 높이 조절 */
     margin-top: 40px; /* 위쪽에 40픽셀의 마진 추가 */
     margin-right: 30px; /* 오른쪽에 30픽셀의 마진 추가 */
     margin-bottom: 20px; /* 아래쪽에 20픽셀의 마진 추가 */
     margin-left: 40px; /* 왼쪽에 40픽셀의 마진 추가 */
-    border-radius: 25px; /* 버튼 모서리를 둥글게 */
+    border-radius: 10px; /* 버튼 모서리를 둥글게 */
 }
 
 .search_btn:hover {
-    background-color: #FFFFFF; /* 흰색 배경 */
-    color: #87CEEB; /* 하늘색 텍스트 */
+    background-color: #A6E2F9;
 }
 
 

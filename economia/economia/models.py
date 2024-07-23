@@ -10,6 +10,34 @@ from django.utils import timezone
 import datetime
 from django.contrib.auth.models import AbstractBaseUser
 
+class Player(AbstractBaseUser):
+    id = models.BigAutoField(primary_key=True)
+    player_id = models.CharField(max_length=20, unique=True)
+    player_name = models.CharField(max_length=5, blank=True, null=True)
+    nickname = models.CharField(unique=True, max_length=255)
+    last_login = models.DateTimeField(auto_now_add=True)
+    email = models.CharField(unique=True, max_length=255)
+    school = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    password = models.CharField(max_length=255)
+
+    USERNAME_FIELD = 'player_id'
+    REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return self.player_id
+
+    def has_perm(self, perm, obj=None):
+        return self.is_superuser
+
+    def has_module_perms(self, app_label):
+        return self.is_superuser
+
+    class Meta:
+        managed = False
+        db_table = 'player'
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
@@ -41,54 +69,6 @@ class AuthPermission(models.Model):
         unique_together = (('content_type', 'codename'),)
 
 
-class AuthUser(models.Model):
-    password = models.CharField(max_length=128)
-    last_login = models.DateTimeField(blank=True, null=True)
-    is_superuser = models.IntegerField()
-    username = models.CharField(unique=True, max_length=150)
-    first_name = models.CharField(max_length=150)
-    last_name = models.CharField(max_length=150)
-    email = models.CharField(max_length=254)
-    is_staff = models.IntegerField()
-    is_active = models.IntegerField()
-    date_joined = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user'
-
-
-class AuthUserGroups(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user_groups'
-        unique_together = (('user', 'group'),)
-
-
-class AuthUserUserPermissions(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user_user_permissions'
-        unique_together = (('user', 'permission'),)
-
-
-class AuthtokenToken(models.Model):
-    key = models.CharField(primary_key=True, max_length=40)
-    created = models.DateTimeField()
-    user_id = models.BigIntegerField(unique=True)
-
-    class Meta:
-        managed = False
-        db_table = 'authtoken_token'
-
 
 class Blank(models.Model):
     characters = models.ForeignKey('Characters', on_delete=models.CASCADE)
@@ -119,14 +99,13 @@ class Characters(models.Model):
 
 class ChildComments(models.Model):
     parent = models.ForeignKey('Comments', models.DO_NOTHING)
-    player = models.ForeignKey('Player', on_delete=models.CASCADE)
+    characters = models.ForeignKey(Characters, on_delete=models.CASCADE)
     texts = models.CharField(max_length=500, blank=True, null=True)
     imgfile = models.ImageField(null=True, upload_to="", blank=True, default="")
 
     class Meta:
         managed = False
         db_table = 'child_comments'
-
 
 class Comments(models.Model):
     scenario = models.ForeignKey('Scenario', models.DO_NOTHING)
@@ -142,7 +121,7 @@ class Comments(models.Model):
 
 
 class CommentsLikes(models.Model):
-    comment = models.ForeignKey(Comments, models.DO_NOTHING)
+    comment = models.ForeignKey("Comments", models.DO_NOTHING)
     player = models.ForeignKey('Player', on_delete=models.CASCADE)
 
     class Meta:
@@ -244,75 +223,6 @@ class NoticeBoard(models.Model):
         db_table = 'notice_board'
 
 
-class Player(AbstractBaseUser):
-    id = models.BigAutoField(primary_key=True)
-    player_id = models.CharField(max_length=20, unique=True)
-    player_name = models.CharField(max_length=5, blank=True, null=True)
-    nickname = models.CharField(unique=True, max_length=255)
-    last_login = models.DateTimeField(auto_now_add=True)
-    email = models.CharField(unique=True, max_length=255)
-    school = models.CharField(max_length=255)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
-    password = models.CharField(max_length=255)
-
-    USERNAME_FIELD = 'player_id'
-    REQUIRED_FIELDS = []
-
-    def __str__(self):
-        return self.player_id
-
-    def has_perm(self, perm, obj=None):
-        return self.is_superuser
-
-    def has_module_perms(self, app_label):
-        return self.is_superuser
-
-    class Meta:
-        managed = False
-        db_table = 'player'
-        
-class AuthGroup(models.Model):
-    name = models.CharField(unique=True, max_length=150)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_group'
-
-
-class AuthGroupPermissions(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_group_permissions'
-        unique_together = (('group', 'permission'),)
-
-
-class AuthPermission(models.Model):
-    name = models.CharField(max_length=255)
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
-    codename = models.CharField(max_length=100)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_permission'
-        unique_together = (('content_type', 'codename'),)
-
-
-class AuthtokenToken(models.Model):
-    key = models.CharField(primary_key=True, max_length=40)
-    created = models.DateTimeField()
-    user = models.OneToOneField('Player', models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'authtoken_token'
-
-
 class Qna(models.Model):
     title = models.CharField(max_length=50, blank=True, null=True)
     question_text = models.CharField(max_length=500, blank=True, null=True)
@@ -388,26 +298,3 @@ class Tf(models.Model):
     class Meta:
         managed = False
         db_table = 'tf'
-
-
-class TokenBlacklistBlacklistedtoken(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    blacklisted_at = models.DateTimeField()
-    token = models.OneToOneField('TokenBlacklistOutstandingtoken', models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'token_blacklist_blacklistedtoken'
-
-
-class TokenBlacklistOutstandingtoken(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    token = models.TextField()
-    created_at = models.DateTimeField(blank=True, null=True)
-    expires_at = models.DateTimeField()
-    user = models.ForeignKey(Player, models.DO_NOTHING, blank=True, null=True)
-    jti = models.CharField(unique=True, max_length=255)
-
-    class Meta:
-        managed = False
-        db_table = 'token_blacklist_outstandingtoken'

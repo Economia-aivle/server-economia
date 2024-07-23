@@ -7,31 +7,30 @@ from . import views
 from django.conf.urls.static import static
 from django.contrib.auth.views import LogoutView
 from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView)
- 
 
 def index(request):
     return render(request, 'index.html')
- 
+
 def chapter(request):
     return render(request, 'chapter.html')
- 
+
 def home(request):
     return render(request, 'home.html')
- 
+
 def mypage(request):
     return render(request, 'mypage.html')
- 
+
 def onboarding(request):
     return render(request, 'onboarding.html')
- 
+
 def update_info(request):
     return render(request, 'update_info.html')
- 
+
 def admin_dashboard(request):
     return render(request,'admin_dashboard.html')
 def admin_login(request):
     return render(request,'admin_login.html')
- 
+
 def ask(request):
     return render(request,'ask.html')
 def service_agree(request):
@@ -54,7 +53,7 @@ urlpatterns = [
     path('scenarios/', include('scenarios.urls')),
     path("chapter", views.chapter),
     path("home/<int:subject_id>", views.home, name='home'),
-    path("mypage", views.mypage, name ='mypage'),
+    path("mypage", views.mypage, name='mypage'),
     path("onboarding", views.onboarding),
     path("onboarding/re", views.LoginView.as_view(), name='login'),
     path("onboarding/logout", views.LogoutView.as_view(), name='logout'),
@@ -70,7 +69,7 @@ urlpatterns = [
     path('ask', ask, name='ask'),
     path('register', views.register, name='register'),
 ]
- 
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)

@@ -17,15 +17,32 @@ body, html {
     font-family: 'omyu_pretty';
 }
 
+img {
+    border: none;
+    background-color: inherit;
+}
+
 .search {
     width: 20px;
     height: 20px;
     background-image: url("/static/images/search.png");
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
 }
 
+.image-button {
+    background: none;
+    border: none;
+    padding: 0;
+    background-color: inherit;
+    margin: 0;
+    border: 0px;
+    cursor: pointer; /* 마우스를 올렸을 때 커서가 포인터로 바뀌게 합니다 */
+}
+
+.image-button img {
+    display: block; /* 이미지만 보이도록 합니다 */
+}
 
 .line {
     border: solid 1px #888787;
@@ -410,7 +427,7 @@ body, html {
 }
 
 .chapter-1, .chapter-2, .chapter-3,
-.created-scenario-1, .created-scenario-2, .created-scenario-3,
+.created-scenario-1, .created-scenario-2, .created-scenario-3, .created-scenario,
 .announcement-text, .announcement-text2 {
     text-decoration: none;
     flex-direction: column;

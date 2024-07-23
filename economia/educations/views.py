@@ -353,7 +353,6 @@ def chapter_summary(request):
     return render(request,'chapter_summary.html')
 
 def chapter(request, subjects):
-    characters = get_player(request, 'characters')
     subjects = Subjects.objects.get(id=subjects).subjects
     response = requests.get(f'http://127.0.0.1:8000/educations/getSubjectDatas/{subjects}/')
     data = response.json()
@@ -362,7 +361,6 @@ def chapter(request, subjects):
         chapter['chapters_list'] = chapter_content.split(', ')
     context = {
         'chapter': data,
-        'characters' : characters,
     }
     print(data)
     return render(request,'chapter.html', context)
