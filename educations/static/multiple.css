@@ -1,0 +1,144 @@
+
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+main{
+	width:100%;
+	position : relative;
+	display: flex;
+	justify-content : center;
+	font-family: 'Noto Sans KR', sans-serif;
+	text-align: center;
+
+}
+body{
+	height: 95vh;
+	background-image: url('images/multiple_back.png');
+	background-repeat : no-repeat;
+	background-size: cover;
+}
+.question-container{
+	width: 600px;
+    height: auto;
+    border: none;
+    border-radius: 10px;
+    background-color: white;
+    color: black;
+    text-align: left;
+    font-size: 25px;
+    font-family: 'Noto Sans KR', sans-serif;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 20px;
+}
+
+
+.wrap-container { 
+	position:absolute;
+	top : 10%;
+	display: flex;
+	justify-content: center;
+	
+}
+.character {
+    text-align: center;
+	cursor: url('images/sword.png') , auto;
+	margin-top:20%
+}
+.character img{
+    height: 246px;
+    width: 260px;
+}
+
+  
+.option-btn {
+    width: 600px;
+    height: 60px;
+    border: none;
+    border-radius: 10px;
+    margin: 10px 0;
+    background-color: white;
+    color: black;
+    text-align: left;
+    padding: 0 20px;
+    font-size: 25px;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+	margin-left: 40px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+.option-btn:hover {
+    background-color: #f0f0f0;
+  }
+  
+.option-btn.selected {
+    background-color: #4378FF;
+    color: white;
+  }
+
+.next-btn{
+	background-color: #39A7FF;
+	font-size: 20px;
+	color: white;
+	width: 150px;
+	height: 60px;
+	border: none;
+	border-top-left-radius:20px;
+	border-top-right-radius:20px;
+	border-bottom-left-radius:20px;
+	border-bottom-right-radius:20px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	font-family: 'Noto Sans KR', sans-serif;
+	margin-right: -600px;
+}
+
+.next-btn:hover {
+	background-color: #1A85D6; 
+	color: #E0E0E0; 
+	}
+
+.wrong-container { 
+	margin-top: 5%;
+	width:1400px;
+	height:600px;
+	position:absolute;
+	margin-top : -0px !important;
+	justify-content: center;
+	flex-direction: column;
+	align-items: flex-end;
+	margin-right: 20%;
+	
+}
+
+.hp-bar-container {
+	width: 200px;
+	height: 20px;
+	border: 1px solid #000;
+	background-color: #f3f3f3;
+	margin-left: 30px;
+  }
+  .hp-bar {
+	height: 100%;
+	background-color: #4caf50;
+	width: 100%; /* Start with full HP */
+  }
+  form{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+  }
+
+  .mychar{
+	height: 30vh;
+	width: 15vw;
+	margin-top:18%
+}
+.answer-container{
+	margin-right: 10%;
+	margin-left: 10%;	
+	margin-top: 150px;
+}
+
+.life{
+	margin-left: 180px;
+}

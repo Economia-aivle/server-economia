@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>학습 하기</title>
+    <link rel="stylesheet" href="{% static 'level_choice.css' %}" />
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+  </head>
+  {% include 'study_header.html' %}
+  <body>
+    
+    <main>
+        <div class="chapter_title"><p>Chapter 1. 스스로 선택해라: 금융과 의사결정</p></div>
+      <div class="wrap-container">
+        <span class="btn-cho">
+            <button class="next-btn {% if chapter_sub is None or chapter_sub == 1 or chapter_sub == 2 or chapter_sub == 3 %}active{% endif %}" onclick="location.href = '{% url 'educations:tf_quiz_page' characters=1 subjects_id=subjects_id chapter=chapter %}'">
+                <img class="cho" src="{% static 'images/choga.png' %}" alt="초급">
+            </button>
+        </span>
+        <span class="btn-jung">
+            <button class="next-btn {% if chapter_sub is 2 or chapter_sub == 3 %}active{% endif %}" onclick="location.href = '{% url 'educations:multiple' characters=1 subjects_id=subjects_id chapter=chapter num=1 %}'">
+              <img class="jung" src="{% static 'images/tree.png' %}" alt="중급">
+            </button>
+        </span>
+        <span class="btn-go">
+            <button class="next-btn {% if chapter_sub is 3 %}active{% endif %}" onclick="location.href = '{% url 'educations:blank' characters=1 subjects_id=subjects_id chapter=chapter num=1 %}'">
+              <img class="go" src="{% static 'images/block.png' %}" alt="고급">
+            </button>
+        </span>
+      </div>
+    </main>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var jungBtn = document.querySelector('.btn-jung .next-btn');
+        var goBtn = document.querySelector('.btn-go .next-btn');
+        var jungImg = jungBtn.querySelector('.jung');
+        var goImg = goBtn.querySelector('.go');
+
+        if (!jungBtn.classList.contains('active')) {
+          jungBtn.disabled = true;
+          jungImg.src = '{% static 'images/lock_tree.png' %}';
+        }
+
+        if (!goBtn.classList.contains('active')) {
+          goBtn.disabled = true;
+          goImg.src = '{% static 'images/lock_block.png' %}';
+        }
+      });
+    </script>
+  </body>
+</html>

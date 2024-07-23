@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>chapter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'chapter.css' %}" />
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+  </head>
+  {% include 'study_header.html' %}
+  <body>
+    <div class="main-container">
+      <div class="chapters">
+        {% for item in chapter %}
+        {% for part in item.chapters_list %}
+            <button class="chap{{ item.id }}" onclick="location.href='{% url 'educations:level_choice' characters=1 subjects_id=item.id chapter=forloop.counter %}'">
+                <p>{{ part }}</p>
+            </button><br>
+        {% endfor %}
+      {% endfor %}
+      </div>
+      
+    </div>
+</body>
+</html>

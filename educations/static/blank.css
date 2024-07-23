@@ -1,0 +1,177 @@
+
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+main{
+	width:100%;
+	position : relative;
+	display: flex;
+	justify-content : center;
+	font-family: 'Noto Sans KR', sans-serif;
+	text-align: center;
+
+}
+body{
+	height: 95vh;
+	background-image: url('images/blank_back.png');
+	background-repeat : no-repeat;
+	background-size: cover;
+}
+
+
+.wrap-container { 
+	width: 1500px;
+	height: 500px;
+	top : 10%;
+	position:absolute;
+	display: flex;
+	justify-content: center;
+    flex-direction: column;
+	
+}
+.character {
+	margin-top: 15%;
+	display: flex;
+	flex-direction: column;
+}
+.character .mychar{
+	margin-left: 10%;
+	
+    height: 246px;
+    width: 260px;
+	float: left;
+}
+.character .mychar.wrong{
+	filter: invert(100%);
+}
+
+.answer_form{
+	float: left;
+    margin-top: 5%;
+	text-align: center;
+}
+.answer{
+	text-align: center;
+    width: 400px;
+	height: 60px;
+    font-size: 20px;
+    border: none;
+	border-top-left-radius:20px;
+	border-top-right-radius:20px;
+	border-bottom-left-radius:20px;
+	border-bottom-right-radius:20px;
+	float: left;
+}
+input::placeholder {
+    font-weight: bold;
+    text-align: center;
+}
+
+.next-btn{
+	background-color: #39A7FF;
+	font-size: 20px;
+	color: white;
+	width: 150px;
+	height: 60px;
+	border: none;
+	border-top-left-radius:20px;
+	border-top-right-radius:20px;
+	border-bottom-left-radius:20px;
+	border-bottom-right-radius:20px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	font-family: 'Noto Sans KR', sans-serif; 
+	float: left;
+	cursor: url('images/sword.png') , auto;
+}
+
+
+
+.next-btn:hover {
+background-color: #1A85D6; 
+color: #E0E0E0; 
+}
+
+.distance{
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.enemy img{
+	bottom: 10%;
+	position: absolute;
+	height: 246px;
+    width: 260px;
+	right: 5%;
+}
+.hp-bar-container {
+	bottom: 3%;
+	width: 200px;
+	position: absolute;
+	height: 20px;
+	border: 1px solid #000;
+	background-color: #f3f3f3;
+	margin-left: 30px;
+	right: 7%;
+  }
+  .hp-bar {
+	height: 100%;
+	background-color: #4caf50;
+	width: 100%; /* Start with full HP */
+  }
+  .question-container {
+	position: relative;
+	background: #ffffff;
+	border-radius: 1em;
+    width: 30vw;
+    height: 230px;
+	max-height: 230px;
+    padding: 20px;
+	right: 50%;
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+
+}
+.question{
+	height: auto;
+	max-height: 230px;
+	overflow: auto; /* 내용이 넘칠 경우 스크롤바 표시 */
+	font-size: 36px;
+	font-weight: bold;
+}
+
+
+
+.question-container:after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 95%;
+	width: 0;
+	height: 0;
+	border: 1.531em solid transparent;
+	border-top-color: #ffffff;
+	border-bottom: 0;
+	border-left: 0;
+	margin-left: -0.766em;
+	margin-bottom: -1.5em;
+	transform: rotate(90deg);
+}
+.life{
+	margin-left: 180px;
+}
+.magic{
+	margin-left: 10%;
+	position: absolute;
+	bottom: 25%;
+	left:-5%;
+	z-index: 1;
+}
+
+.enemy_magic{
+	position: absolute;
+	z-index: 1;
+}
+.enemy_char.wrong{
+	filter: invert(100%);
+}

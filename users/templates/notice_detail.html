@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ notice.title }}</title>
+    <link rel="stylesheet" href="{% static 'notice_detail.css' %}">
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="notice-container">
+        <h1 class="notice-title">{{ notice.title }}</h1>
+        <div class="notice-meta">
+            <p>작성자: {{ admin_nickname }}</p>
+            <p>작성일: {{ notice.write_time|date:"Y-m-d H:i" }}</p>
+        </div>
+        <div class="notice-content">
+            {{ notice.texts|linebreaks }}
+        </div>
+        <a href="{% url 'users:notice' %}" class="back-button">목록으로 돌아가기</a>
+    </div>
+</body>
+</html>
